@@ -46,6 +46,7 @@
                         <div class="row-fluid">
                             <div class="span9">
                                 <ul class="inline top-cat-menu">
+                                	<li><a href="<%URLPADRAO%>">Início</a></li>
                                     <li><a href="<%URLPADRAO%>sobre-nos">Sobre Nós</a></li>
                                     <li><a href="<%URLPADRAO%>lista-produtos">Produtos</a></li>
                                     <li><a href="<%URLPADRAO%>agenda">Agenda</a></li>
@@ -53,7 +54,8 @@
                                     <li><a href="<%URLPADRAO%>cadastro">Cadastro</a></li>
                                     <li><a href="<%URLPADRAO%>contato">Contato</a></li>
                                 </ul>
-                                <select class="top-cat-menu dropdown">
+                                <select onchange="navega(this.value)" class="top-cat-menu dropdown">
+                                	<option value="">Início</option>
                                 	<option value="sobre-nos">Sobre Nós</option>
 			                        <option value="lista-produtos">Produtos</option>
                                  	<option value="agenda">Agenda</option>
@@ -157,5 +159,10 @@
         <script type="text/javascript" src="<%URLPADRAO%>_html/js/jquery.easing-1.3.js"></script>
         <script type="text/javascript" src="<%URLPADRAO%>_html/js/jquery.flexslider-min.js"></script>
         <script type="text/javascript" src="<%URLPADRAO%>_html/js/script.js"></script>
+        <script type="text/javascript">
+        	function navega(pagina){
+        		location.href = "<%URLPADRAO%>" + pagina;
+        	}
+        </script>
     </body>
 </html>
