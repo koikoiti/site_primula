@@ -233,7 +233,11 @@
 		
 		#Funcao que carrega as páginas
 		function CarregaPaginas(){
-            $urlDesenvolve = 'site_primula';
+			if (strpos($_SERVER['DOCUMENT_ROOT'], 'public_html') !== false) {
+				$urlDesenvolve = 'scylla';
+			}else{
+				$urlDesenvolve = 'site_primula';
+			}
 			$primeiraBol = true;
 			$uri = $_SERVER["REQUEST_URI"];
 			$exUrls = explode('/',$uri);

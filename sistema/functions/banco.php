@@ -245,7 +245,13 @@
 		
 		#Funcao que carrega as páginas
 		function CarregaPaginas(){
-            $urlDesenvolve = 'primula';
+			if (strpos($_SERVER['DOCUMENT_ROOT'], 'public_html') !== false) {
+				$urlDesenvolve = 'scylla';
+				$urlDesenvolve2 = 'sistema';
+			}else{
+				$urlDesenvolve = 'site_primula';
+				$urlDesenvolve2 = 'sistema';
+			}
 			$primeiraBol = true;
 			$uri = $_SERVER["REQUEST_URI"];
 			$exUrls = explode('/',$uri);
@@ -253,7 +259,7 @@
 
 			$p = 0;
 			foreach( $exUrls as $chave => $valor ){
-				if( $valor != '' && $valor != $urlDesenvolve ){
+				if( $valor != '' && $valor != $urlDesenvolve && $valor != $urlDesenvolve2){
 					$valorUri = $valor;
 					$valorUri = strip_tags($valorUri);
 					$valorUri = trim($valorUri);
