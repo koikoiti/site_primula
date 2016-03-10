@@ -1,0 +1,28 @@
+<tr class="odd gradeX">
+    <td><%NOME%></td>
+    <td><%MARCA%></td>
+    <td><%CATEGORIA%></td>
+    <td class="center"><%ESTOQUE%></td>
+    <td class="center"><%ATIVOINATIVO%></td>
+    <td class="center">
+        <div class="btn-group">
+            <button class="btn btn-default btn-xs" type="button">-----</button>
+            <button data-toggle="dropdown" class="btn btn-xs btn-primary dropdown-toggle" type="button">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul role="menu" class="dropdown-menu">
+                <li>
+                    <a href="<%URLPADRAO%>produto/editar/<%ID%>">Editar</a>
+                </li>
+                <li>
+                    <a target="_blank" href="<%URLPADRAO%>produto/visualizar/<%ID%>">Visualizar</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <%BOTAOAI%>
+                </li>
+            </ul>
+        </div>
+    </td>
+</tr>

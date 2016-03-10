@@ -1,0 +1,29 @@
+<tr class="odd gradeX">
+    <td><%REFERENCIA%></td>
+    <td><%ENDERECO%></td>
+    <td><%BAIRRO%></td>
+    <td><%CATEGORIA%></td>
+    <td class="center">R$ <%VALOR%></td>
+    <td class="center">
+        <div class="btn-group">
+            <button class="btn btn-default btn-xs" type="button">-----</button>
+            <button data-toggle="dropdown" class="btn btn-xs btn-primary dropdown-toggle" type="button">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul role="menu" class="dropdown-menu">
+                <li>
+                    <a href="<%URLPADRAO%>imovel/editar/<%ID%>">Editar</a>
+                </li>
+                <li>
+                    <a target="_blank" href="<%URLPADRAO%>imovel/visualizar/<%ID%>">Visualizar</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#" onclick="remover('<%ID%>')">Remover</a>
+                </li>
+            </ul>
+        </div>
+        <%DESTAQUE%>
+    </td>
+</tr>

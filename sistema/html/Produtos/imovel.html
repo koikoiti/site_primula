@@ -1,0 +1,464 @@
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/jasny.bootstrap/extend/css/jasny-bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.switch/bootstrap-switch.min.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/jquery.select2/select2.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.slider/css/slider.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/jquery.icheck/skins/flat/green.css">
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.daterangepicker/daterangepicker-bs3.css" />
+<div class="header">
+    <h3><%TITULO%></h3>
+</div>
+<div class="content">
+    <div class="col-md-6">
+    
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">*Referência</label>
+            <div class="col-sm-6">
+                <input autofocus required type="text" class="form-control" name="referencia" value="<%REFERENCIA%>">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">*Angariador</label>
+            <div class="col-sm-6">
+                <input required type="text" class="form-control" name="angariador" value="<%ANGARIADOR%>">
+            </div>
+        </div>
+        
+        <div class="form-group form-margin">
+            <label class="col-sm-3 control-label">*Categoria</label>
+            <div class="col-sm-6">
+                <%SELECTCATEGORIAS%>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">CEP</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control cep" name="cep" onblur="buscaCep(this.value)" value="<%CEP%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label class="col-sm-3 control-label form-margin">Endereço</label>
+            <div class="col-sm-6">
+                <input type="text" id="endereco" class="form-control" name="endereco" value="<%ENDERECO%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label class="col-sm-3 control-label form-margin">Número</label>
+            <div class="col-sm-6">
+                <input type="text" id="numero" class="form-control" name="numero" value="<%NUMERO%>">
+            </div>
+        </div>
+
+        <div class="form-group" style="width: 50%; float: left">
+            <label class="col-sm-3 control-label form-margin">Bairro</label>
+            <div class="col-sm-6">
+                <input type="text" id="bairro" class="form-control" name="bairro" value="<%BAIRRO%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 25%; float: left">
+            <label class="col-sm-3 control-label form-margin">Cidade</label>
+            <div class="col-sm-6">
+                <input type="text" id="cidade" class="form-control" name="cidade" value="<%CIDADE%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 25%; float: left">
+            <label class="col-sm-3 control-label form-margin">Estado</label>
+            <div class="col-sm-6">
+                <input maxlength="2" onblur="maiusc(this);" type="text" id="estado" class="form-control" name="estado" value="<%ESTADO%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label class="col-sm-3 control-label form-margin">Complemento</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="complemento" value="<%COMPLEMENTO%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Ponto de Referência</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="ponto_referencia" value="<%PONTOREFERENCIA%>">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">Entre Ruas</label>
+            <div class="col-sm-6">
+              <textarea class="form-control" style="margin-bottom:30px; height:60px; max-width: 100%;" name="entre_ruas"><%ENTRERUAS%></textarea>
+            </div>
+       </div>
+
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Área Útil</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="area_util" value="<%AREAUTIL%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Área Total</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="area_total" value="<%AREATOTAL%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Proprietário</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="proprietario" value="<%PROPRIETARIO%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Telefone</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control telefone" name="telefone" value="<%TELEFONE%>">
+            </div>
+        </div>
+
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Dormitórios</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="dormitorios" value="<%DORMITORIOS%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Garagem</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="garagem" value="<%GARAGEM%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Sala</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="sala" value="<%SALA%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Churrasqueira</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="churrasqueira" value="<%CHURRASQUEIRA%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Piso</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="piso" value="<%PISO%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Esquadrias</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="esquadrias" value="<%ESQUADRIAS%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">Idade</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="idade" value="<%IDADE%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBAVERBADA%> type="checkbox" id="cbaverbada" class="form-control" name="cbaverbada" style="width: 16px; height: 16px; float: left;">&nbsp;Averbada</label>
+            <div class="col-sm-6">
+                <input type="text" id="averbada" class="form-control" name="averbada" style="visibility: <%VBAVERBADA%>;" value="<%AVERBADA%>">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">*Valor</label>
+            <div class="col-sm-6">
+                <input required type="text" class="form-control money" name="valor" value="<%VALOR%>">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">Descrição (Site)</label>
+            <div class="col-sm-6">
+              <textarea class="form-control" style="margin-bottom:30px; height:150px; max-width: 100%;" name="descricao"><%DESCRICAO%></textarea>
+            </div>
+       </div>
+       
+       <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">Informações (Ficha)</label>
+            <div class="col-sm-6">
+              <textarea class="form-control" style="margin-bottom:30px; height:150px; max-width: 100%;" name="informacoes"><%INFORMACOES%></textarea>
+            </div>
+       </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBCOPA%> type="checkbox" class="form-control" name="copa" style="width: 16px; height: 16px; float: left;">&nbsp;Copa</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBCOZINHA%> type="checkbox" class="form-control" name="cozinha" style="width: 16px; height: 16px; float: left;">&nbsp;Cozinha</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBLAVABO%> type="checkbox" class="form-control" name="lavabo" style="width: 16px; height: 16px; float: left;">&nbsp;Lavabo</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBLAVANDERIA%> type="checkbox" class="form-control" name="lavanderia" style="width: 16px; height: 16px; float: left;">&nbsp;Lavanderia</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBSUITE%> type="checkbox" class="form-control" name="suite" style="width: 16px; height: 16px; float: left;">&nbsp;Suíte</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBCLOSET%> type="checkbox" class="form-control" name="closet" style="width: 16px; height: 16px; float: left;">&nbsp;Closet</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBHIDROMASSAGEM%> type="checkbox" class="form-control" name="hidromassagem" style="width: 16px; height: 16px; float: left;">&nbsp;Hidromassagem</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBBWCSOCIAL%> type="checkbox" class="form-control" name="bwc_social" style="width: 16px; height: 16px; float: left;">&nbsp;BWC Social</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBLAREIRA%> type="checkbox" class="form-control" name="lareira" style="width: 16px; height: 16px; float: left;">&nbsp;Lareira</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBATICO%> type="checkbox" class="form-control" name="atico" style="width: 16px; height: 16px; float: left;">&nbsp;Ático</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBARMARIOS%> type="checkbox" class="form-control" name="armarios" style="width: 16px; height: 16px; float: left;">&nbsp;Armários</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBSACADA%> type="checkbox" class="form-control" name="sacada" style="width: 16px; height: 16px; float: left;">&nbsp;Sacada</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBESCRITORIO%> type="checkbox" class="form-control" name="escritorio" style="width: 16px; height: 16px; float: left;">&nbsp;Escritório</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBDEPEMPREGADA%> type="checkbox" class="form-control" name="dep_empregada" style="width: 16px; height: 16px; float: left;">&nbsp;Dep Empregada</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBPLAYGROUND%> type="checkbox" class="form-control" name="playground" style="width: 16px; height: 16px; float: left;">&nbsp;Playground</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBSALAOFESTAS%> type="checkbox" class="form-control" name="salao_festas" style="width: 16px; height: 16px; float: left;">&nbsp;Salão de Festas</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBPISCINA%> type="checkbox" class="form-control" name="piscina" style="width: 16px; height: 16px; float: left;">&nbsp;Piscina</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label style="float: left; width: 50%;" class="col-sm-3 control-label form-margin"><input <%CBPORTAOELETRONICO%> type="checkbox" class="form-control" name="portao_eletronico" style="width: 16px; height: 16px; float: left;">&nbsp;Portão Eletrônico</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" style="width: 100%;">
+        <div class="form-group">
+            <div class="col-sm-3" style="width: 100%;">
+                <span class="btn btn-primary btn-file"><span class="fileinput-new">Selecionar Imagens</span><input id="files" type="file" name="imagens[]" multiple="multiple" accept="image/*"></span>
+                <div id="selectedFiles" style="display: flex;"><%IMAGENS%></div>
+            </div>
+        </div>
+      
+      <div class="form-group">
+            <div class="col-sm-6 form-margin">
+                <button style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
+                    <i class="fa fa-check"></i> Salvar
+                </button>
+                <%BOTAOVOLTAR%>
+                <%BOTAOATIVARINATIVAR%>
+                <%BOTAOEXCLUIR%>
+           </div>
+       </div>
+    </div>
+</div>
+<input type="hidden" name="acao" value="acao" />
+<script type="text/javascript">
+$(function() {
+    $('.cep').mask('00000-000');
+    $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
+    $('.telefone').mask('(00) 0000-00009');
+    
+    $('#cbaverbada').on('change', function(){
+        if($("#cbaverbada").is(':checked')){
+            $("#averbada").css('visibility', 'visible');  // checked
+        }else{
+            $("#averbada").css('visibility', 'hidden');
+        }
+    });
+});
+</script>
+<script type="text/javascript">
+function voltar(){
+    location.href = "<%URLPADRAO%>lista-imovel";
+}
+
+function ativar(idimovel){
+    location.href = "<%URLPADRAO%>imovel/ativar/" + idimovel;
+}
+
+function inativar(idimovel){
+    location.href = "<%URLPADRAO%>imovel/inativar/" + idimovel;
+}
+
+function buscaCep(cep){
+    if(cep.length == 9){
+		$.post("<%URLPADRAO%>lib/ajax/buscacep.php",
+ 				{cep: cep},
+ 				function(dados){
+ 					if(dados){
+ 						if(dados == "NOTFOUND"){
+ 							alert("CEP não encontrado na base de dados dos Correios!");
+ 						}else{
+ 							//Encontrou o CEP...tratar o retorno
+ 							var aux = dados.split("|");
+ 							
+ 							$('#endereco').val(aux[0]);
+ 							$('#bairro').val(aux[1]);
+                            var cidadeestado = aux[2].split("/");
+ 							$('#cidade').val(cidadeestado[0]);
+                            $('#estado').val(cidadeestado[1]);
+ 						}
+					}
+				}
+    	);
+	}
+}
+</script>
+<script type="text/javascript">
+/* Multifiles */
+    var selDiv = "";
+	var storedFiles = [];
+	
+	$(document).ready(function() {
+		$("#files").on("change", handleFileSelect);
+		
+		selDiv = $("#selectedFiles"); 
+		//$("#myForm").on("submit", handleForm);
+		
+		$("body").on("click", ".fileinput-exists", removeFile);
+	});
+    
+    function handleFileSelect(e) {
+		var files = e.target.files;
+		var filesArr = Array.prototype.slice.call(files);
+		filesArr.forEach(function(f) {			
+			if(!f.type.match("image.*")) {
+				return;
+			}
+			storedFiles.push(f);
+			
+			var reader = new FileReader();
+			reader.onload = function (e) {
+                var html = "<div style='float: left; clear: both; width: 20%'><div class='fileinput-preview thumbnail selFile'><img style='max-height: 400px;' src=\"" + e.target.result + "\" data-file='"+f.name+"'></div><a href='#' class='btn btn-danger fileinput-exists'>Remover</a></div>";
+			//	var html = "<div>" + f.name + "<br clear=\"left\"/></div>";
+				selDiv.append(html);
+				
+			}
+			reader.readAsDataURL(f); 
+		});	
+	}
+    
+    function removeFile(e) {
+		var file = $(this).data("file");
+		for(var i=0;i<storedFiles.length;i++) {
+			if(storedFiles[i].name === file) {
+				storedFiles.splice(i,1);
+				break;
+			}
+		}
+		$(this).parent().remove();
+	}
+</script>
+<script type="text/javascript">
+    function excluir(id){
+        if(confirm("Tem certeza que deseja excluir este imóvel?")){
+            location.href = "<%URLPADRAO%>imovel/remover/" + id;
+        }
+    }
+    
+    function removeFoto(id){
+        if(confirm("Deseja remover a imagem desse imóvel?")){
+            $.post("<%URLPADRAO%>lib/ajax/removeFotoImovel.php",
+    			{id:id},
+    			function(retorno){
+				    if(retorno == 1){
+				        $('#'+id).remove();
+				    }
+    			}
+    		);
+        }
+    }
+    
+    function maiusc(e){
+        e.value = e.value.toUpperCase();
+    }
+</script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/jasny.bootstrap/extend/js/jasny-bootstrap.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.touchspin/bootstrap-touchspin/bootstrap.touchspin.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.switch/bootstrap-switch.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/jquery.select2/select2.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.slider/js/bootstrap-slider.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/jquery.icheck/icheck.min.js"></script>

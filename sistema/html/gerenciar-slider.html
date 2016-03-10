@@ -1,0 +1,47 @@
+<div class="header">
+    <h3>Gerenciar Slider</h3>
+</div>
+<div class="content">
+    <div><button type="button" class="btn btn-success btn-flat" onclick="addSlide()">Adicionar Slide</button></div>
+    <div id="novo"></div>
+    <%SLIDER%>
+</div>
+<script type="text/javascript">
+function alterar(id){
+    var texto1 = $('#texto1' + id).val().trim();
+    var texto2 = $('#texto2' + id).val().trim();
+    var link = $('#link' + id).val().trim();
+    
+    if(texto1 != '' && texto2 != ''){
+        $.post("<%URLPADRAO%>lib/ajax/alteraSlideSite.php",
+			{id:id, texto1:texto1, texto2:texto2, link:link},
+			function(retorno){
+			    if(retorno == 1){
+			        window.location.reload();
+			    }
+			}
+		);
+    }
+}
+
+function remover(id){
+    if(confirm("Deseja remover este slide?")){
+        $.post("<%URLPADRAO%>lib/ajax/removeSlideSite.php",
+			{id:id},
+			function(retorno){
+			    if(retorno == 1){
+			        window.location.reload();
+			    }
+			}
+		);
+    }
+}
+
+function addSlide(){
+    var nova = document.getElementById("novo");
+	var novadiv = document.createElement("div");
+    novadiv.setAttribute('style', 'margin-bottom: 10px');
+	novadiv.innerHTML =  "<form enctype='multipart/form-data' method='post' action=''>Texto 1: <input required style='width: 25%' name='texto1' class='form-control' type='text' /><br/>Texto 2: <input required style='width: 25%' name='texto2' class='form-control' type='text' /><br/>Link: <input style='width: 25%' name='link' class='form-control' type='text' /><input type='hidden' name='acao' value='acao' /><br/><input required name='slide' type='file' accept='image/*'/><br/><input type='submit' class='btn btn-success btn-flat' value='Salvar'/></form>";
+	nova.appendChild(novadiv);
+}
+</script>

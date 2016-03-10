@@ -1,0 +1,70 @@
+<div class="header">
+    <h3><%TITULO%></h3>
+</div>
+<div class="content">
+
+    <div class="col-md-6">
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">Nome</label>
+            <div class="col-sm-6">
+                <input autofocus name="nome" type="text" class="form-control" value="<%NOME%>"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">Login</label>
+            <div class="col-sm-6">
+                <input name="login" type="text" class="form-control" value="<%LOGIN%>"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin"><%TITULOSENHA%></label>
+            <div class="col-sm-6">
+                <input name="senha" type="password" class="form-control"/>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">Setor</label>
+            <div class="col-sm-6">
+                <%SETOR%>
+            </div>
+        </div>
+        
+        <div id="div_tipo" style="display: <%DISPLAYTIPO%>;" class="form-group"><label class="col-sm-6 control-label form-margin">Tipo Vendedor</label><div class="col-sm-3" style="float: left;"><label><input <%CHECKEXTERNO%> name="tipo_vendedor" type="radio" value="Externo"/> Externo</label></div><div class="col-sm-3" style="float: left;"><label><input <%CHECKINTERNO%> name="tipo_vendedor" type="radio" value="Interno"/> Interno</label></div></div>
+        
+        <div class="form-group">
+            <div class="col-sm-6 form-margin">
+                <button type="submit" class="btn btn-success btn-flat"><i class="fa fa-check"></i> Salvar</button>
+                <%BOTAOEXCLUIR%>
+           </div>
+        </div>
+
+    </div>
+
+</div>
+<input type="hidden" name="acao" value="acao" />
+<script type="text/javascript">
+    function remover(id, nome){
+        if(confirm("Tem certeza que deseja inativar o usuário " + nome + "?")){
+            location.href = "<%URLPADRAO%>usuario/remover/" + id;
+        }
+    }
+    
+    function ativar(id, nome){
+        if(confirm("Tem certeza que deseja ativar o usuário " + nome + "?")){
+            location.href = "<%URLPADRAO%>usuario/ativar/" + id;
+        }
+    }
+    
+    function tipo(){
+        var setor = $("#setor").val();
+        if(setor == 2){
+            $("#div_tipo").show();
+        }else{
+            $("#div_tipo").hide();
+        }
+    }
+</script>

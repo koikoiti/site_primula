@@ -1,0 +1,54 @@
+<div class="col-md-12">
+    <div class="block-flat">
+        <div class="header" style="overflow: hidden;">
+            <p>
+                <a href="<%URLPADRAO%>monta-kit">Inserir Novo</a>
+            </p>
+            <h3 style="width: 30%; float: left;">Lista Kits</h3>
+        </div>
+        <div class="content">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome Kit</th>
+                            <th>Valor</th>
+                            <th>Produtos</th>
+                            <th>Ativo / Inativo</th>
+                            <th>Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%KITS%>
+                    </tbody>
+                </table>
+                <div class="pagination">
+            		<%PAGINACAO%>
+            	</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+function ativar(idkit, nome){
+    if(confirm('Deseja ativar o kit '+nome+' ?')){
+        location.href = "<%URLPADRAO%>monta-kit/ativar/" + idkit;
+    }
+}
+
+function inativar(idkit, nome){
+    if(confirm('Deseja inativar o kit '+nome+' ?')){
+        location.href = "<%URLPADRAO%>monta-kit/inativar/" + idkit;
+    }
+}
+    
+/*function pesquisar(){
+    var produto = $("#produto").val();
+    var categoria = $("#categoria").val();
+    var marca = $("#marca").val();
+    var modelo = $("#modelo").val();
+    
+    location.href = "<%URLPADRAO%>lista-produto/?produto=" + produto + "&categoria=" + categoria + "&marca=" + marca + "&modelo=" + modelo;
+}*/
+</script>

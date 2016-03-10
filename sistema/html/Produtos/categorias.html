@@ -1,0 +1,69 @@
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/jasny.bootstrap/extend/css/jasny-bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.switch/bootstrap-switch.min.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/jquery.select2/select2.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.slider/css/slider.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/jquery.icheck/skins/flat/green.css">
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.daterangepicker/daterangepicker-bs3.css" />
+<div class="header">
+    <h3><%TITULO%></h3>
+</div>
+<div class="content">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">*Categorias</label>
+            <div class="col-sm-6">
+                <button onclick="mais()" type="button" class="btn btn-primary">+</button>
+                <div class="form-group" id="lista-categorias">
+                    <%CATEGORIAS%>
+                </div>
+            </div>
+        </div>
+            
+        <div class="form-group">
+            <div class="col-sm-6 form-margin">
+                <button style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
+                    <i class="fa fa-check"></i> Salvar
+                </button>
+                <%BOTAOVOLTAR%>
+                <%BOTAOEXCLUIR%>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="acao" value="acao" />
+<script type="text/javascript">
+var novo = 0;
+function voltar(){
+    location.href = "<%URLPADRAO%>lista-entrada-produto";
+}
+    
+function mais(){
+    var verifica = document.getElementById('categ'+(novo-1));
+    
+    if(verifica == null || verifica.value.length > 1){
+        novadiv = document.createElement('div');
+        novadiv.setAttribute('id', 'novo'+novo);
+        novadiv.setAttribute('class', 'novo-categ');
+        novadiv.innerHTML = "<div class='col-md-2' id='div_produto"+novo+"'>*Nome: <input required name='categ[]' id='categ"+novo+"' type='text' class='form-control' /></div><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div>";
+        document.getElementById('lista-categorias').appendChild(novadiv);
+        
+        novo++;
+    }
+}
+
+function menos(idnovo){
+    document.getElementById('novo'+idnovo).remove();
+}
+</script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/jasny.bootstrap/extend/js/jasny-bootstrap.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.touchspin/bootstrap-touchspin/bootstrap.touchspin.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.switch/bootstrap-switch.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/jquery.select2/select2.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.slider/js/bootstrap-slider.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/jquery.icheck/icheck.min.js"></script>

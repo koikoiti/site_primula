@@ -1,0 +1,72 @@
+<section id="home" class="home-slider">
+    <div class="container">
+        <div class="flexslider">
+            <ul class="slides">
+                <li class="slide">
+                    <img alt="" src="<%URLPADRAO%>_html/images/slide01.png" />
+                    <div class="flex-caption">
+                        <h1>Novo Site Prímula!</h1>
+                        <div class="medium">
+                            <span></span>
+                        </div>
+                        <div class="small">
+                            <span></span>
+                        </div>
+                        <div class="small yellow">
+                            <span></span>
+                        </div>
+                        <!-- div>
+                            <span><a class="cusmo-btn" href="#">see details</a></span>
+                        </div-->
+                    </div>
+                </li>
+                <li class="slide">
+                    <!-- img alt="" src="<%URLPADRAO%>_html/images/slide01.png" />
+                    <div class="flex-caption">
+                        <h1>Fashion</h1>
+                        <div class="medium">
+                            <span>you can use this theme</span>
+                        </div>
+                        <div class="small">
+                            <span>for your small business</span>
+                        </div>
+                        <div class="small yellow">
+                            <span>beauty.creative.smart</span>
+                        </div>
+                        <div>
+                            <span><a class="cusmo-btn" href="#">learn more</a></span>
+                        </div>
+                    </div-->
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+<section class="section-home-products">
+    <div class="container">
+        <div class="controls-holder nav-tabs">
+            <ul class="inline">
+                <li class="active"><a data-toggle="tab" href="#hot-products">Destaques</a></li>
+                <li><a data-toggle="tab" href="#new-products">Últimos Adicionados</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div id="hot-products" class="products-holder active tab-pane ">
+            	<%DESTAQUES%>
+                <div class="load-more-holder">
+                    <a href="<%URLPADRAO%>lista-produtos/destaques" class="load-more">
+                        Visualizar todos os destaques
+                    </a>
+                </div>
+            </div>
+            <div id="new-products" class="products-holder  tab-pane ">
+                <%ULTIMOS%>
+                <div class="load-more-holder">
+                    <a href="<%URLPADRAO%>lista-produtos" class="load-more">
+                        Visualizar todos os produtos
+                    </a>
+                </div>
+            </div>
+        </div>
+	</div>
+</section>

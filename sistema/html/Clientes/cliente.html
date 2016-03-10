@@ -1,0 +1,325 @@
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/jasny.bootstrap/extend/css/jasny-bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.switch/bootstrap-switch.min.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/jquery.select2/select2.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.slider/css/slider.css" />
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/jquery.icheck/skins/flat/green.css">
+<link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.daterangepicker/daterangepicker-bs3.css" />
+<div class="header">
+    <h3><%TITULO%></h3>
+</div>
+<div class="content">
+    <div class="col-md-12">
+        
+        <div class="form-group form-margin" style="width: 50%; float: left">
+            <label class="col-sm-6 control-label">*Tipo do Cliente</label>
+            <div class="col-sm-6">
+                <%SELECTTIPOCLIENTE%>
+            </div>
+        </div>
+        
+        <div class="form-group form-margin" style="width: 50%; float: left">
+            <label class="col-sm-6 control-label">*Tipo Profissional</label>
+            <div class="col-sm-6">
+                <%SELECTTIPOPROFISSIONAL%>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">*CNPJ / CPF</label>
+            <div class="col-sm-6">
+                <input required type="text" class="form-control" name="cnpj_cpf" id="cnpjcpf" value="<%CNPJCPF%>">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin" id="nome">*Nome</label>
+            <div class="col-sm-6">
+                <input required type="text" class="form-control" name="nome" value="<%NOME%>">
+            </div>
+        </div>
+        
+        <div id="div_socio" class="form-group col-sm-12" style="padding: 0 50px; display: <%DISPLAYSOCIO%>;">
+            <div class="col-sm-4">
+                <label class="col-sm-3 control-label form-margin">Nome Sócio</label>
+                <div class="col-sm-6">
+                    <input type="text" id="nome_socio" class="form-control" name="nome_socio" value="<%NOMESOCIO%>">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-3 control-label form-margin">CPF Sócio</label>
+                <div class="col-sm-6">
+                    <input type="text" id="cpf_socio" class="form-control" name="cpf_socio" value="<%CPFSOCIO%>">
+                </div>
+            </div>
+        </div>
+        
+        <div style="background-color: ivory; border-radius: 4px; margin-top: 10px;" class="col-sm-12">
+            <div class="col-sm-12">
+                <label>Endereço Principal</label> <a href="http://m.correios.com.br/movel/buscaCepConfirma.do" target="_blank"> - Pesquisar CEP/Endereço</a>
+            </div>
+            <div class="form-group form-margin" style="width: 50%; float: left">
+                <label class="col-sm-6 control-label">*Tipo Endereço</label>
+                <div class="col-sm-6">
+                    <%SELECTTIPOENDERECO%>
+                </div>
+            </div>
+            
+            <div class="form-group" style="width: 50%; float: left">
+                <label class="col-sm-3 control-label form-margin">CEP</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control cep" name="cep_p" onblur="buscaCep(this.value, 'p')" value="<%CEP%>" placeholder="Digite o CEP para autocompletar os outros campos">
+                </div>
+            </div>
+            
+            <div class="form-group" style="width: 50%; float: left">
+                <label class="col-sm-3 control-label form-margin">*Endereço</label>
+                <div class="col-sm-6">
+                    <input required type="text" id="endereco_p" class="form-control" name="endereco_p" value="<%ENDERECO%>">
+                </div>
+            </div>
+            
+            <div class="form-group" style="width: 50%; float: left">
+                <label class="col-sm-3 control-label form-margin">*Número</label>
+                <div class="col-sm-6">
+                    <input required type="text" id="numero_p" class="form-control" name="numero_p" value="<%NUMERO%>">
+                </div>
+            </div>
+    
+            <div class="form-group" style="width: 50%; float: left">
+                <label class="col-sm-3 control-label form-margin">*Bairro</label>
+                <div class="col-sm-6">
+                    <input required type="text" id="bairro_p" class="form-control" name="bairro_p" value="<%BAIRRO%>">
+                </div>
+            </div>
+            
+            <div class="form-group" style="width: 25%; float: left">
+                <label class="col-sm-3 control-label form-margin">*Cidade</label>
+                <div class="col-sm-6">
+                    <input required type="text" id="cidade_p" class="form-control" name="cidade_p" value="<%CIDADE%>">
+                </div>
+            </div>
+            
+            <div class="form-group" style="width: 25%; float: left">
+                <label class="col-sm-3 control-label form-margin">*Estado</label>
+                <div class="col-sm-6">
+                    <input required maxlength="2" onblur="maiusc(this);" type="text" id="estado_p" class="form-control" name="estado_p" value="<%ESTADO%>">
+                </div>
+            </div>
+            
+            <div class="form-group" style="width: 50%; float: left">
+                <label class="col-sm-3 control-label form-margin">Complemento</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="complemento" value="<%COMPLEMENTO%>">
+                </div>
+            </div>
+            
+            <div class="form-group" style="width: 50%; float: left">
+                <label style="width: 100%;" class="col-sm-3 control-label form-margin">Ponto de Referência</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="ponto_referencia" value="<%PONTOREFERENCIA%>">
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-6" style="margin-top: 10px;">
+            <label>Adicionar Endereços</label>
+            <button class="btn btn-primary" type="button" onclick="addAddr()">+</button>
+        </div>
+        <div id="addrsAdicionais" class="col-sm-12" style="margin-top: 10px;">
+            <%ENDERECOSADICIONAIS%>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">*Telefone Principal</label>
+            <div class="col-sm-6">
+                <input required type="text" class="form-control telefone" name="telefone_p" value="<%TELEFONE%>" placeholder="(00) 0000-0000#">
+            </div>
+            <div class="col-sm-6" style="margin-top: 10px;">
+                <label>Adicionar Telefone</label>
+                <button class="btn btn-primary" type="button" onclick="addTelefone()">+</button>
+            </div>
+            <div id="telefonesAdicionais" class="col-sm-6" style="margin-top: 10px;">
+                <%TELEFONESADICIONAIS%>
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 50%; float: left">
+            <label style="width: 100%;" class="col-sm-3 control-label form-margin">E-mail Principal</label>
+            <div class="col-sm-6">
+                <input type="email" class="form-control" name="email_p" value="<%EMAIL%>">
+            </div>
+            <div class="col-sm-6" style="margin-top: 10px;">
+                <label>Adicionar E-mail</label>
+                <button class="btn btn-primary" type="button" onclick="addEmail()">+</button>
+            </div>
+            <div id="emailsAdicionais" class="col-sm-6" style="margin-top: 10px;">
+                <%EMAILSADICIONAIS%>
+            </div>
+        </div>
+        
+      <div class="form-group">
+            <div class="col-sm-6 form-margin">
+                <button style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
+                    <i class="fa fa-check"></i> Salvar
+                </button>
+                <%BOTAOVOLTAR%>
+                <%BOTAOATIVARINATIVAR%>
+                <%BOTAOEXCLUIR%>
+           </div>
+       </div>
+    </div>
+</div>
+<input type="hidden" name="acao" value="acao" />
+<script type="text/javascript">
+$(function() {
+    $('.cep').mask('00000-000');
+    $('.telefone').mask('(00) 0000-00009');
+});
+</script>
+<script type="text/javascript">
+var newEnd = 0;
+var selecttipoendereco = "<%SELECTTIPOENDERECO%>";
+selecttipoendereco = selecttipoendereco.replace('tipoendereco_p', 'tipoendereco[]');
+selecttipoendereco = selecttipoendereco.replace('selected', '');
+
+function voltar(){
+    location.href = "<%URLPADRAO%>lista-cliente";
+}
+
+function ativar(idcliente){
+    location.href = "<%URLPADRAO%>cliente/ativar/" + idcliente;
+}
+
+function inativar(idcliente){
+    location.href = "<%URLPADRAO%>cliente/inativar/" + idcliente;
+}
+
+function buscaCep(cep, id){
+    if(cep.length == 9){
+		$.post("<%URLPADRAO%>lib/ajax/buscacep.php",
+ 				{cep: cep},
+ 				function(dados){
+ 					if(dados){
+ 						if(dados == "NOTFOUND"){
+ 							alert("CEP não encontrado na base de dados dos Correios!");
+ 						}else{
+ 							//Encontrou o CEP...tratar o retorno
+ 							var aux = dados.split("|");
+ 							
+ 							$('#endereco_'+id).val(aux[0]);
+ 							$('#bairro_'+id).val(aux[1]);
+                            var cidadeestado = aux[2].split("/");
+ 							$('#cidade_'+id).val(cidadeestado[0]);
+                            $('#estado_'+id).val(cidadeestado[1]);
+ 						}
+					}
+				}
+    	);
+	}
+}
+
+function mascaraCnpjCpf(){
+    var tipocliente = $("#tipocliente").val();
+    if(tipocliente == 2){
+        $("#cnpjcpf").mask("00.000.000/0000-00");
+        $("#cpf_socio").mask("000.000.000-00");
+        $("#cnpjcpf").attr('placeholder', "00.000.000/0000-00");
+        $("#div_socio").show();
+        $("#nome").html("Nome Fantasia");
+    }else if(tipocliente == 1){
+        $("#cnpjcpf").mask("000.000.000-00");
+        $("#cnpjcpf").attr('placeholder', "000.000.000-00");
+        $("#nome").html("Nome");
+        $("#div_socio").hide();
+    }
+}
+
+function addAddr(){
+    selecttipoendereco = selecttipoendereco.replace('tipoendereco_p', 'tipoendereco[]');
+    selecttipoendereco = selecttipoendereco.replace('selected', '');
+    var nova = document.createElement('div');
+    nova.setAttribute('class', 'col-sm-12');
+    nova.setAttribute('style', 'margin-top: 5px; background-color: aliceblue; border-radius: 4px');
+    nova.innerHTML = '<div class="form-group form-margin" style="width: 50%; float: left"><label class="col-sm-6 control-label">*Tipo Endereço</label><div class="col-sm-6">'+selecttipoendereco+'</div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">CEP</label><div class="col-sm-6"><input type="text" class="form-control cep" name="cep[]" onblur="buscaCep(this.value, '+newEnd+')" value="" placeholder="Digite o CEP para autocompletar os outros campos" maxlength="9" autocomplete="off"></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">*Endereço</label><div class="col-sm-6"><input required="" type="text" id="endereco_'+newEnd+'" class="form-control" name="endereco[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">*Número</label><div class="col-sm-6"><input required="" type="text" id="numero" class="form-control" name="numero[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">*Bairro</label><div class="col-sm-6"><input required="" type="text" id="bairro_'+newEnd+'" class="form-control" name="bairro[]" value=""></div></div><div class="form-group" style="width: 25%; float: left"><label class="col-sm-3 control-label form-margin">*Cidade</label><div class="col-sm-6"><input required="" type="text" id="cidade_'+newEnd+'" class="form-control" name="cidade[]" value=""></div></div><div class="form-group" style="width: 25%; float: left"><label class="col-sm-3 control-label form-margin">*Estado</label><div class="col-sm-6"><input required="" maxlength="2" onblur="maiusc(this);" type="text" id="estado_'+newEnd+'" class="form-control" name="estado[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">Complemento</label><div class="col-sm-6"><input type="text" class="form-control" name="complemento[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label style="width: 100%;" class="col-sm-3 control-label form-margin">Ponto de Referência</label><div class="col-sm-6"><input type="text" class="form-control" name="ponto_referencia[]" value=""></div></div></div>';
+    var aqui = document.getElementById('addrsAdicionais');
+    aqui.appendChild(nova);
+    $('.cep').mask('00000-000');
+    newEnd++;
+}
+
+function addTelefone(){
+    var nova = document.createElement('div');
+    nova.setAttribute('class', 'col-sm-12');
+    nova.setAttribute('style', 'margin-top: 5px;');
+    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoTelefone[]"><><option value="Residencial">Residencial</option><option value="Comercial">Comercial</option><option value="Celular">Celular</option></select></div><div class="col-sm-8"><input type="text" class="form-control telefone" name="telAdicional[]" placeholder="(00) 0000-0000#" /></div>';
+    var aqui = document.getElementById('telefonesAdicionais');
+    aqui.appendChild(nova);
+    $('.telefone').mask('(00) 0000-00009');
+}
+
+function addEmail(){
+    var nova = document.createElement('div');
+    nova.setAttribute('class', 'col-sm-12');
+    nova.setAttribute('style', 'margin-top: 5px;');
+    nova.innerHTML = '<div class="col-sm-12"><input type="email" class="form-control" name="emailAdicional[]" /></div>';
+    var aqui = document.getElementById('emailsAdicionais');
+    aqui.appendChild(nova);
+}
+
+function removerEnderecoAdicional(idenderecoadicional){
+    if(confirm("Deseja remover esse endereço?")){
+        $.post("<%URLPADRAO%>lib/ajax/removeEnderecoAdicional.php",
+ 				{idenderecoadicional: idenderecoadicional},
+ 				function(dados){
+ 				   if(dados == 1){
+ 					  $("#divEndAdd" + idenderecoadicional).remove();
+                    }else{
+                        alert("Erro no banco de dados!");
+                    }
+				}
+    	);
+    }
+}
+
+function removerTelefoneAdicional(idtelefoneadicional){
+    if(confirm("Deseja remover esse telefone?")){
+        $.post("<%URLPADRAO%>lib/ajax/removeTelefoneAdicional.php",
+ 				{idtelefoneadicional: idtelefoneadicional},
+ 				function(dados){
+ 				   if(dados == 1){
+ 					  $("#divTelAdd" + idtelefoneadicional).remove();
+                    }else{
+                        alert("Erro no banco de dados!");
+                    }
+				}
+    	);
+    }
+}
+
+function removerEmailAdicional(idemailadicional){
+    if(confirm("Deseja remover esse e-mail?")){
+        $.post("<%URLPADRAO%>lib/ajax/removeEmailAdicional.php",
+ 				{idemailadicional: idemailadicional},
+ 				function(dados){
+ 				   if(dados == 1){
+ 					  $("#divEmaAdd" + idemailadicional).remove();
+                    }else{
+                        alert("Erro no banco de dados!");
+                    }
+				}
+    	);
+    }
+}
+</script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/jasny.bootstrap/extend/js/jasny-bootstrap.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.touchspin/bootstrap-touchspin/bootstrap.touchspin.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.switch/bootstrap-switch.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/jquery.select2/select2.min.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.slider/js/bootstrap-slider.js"></script>
+    <script type="text/javascript" src="<%URLPADRAO%>html/js/jquery.icheck/icheck.min.js"></script>

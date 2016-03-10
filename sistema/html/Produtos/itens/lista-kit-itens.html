@@ -1,0 +1,28 @@
+<tr class="odd gradeX">
+    <td style="vertical-align: middle;"><%CODIGO%></td>
+    <td style="vertical-align: middle;"><%NOME%></td>
+    <td style="vertical-align: middle;"><%VALOR%></td>
+    <td><%PRODUTOS%></td>
+    <td style="vertical-align: middle;"><%ATIVOINATIVO%></td>
+    <td class="center">
+        <div class="btn-group">
+            <button class="btn btn-default btn-xs" type="button">-----</button>
+            <button data-toggle="dropdown" class="btn btn-xs btn-primary dropdown-toggle" type="button">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul role="menu" class="dropdown-menu">
+                <li>
+                    <a href="<%URLPADRAO%>monta-kit/editar/<%ID%>">Editar</a>
+                </li>
+                <li>
+                    <a target="_blank" href="<%URLPADRAO%>monta-kit/visualizar/<%ID%>">Visualizar</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <%BOTAOAI%>
+                </li>
+            </ul>
+        </div>
+    </td>
+</tr>
