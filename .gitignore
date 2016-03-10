@@ -1,4 +1,5 @@
 _conf/tags.php
+sistema/conf/tags.php
 
 # Windows image file caches
 Thumbs.db
