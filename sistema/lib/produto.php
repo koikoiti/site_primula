@@ -163,7 +163,7 @@
     }#Fim POST
     
     #Monta Categorias
-    $select_categorias = $banco->SelectCategorias($idcategoria);
+    $select_categorias = utf8_encode($banco->SelectCategorias($idcategoria));
     
     if($_SESSION['idsetor'] == 1){
         $campo_custo = '<div class="form-group">

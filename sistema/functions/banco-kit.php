@@ -127,13 +127,7 @@
         #Fotos insert
         function InsereFotosInsertKit($idkit, $files){
             $cont = 1;
-            
-			#Verifica SERVER (web/local)
-            if (strpos($_SERVER['DOCUMENT_ROOT'], 'public_html') !== false) {
-                $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . "/arq/kits/$idkit";
-            }else{
-                $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . "/primula/arq/kits/$idkit";
-            }
+            $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . AuxCaminhoFotoKits . $idkit;
             $caminho = "arq/kits/$idkit";
             
 			mkdir($caminhoCriar, 0755);
@@ -175,12 +169,7 @@
         #Fotos update
         function InsereFotosUpdate($idkit, $files){
             $order = 1;
-            #Verifica SERVER (web/local)
-            if (strpos($_SERVER['DOCUMENT_ROOT'], 'public_html') !== false) {
-                $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . "/arq/kits/$idkit";
-            }else{
-                $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . "/primula/arq/kits/$idkit";
-            }
+            $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . AuxCaminhoFotoKits . $idkit;
 			$caminho = "arq/kits/$idkit";
 			
 			#Pega a numeração da última imagem caso precise adicionar 1 novo
