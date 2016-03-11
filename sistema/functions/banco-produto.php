@@ -50,8 +50,8 @@
         }
         
         function InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $files){
-            $Sql = "INSERT INTO t_produtos (cod_barras, cod_fornecedor, nome, marca, idcategoria, valor_unitario, valor_profissional, valor_consumidor, descricao, informacoes, estoque) 
-                    VALUES ('$cod_barras', '$cod_fornecedor', '".ucwords($nome)."', '".ucwords($marca)."',  '$idcategoria', '$valor_unitario', '$valor_profissional', '$valor_consumidor', '".ucfirst($descricao)."', '".ucfirst($informacoes)."', '$estoque')";
+            $Sql = "INSERT INTO t_produtos (cod_barras, cod_fornecedor, nome, marca, idcategoria, valor_unitario, valor_profissional, valor_consumidor, descricao, informacoes, estoque, data_cadastro) 
+                    VALUES ('$cod_barras', '$cod_fornecedor', '".ucwords($nome)."', '".ucwords($marca)."',  '$idcategoria', '$valor_unitario', '$valor_profissional', '$valor_consumidor', '".ucfirst($descricao)."', '".ucfirst($informacoes)."', '$estoque', '".date("Y-m-d")."')";
             if(parent::Execute($Sql)){
                 if($files){
                     $lastID = mysql_insert_id();
