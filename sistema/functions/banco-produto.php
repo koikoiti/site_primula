@@ -66,13 +66,7 @@
         #Insere caminho das fotos no banco e copia para a pasta do produto
         function InsereFotosInsert($idproduto, $files){
             $cont = 1;
-            
-			#Verifica SERVER (web/local)
-            if (strpos($_SERVER['DOCUMENT_ROOT'], 'public_html') !== false) {
-                $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . "/arq/produtos/$idproduto";
-            }else{
-                $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . "/primula/arq/produtos/$idproduto";
-            }
+            $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . AuxCaminhoFoto . $idproduto;
             $caminho = "arq/produtos/$idproduto";
             
 			mkdir($caminhoCriar, 0755);
@@ -101,12 +95,7 @@
        
        function InsereFotosUpdate($idproduto, $files){
             $order = 1;
-            #Verifica SERVER (web/local)
-            if (strpos($_SERVER['DOCUMENT_ROOT'], 'public_html') !== false) {
-                $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . "/arq/produtos/$idproduto";
-            }else{
-                $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . "/primula/arq/produtos/$idproduto";
-            }
+            $caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . AuxCaminhoFoto . $idproduto;
 			$caminho = "arq/produtos/$idproduto";
 			
 			#Pega a numeração da última imagem caso precise adicionar 1 novo
