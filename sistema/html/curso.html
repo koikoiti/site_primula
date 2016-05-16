@@ -1,0 +1,53 @@
+<div class="header">
+    <h3><%TITULO%></h3>
+</div>
+<div class="content">
+    <div class="col-md-12">
+        <%MSG%>
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">*Curso</label>
+            <div class="col-sm-6">
+                <input autofocus name="nome" type="text" class="form-control" value="<%NOME%>"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label form-margin">*Descrição</label>
+            <div class="col-sm-6">
+                <textarea required name="descricao" class="form-control" placeholder=""><%DESCRICAO%></textarea>
+            </div>
+        </div>
+        <div class="form-group" style="width: 33.33%; float: left;">
+            <label class="col-sm-3 control-label form-margin">*Data</label>
+            <div class="col-sm-6">
+                <input required name="data" type="date" class="form-control" value="<%DATA%>"/>
+            </div>
+        </div>
+        <div class="form-group" style="width: 33.33%; float: left;">
+            <label class="col-sm-3 control-label form-margin">*Hora</label>
+            <div class="col-sm-6">
+                <input name="hora" type="time" class="form-control" value="<%HORA%>"/>
+            </div>
+        </div>
+        <div class="form-group" style="width: 33.33%; float: left;">
+            <label class="col-sm-3 control-label form-margin">*Vagas</label>
+            <div class="col-sm-6">
+                <input name="vagas" type="number" class="form-control" value="<%VAGAS%>"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6 form-margin">
+                <%BOTAOSALVAR%>
+                <%BOTAOEXCLUIR%>
+                <%BOTAOVOLTAR%>
+           </div>
+        </div>
+
+    </div>
+
+</div>
+<input type="hidden" name="acao" value="acao" />
+<script type="text/javascript">
+function voltar(){
+    location.href = "<%URLPADRAO%>lista-cursos";
+}
+</script>

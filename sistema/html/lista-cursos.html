@@ -1,0 +1,42 @@
+<!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO -->
+    <div class="col-md-12">
+        <div class="block-flat">
+            <div class="header">
+                <p>
+                    <a href="<%URLPADRAO%>curso">Criar Novo</a>
+                </p>
+                <h3>Lista de Cursos</h3>
+            </div>
+            <div class="content">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="datatable">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data</th>
+                                <th>Hora</th>
+                                <th>Vagas</th>
+                                <th>Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%CURSOS%>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    function remover(id, nome){
+        if(confirm("Tem certeza que deseja inativar o usuário " + nome + "?")){
+            location.href = "<%URLPADRAO%>usuario/remover/" + id;
+        }
+    }
+    
+    function ativar(id, nome){
+        if(confirm("Tem certeza que deseja ativar o usuário " + nome + "?")){
+            location.href = "<%URLPADRAO%>usuario/ativar/" + id;
+        }
+    }
+</script>

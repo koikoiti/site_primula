@@ -1,0 +1,82 @@
+<div class="breadcrumb-holder">
+    <div class="container">
+        <ul class="inline bcrumb">
+            <li>
+                <a href="<%URLPADRAO%>">Home</a>
+            </li>
+            <li>
+                <a href="<%URLPADRAO%>lista-kits">Lista Kits</a>
+            </li>
+            <li class="active"><%NOMEKIT%></li>
+        </ul>       
+    </div>
+</div>
+
+<section class="section-two-columns">
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="page-content">
+	                <div class="products-page-head">
+	                    <h1><%NOMEKIT%></h1>
+	                    <div class="tag-line">
+
+	                    </div>
+	                </div>
+	                <div class="row-fluid" style="float: left; margin-bottom: 50px;">
+	                    <div class="span6">
+	                        <div class="flexslider product-gallery">
+	                            <ul class="slides">
+	                                <%FOTOS%>
+	                            </ul>
+	                        </div>
+	                    </div>
+	                    <div class="span6">
+	                        <div class="product-info-box">
+	                            <div class="info-holder text-justify">
+	                                <h4>Código do Kit: <%CODIGO%></h4>
+	                                <p>
+	                                	Produtos:<br/>
+	                                	<%PRODUTOS%>
+	                                </p>
+	                            </div>
+	                            <hr>
+	                            <div class="price-holder">
+	                                <div class="price">
+	                                    <span>R$ <%PRECO%></span>
+	                                    <!-- span class="old">$240.00</span-->
+	                                </div>
+	                            </div>
+	                            <hr/>
+	                            <div class="buttons-holder">
+	                                <a class="cusmo-btn add-button" href="#">Solicitar Orçamento</a>
+	                            </div>
+	                        </div>
+	                    </div>
+					</div>
+	                <div class="product-tabs">
+	                    <div class="controls-holder nav-tabs">
+	                        <ul class="inline">
+	                            <li class="active"><a data-toggle="tab" href="#description">Descrição</a></li>
+	                            <li><a data-toggle="tab" href="#how-to-use">Como Usar</a></li>
+	                        </ul>
+	                    </div>
+	                    <div class="tab-content">
+	                        <div id="description" class=" active tab-pane text-justify">
+	                            <p>
+	                                <%DESCRICAO%>
+	                            </p>
+	                        </div>
+	
+	                        <div id="how-to-use" class=" tab-pane text-justify">
+	                            <p>
+	                                
+	                            </p>
+	                        </div>
+						</div>
+	                </div>
+	            </div>
+            </div>
+		</div>
+	</div>
+</section>

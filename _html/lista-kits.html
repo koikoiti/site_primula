@@ -1,0 +1,60 @@
+<div class="breadcrumb-holder">
+    <div class="container">
+        <ul class="inline bcrumb">
+            <li>
+                <a href="<%URLPADRAO%>">Home</a>
+            </li>
+            <li class="active">Kits</li>
+        </ul>       
+    </div>
+</div>
+
+<section class="section-two-columns">
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span3">
+                <div class="sidebar">
+                	<div class="accordion-widget filter-accordions">
+	                    <div class="accordion" >
+	                        <div class="accordion-group">
+	                            <div class="accordion-heading">
+	                                <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+	                                    Ordenar Por
+	                                </a>
+	                            </div>
+	                            <div id="collapseOne" class="accordion-body collapse in">
+	                                <div class="accordion-inner">
+	                                    <ul>
+	                                        <li><a href="<%URLPADRAO%>lista-kits/ordenar/menor+preco">Menor Preço</a></li>
+	                                        <li><a href="<%URLPADRAO%>lista-kits/ordenar/maior+preco">Maior Preço</a></li>
+	                                        <li><a href="<%URLPADRAO%>lista-kits/ordenar/a+z">A-Z</a></li>
+	                                        <li><a href="<%URLPADRAO%>lista-kits/ordenar/z+a">Z-A</a></li>
+	                                    </ul>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+					</div>
+					<hr/>
+				</div>
+            </div>
+            <div class="span9">
+                <div class="products-list-head">
+                    <h1>Kits</h1>
+                    <div class="tag-line">
+
+                    </div>
+                    <div class="image-holder">
+                        
+                    </div>
+                </div>
+                
+                <div id="grid-view" class="products-grid products-holder active tab-pane">
+                    <%KITS%>
+                    <hr/>
+                    <div class="span12 text-center">Paginação</div>
+                </div>
+            </div>
+		</div>
+	</div>
+</section>

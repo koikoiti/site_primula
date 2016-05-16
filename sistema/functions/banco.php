@@ -94,6 +94,12 @@
                                     <li><a href="<%URLPADRAO%>cliente">Inserir Novo</a></li>
                                 </ul>
                              </li>
+                    		<li class="parent"><a href="#"><i class="fa fa-plus-circle"></i><span>Cursos</span></a>
+                                <ul class="sub-menu">
+                                    <li><a href="<%URLPADRAO%>lista-cursos">Listar</a></li>
+                                    <li><a href="<%URLPADRAO%>curso">Inserir Novo</a></li>
+                                </ul>
+                             </li>
                              <li class="parent"><a href="#"><i class="fa fa-plus-circle"></i><span>Gerenciamento</span></a>
                                 <ul class="sub-menu">
                                     <li><a href="<%URLPADRAO%>">Relatórios</a></li>

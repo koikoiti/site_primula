@@ -1,3 +1,11 @@
+/* Lista Produtos */
+.product-item a img{
+	height: 220px;
+}
+.product-item a h1{
+	height: 50px;
+}
+
 .text-justify{
 	text-align: justify;
 }
@@ -1107,10 +1115,10 @@ text-transform: uppercase;
 }
 
 .list-item .desc {
-    font-size: 11px;
+    font-size: 13px;
     line-height: 18px;
     color: #6e6e6e;
-    margin-top: 27px;
+    margin-top: 20px;
 }
 .list-item .thumb{
     position: relative;
