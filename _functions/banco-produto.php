@@ -2,8 +2,13 @@
 	class bancoproduto extends banco{
 		
 		#
-		function ListaProdutos(){
-			$Sql = "SELECT * FROM t_produtos LIMIT 0, " . Limite;
+		function ListaProdutos($idcategoria){
+			if($idcategoria){
+				$where .= " AND C.idcategoria = $idcategoria";
+			}
+			$Sql = "SELECT P.* FROM t_produtos P 
+					INNER JOIN fixo_categorias_produto C ON C.idcategoria = P.idcategoria 
+					WHERE 1 $where LIMIT 0, " . Limite;
 			$result = parent::Execute($Sql);
 			$Auxilio = parent::CarregaHtml('itens/lista-produto-itens');
 			$Produtos = '<div class="row-fluid">';
@@ -81,6 +86,14 @@
 				$Semelhantes .= $Linha;
 			}
 			return utf8_encode($Semelhantes);
+		}
+		
+		#
+		function BuscaCategoriaPorId($idcategoria){
+			$Sql = "SELECT nome FROM fixo_categorias_produto WHERE idcategoria = $idcategoria";
+			$result = parent::Execute($Sql);
+			$rs = parent::ArrayData($result);
+			return utf8_encode($rs['nome']);
 		}
 	}
 ?>

@@ -5,13 +5,19 @@
 	#Instancia o objeto
 	$banco = new bancoproduto();
     
-	$Produtos = $banco->ListaProdutos();
+	if($this->PaginaAux[0] == 'categoria'){
+		$idcategoria = $this->PaginaAux[1];
+		$categoria = $banco->BuscaCategoriaPorId($idcategoria);
+	}
+	
+	$Produtos = $banco->ListaProdutos($idcategoria);
 	$Categorias = $banco->ListaCategorias();
 	
 	#Imprime valores
 	$Conteudo = utf8_encode($banco->CarregaHtml('lista-produtos'));
 	$Conteudo = str_replace('<%PRODUTOS%>', $Produtos, $Conteudo);
 	$Conteudo = str_replace('<%CATEGORIAS%>', $Categorias, $Conteudo);
+	$Conteudo = str_replace('<%CATEGORIA%>', $categoria, $Conteudo);
 	
 	/*
 	 * Depois dos produtos - Load more:
