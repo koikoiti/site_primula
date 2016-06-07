@@ -9,10 +9,31 @@
 			while($rs = parent::ArrayData($result)){
 				$Linha = $Auxilio;
 				$Linha = str_replace('<%NOMECURSO%>', $rs['nome'], $Linha);
-				$Linha = str_replace('<%DATA%>', date("d/m/Y", strtotime($rs['data'])), $Linha);
-				$Linha = str_replace('<%HORA%>', $rs['hora'], $Linha);
+				if($rs['data_ini'] == $rs['data_fim']){
+					$data_format = date("d/m/Y", strtotime($rs['data_ini']));
+				}else{
+					$data_format = date("d/m/Y", strtotime($rs['data_ini'])) . " até " . date("d/m/Y", strtotime($rs['data_fim']));
+				}
+				if($rs['hora_ini'] == $rs['hora_fim']){
+					$hora_format = date("H:i", strtotime($rs['hora_ini']));
+				}else{
+					$hora_format = date("H:i", strtotime($rs['hora_ini'])) . " às " . date("H:i", strtotime($rs['hora_fim'])); 
+				}
+				$Linha = str_replace('<%DATAFORMATADA%>', $data_format, $Linha);
+				$Linha = str_replace('<%HORAFORMATADA%>', $hora_format, $Linha);
 				$Linha = str_replace('<%DESCRICAO%>', $rs['descricao'], $Linha);
-				$Linha = str_replace('<%VAGAS%>', $rs['vagas'], $Linha);
+				if($rs['carga_horaria'] == 0){
+					$carga_horaria = '';
+				}else{
+					$carga_horaria = "<p><span>Carga Horária: ". $rs['carga_horaria'] ." horas</span></p>";
+				}
+				$Linha = str_replace('<%CARGAHORARIA%>', $carga_horaria, $Linha);
+				if($rs['investimento'] == '0.00'){
+					$investimento = '';
+				}else{
+					$investimento = "<p><span>Investimento: R$ ". number_format($rs['investimento'], 2, ',', '.') ."</span></p>";
+				}
+				$Linha = str_replace('<%INVESTIMENTO%>', $investimento, $Linha);
 				$Cursos .= $Linha;
 			}
 			return utf8_encode($Cursos);

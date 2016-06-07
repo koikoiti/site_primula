@@ -62,7 +62,7 @@
 			$result = parent::Execute($Sql);
 			while($rs = parent::ArrayData($result)){
 				$fotos .= '<li class="text-center" data-thumb="'.UrlFoto.$rs['caminho'].'">
-								<img alt="" src="'.UrlFoto.$rs['caminho'].'" style="height: 375px;" />
+								<img class="img-zoom" alt="" src="'.UrlFoto.$rs['caminho'].'" data-zoom-image="'.UrlFoto.$rs['caminho'].'" style="height: 375px;" />
                            </li>';
 			}
 			return $fotos;

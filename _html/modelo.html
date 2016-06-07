@@ -130,7 +130,9 @@
                                     Rua Rocha Pombo, 230<br>
                                     Juvevê - Curitiba/PR<br>
                                     CEP: 80030-390<br>
-                                    Fone: (41) 3254-4704
+                                    Fone: (41) 3254-4704<br>
+                                    WhatsApp: (41) 9903-0417<br>
+                                    <span style="margin-left: 70px;">(41) 85198360</span>
                                 </p>
                             </div>
                         </div>
@@ -164,10 +166,25 @@
         <script type="text/javascript" src="<%URLPADRAO%>_html/js/jquery.flexslider-min.js"></script>
         <script type="text/javascript" src="<%URLPADRAO%>_html/js/bootstrap-slider.js"></script>
         <script type="text/javascript" src="<%URLPADRAO%>_html/js/script.js"></script>
+        <script type="text/javascript" src="<%URLPADRAO%>_html/js/jquery.elevateZoom.min.js"></script>
         <script type="text/javascript">
         	function navega(pagina){
         		location.href = "<%URLPADRAO%>" + pagina;
         	}
+        	
+        	$(document).ready(function(){
+        		var ww = $(window).width();
+        		if(ww >= 1024){
+        			$(".img-zoom").elevateZoom({
+        				responsive: true,
+        				tint: true, 
+        				tintColour:'#000', 
+        				tintOpacity: 0.5, 
+        				cursor: "crosshair",
+        				zoomWindowPosition: 3
+        			});
+        		}
+        	});
         </script>
     </body>
 </html>

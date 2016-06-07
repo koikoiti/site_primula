@@ -78,7 +78,7 @@
 					WHERE K.idkit = $idkit";
 			$result = parent::Execute($Sql);
 			while($rs = parent::ArrayData($result)){
-				$produtos .= $rs['nome'] . " - " . $rs['marca'] . "<br/>";
+				$produtos .= $rs['nome'] . "<br/>";
 			}
 			return utf8_encode($produtos);
 		}
