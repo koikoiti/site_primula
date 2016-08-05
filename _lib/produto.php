@@ -23,4 +23,5 @@
 	$Conteudo = str_replace('<%FOTOS%>', $fotos, $Conteudo);
 	$Conteudo = str_replace('<%SEMELHANTES%>', $semelhantes, $Conteudo);
 	$Conteudo = str_replace('<%CATEGORIAS%>', $Categorias, $Conteudo);
+	$Conteudo = str_replace('<%IDCATEGORIA%>', $rsProduto['idcategoria'], $Conteudo);
 ?>

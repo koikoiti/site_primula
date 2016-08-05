@@ -12,4 +12,6 @@
 	$Conteudo = utf8_encode($banco->CarregaHtml('inicio'));
 	$Conteudo = str_replace('<%DESTAQUES%>', $destaques, $Conteudo);
 	$Conteudo = str_replace('<%ULTIMOS%>', $ultimos, $Conteudo);
+	$Conteudo = str_replace('<%NOTICIAS%>', $noticia, $Conteudo);
+	$Conteudo = str_replace('<%ENQUETE%>', $enquete, $Conteudo);
 ?>
