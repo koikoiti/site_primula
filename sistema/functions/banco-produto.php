@@ -266,7 +266,7 @@
 					}
 				}
 				$select_categorias .= "</select>";
-				return $select_categorias;
+				return utf8_encode($select_categorias);
 			}else{
 				return false;
 			}
