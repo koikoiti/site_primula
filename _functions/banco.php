@@ -198,8 +198,13 @@
 		
 		#Função que chama a pagina.php desejada.
 		public function ChamaPhp($Nome){
-			@require_once('_lib/'.$Nome.'.php');
-			return $Conteudo;
+			$file = '_lib/'.$Nome.'.php';
+			if(file_exists($file)){
+				@require_once('_lib/'.$Nome.'.php');
+				return $Conteudo;
+			}else{
+				return utf8_encode($this->CarregaHtml('404'));
+			}
 		}
 	
 		#Função que monta o html da pagina

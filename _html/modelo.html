@@ -69,10 +69,9 @@
                             </div>
                             <div class="span3">
                                 <div class="search-field-holder">
-                                    <form>
-                                        <input class="span12" type="text" placeholder="Pesquise seu produto ou curso aqui...">
-                                        <button style="position: absolute; top: 4px; left: 83%; background-color: #0E8642; border-radius: 20px; color: white; border: 0; padding: 5px; width: 60px"><i class="icon-search" style="position: initial"></i></button>
-                                    </form>
+                                        <input id="busca" class="span12" type="text" placeholder="Pesquise seu produto ou curso aqui...">
+                                        <button type="button" onclick="Fazbusca();" style="position: absolute; top: 4px; left: 83%; background-color: #0E8642; border-radius: 20px; color: white; border: 0; padding: 5px; width: 60px"><i class="icon-search" style="position: initial"></i></button>
+
                                 </div>
                             </div>
                         </div>
@@ -186,6 +185,17 @@
         			});
         		}
         	});
+        	
+        	$("#busca").keypress(function(e) {
+        	    if(e.which == 13) {
+        	        Fazbusca();
+        	    }
+        	});
+        	
+        	function Fazbusca(){
+        		var busca = $("#busca").val();
+        		location.href = "<%URLPADRAO%>busca/" + busca;
+        	}
         </script>
     </body>
 </html>
