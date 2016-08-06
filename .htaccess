@@ -2,3 +2,6 @@ RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule !\.(js|ico|txt|gif|jpg|png|xml|css|/)$ index.php
+
+RewriteCond %{HTTP_HOST} ^primulatkc.com.br [NC]
+RewriteRule ^(.*)$ http://www.primulatkc.com.br/$1 [L,R=301,NC]

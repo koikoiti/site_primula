@@ -100,12 +100,6 @@
                                     <li><a href="<%URLPADRAO%>curso">Inserir Novo</a></li>
                                 </ul>
                              </li>
-                             <li class="parent"><a href="#"><i class="fa fa-plus-circle"></i><span>Gerenciamento</span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="<%URLPADRAO%>">Relatórios</a></li>
-                                    <li><a href="<%URLPADRAO%>">Fluxo Financeiro</a></li>
-                                </ul>
-                             </li>
                              <li class="parent"><a href="#"><i class="fa fa-plus-circle"></i><span>Ferramentas</span></a>
                                 <ul class="sub-menu">
                                     <li><a href="<%URLPADRAO%>lista-avisos">Lista de Avisos</a></li>
@@ -115,13 +109,25 @@
                              ';
                     
                     if($_SESSION['idsetor'] <= 1){
-                        $menu .= '<li class="parent"><a href="#"><i class="fa  fa-user"></i><span>Usuários</span></a>
+                        $menu .= '
+                        		<li class="parent"><a href="#"><i class="fa fa-plus-circle"></i><span>Gerenciamento</span></a>
+	                            	<ul class="sub-menu">
+	                                	<li><a href="<%URLPADRAO%>relatorios">Relatórios</a></li>
+	                                    <li><a href="<%URLPADRAO%>fluxo-financeiro">Fluxo Financeiro</a></li>
+	                                </ul>
+	                            </li>
+                        		<li class="parent"><a href="#"><i class="fa  fa-user"></i><span>Usuários</span></a>
                                     <ul class="sub-menu">
                                         <li><a href="<%URLPADRAO%>lista-usuario">Listar</a></li>
                                         <li><a href="<%URLPADRAO%>usuario">Inserir Novo</a></li>
                                     </ul>
                                 </li>
-                                <li class="parent"><a href="#"><i class="fa fa-edit"></i><span>Configurações</span></a>
+                        		<li class="parent"><a href="#"><i class="fa fa-edit"></i><span>Configurações Sistema</span></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="<%URLPADRAO%>clientes-tipo-profissional">Clientes - Tipo Profissional</a></li>
+                                    </ul>
+                                </li>
+                                <li class="parent"><a href="#"><i class="fa fa-edit"></i><span>Configurações Site</span></a>
                                     <ul class="sub-menu">
                                         <li><a href="<%URLPADRAO%>gerenciar-slider">Gerenciar Slider</a></li>
                                         <li><a href="<%URLPADRAO%>gerenciar-destaques">Gerenciar Destaques</a></li>

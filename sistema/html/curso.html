@@ -16,22 +16,40 @@
                 <textarea required name="descricao" class="form-control" placeholder=""><%DESCRICAO%></textarea>
             </div>
         </div>
-        <div class="form-group" style="width: 33.33%; float: left;">
-            <label class="col-sm-3 control-label form-margin">*Data</label>
+        <div class="form-group" style="width: 50%; float: left;">
+            <label class="col-sm-3 control-label form-margin">*Data Inicial</label>
             <div class="col-sm-6">
-                <input required name="data" type="date" class="form-control" value="<%DATA%>"/>
+                <input required name="dataIni" type="date" class="form-control" value="<%DATAINI%>"/>
             </div>
         </div>
-        <div class="form-group" style="width: 33.33%; float: left;">
-            <label class="col-sm-3 control-label form-margin">*Hora</label>
+        <div class="form-group" style="width: 50%; float: left;">
+            <label class="col-sm-3 control-label form-margin">*Data Final</label>
             <div class="col-sm-6">
-                <input name="hora" type="time" class="form-control" value="<%HORA%>"/>
+                <input required name="dataFim" type="date" class="form-control" value="<%DATAFIM%>"/>
             </div>
         </div>
-        <div class="form-group" style="width: 33.33%; float: left;">
-            <label class="col-sm-3 control-label form-margin">*Vagas</label>
+        <div class="form-group" style="width: 50%; float: left;">
+            <label class="col-sm-3 control-label form-margin">*Hora Inicial</label>
             <div class="col-sm-6">
-                <input name="vagas" type="number" class="form-control" value="<%VAGAS%>"/>
+                <input name="horaIni" type="time" class="form-control" value="<%HORAINI%>"/>
+            </div>
+        </div>
+        <div class="form-group" style="width: 50%; float: left;">
+            <label class="col-sm-3 control-label form-margin">*Hora Final</label>
+            <div class="col-sm-6">
+                <input name="horaFim" type="time" class="form-control" value="<%HORAFIM%>"/>
+            </div>
+        </div>
+        <div class="form-group" style="width: 50%; float: left;">
+            <label class="col-sm-3 control-label form-margin">Carga Horária</label>
+            <div class="col-sm-6">
+                <input name="carga" type="text" class="form-control" value="<%CARGA%>"/>
+            </div>
+        </div>
+        <div class="form-group" style="width: 50%; float: left;">
+            <label class="col-sm-3 control-label form-margin">Investimento</label>
+            <div class="col-sm-6">
+                <input name="investimento" type="text" class="form-control money" value="<%INVESTIMENTO%>"/>
             </div>
         </div>
         <div class="form-group">
@@ -50,4 +68,7 @@
 function voltar(){
     location.href = "<%URLPADRAO%>lista-cursos";
 }
+$(function() {
+    $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
+});
 </script>

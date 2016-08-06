@@ -12,11 +12,14 @@
 	if($this->PaginaAux[0] == 'editar'){
 		$idcurso = $this->PaginaAux[1];
 		$rs = $banco->BuscaCursoPorId($idcurso);
-		$data = $rs['data'];
-		$hora = $rs['hora'];
+		$dataIni = $rs['data_ini'];
+		$dataFim = $rs['data_fim'];
+		$horaIni = $rs['hora_ini'];
+		$horaFim = $rs['hora_fim'];
 		$nome = utf8_encode($rs['nome']);
 		$descricao = utf8_encode($rs['descricao']);
-		$vagas = utf8_encode($rs['vagas']);
+		$carga = utf8_encode($rs['carga_horaria']);
+		$investimento = $rs['investimento'];
 		
 		$titulo = 'Edita Curso';
 	}elseif($this->PaginaAux[0] == 'excluir'){
@@ -27,15 +30,20 @@
 	
 	if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
 		$nome = utf8_decode(strip_tags(trim(addslashes($_POST["nome"]))));
-		$data = $_POST['data'];
-		$hora = $_POST['hora'];
+		$dataIni = $_POST['dataIni'];
+		$dataFim = $_POST['dataFim'];
+		$horaIni = $_POST['horaIni'];
+		$horaFim = $_POST['horaFim'];
 		$descricao = utf8_decode(strip_tags(trim(addslashes($_POST["descricao"]))));
-		$vagas = $_POST['vagas'];
+		$carga = $_POST['carga'];
+		$investimento = $_POST['investimento'];
+		$investimento = str_replace('.', '', $investimento);
+		$investimento = str_replace(',', '.', $investimento);
 	
 		if($idcurso){
-			$banco->AtualizaCurso($idcurso, $nome, $data, $hora, $descricao, $vagas);
+			$banco->AtualizaCurso($idcurso, $nome, $dataIni, $dataFim, $horaIni, $horaFim, $descricao, $carga, $investimento);
 		}else{
-			$banco->InsereCurso($nome, $data, $hora, $descricao, $vagas);
+			$banco->InsereCurso($nome, $dataIni, $dataFim, $horaIni, $horaFim, $descricao, $carga, $investimento);
 		}
 	}
     
@@ -43,10 +51,13 @@
 	$Conteudo = utf8_encode($banco->CarregaHtml('curso'));
 	$Conteudo = str_replace("<%TITULO%>", $titulo, $Conteudo);
 	$Conteudo = str_replace("<%NOME%>", $nome, $Conteudo);
-	$Conteudo = str_replace("<%DATA%>", $data, $Conteudo);
-	$Conteudo = str_replace("<%HORA%>", $hora, $Conteudo);
+	$Conteudo = str_replace("<%DATAINI%>", $dataIni, $Conteudo);
+	$Conteudo = str_replace("<%DATAFIM%>", $dataFim, $Conteudo);
+	$Conteudo = str_replace("<%HORAINI%>", $horaIni, $Conteudo);
+	$Conteudo = str_replace("<%HORAFIM%>", $horaFim, $Conteudo);
 	$Conteudo = str_replace("<%DESCRICAO%>", $descricao, $Conteudo);
-	$Conteudo = str_replace("<%VAGAS%>", $vagas, $Conteudo);
+	$Conteudo = str_replace("<%CARGA%>", $carga, $Conteudo);
+	$Conteudo = str_replace("<%INVESTIMENTO%>", $investimento, $Conteudo);
 	$Conteudo = str_replace("<%BOTAOEXCLUIR%>", $botao_excluir, $Conteudo);
 	$Conteudo = str_replace("<%BOTAOVOLTAR%>", $botao_voltar, $Conteudo);
 	$Conteudo = str_replace("<%BOTAOSALVAR%>", $botao_salvar, $Conteudo);
