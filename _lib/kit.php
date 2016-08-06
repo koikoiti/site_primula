@@ -12,6 +12,24 @@
 	$fotos = $banco->MontaFotosKit($idkit);
 	$produtos = $banco->BuscaProdutosKit($idkit);
 	
+	if($_POST){
+		$nome = utf8_decode(strip_tags(trim(addslashes($_POST['nome']))));
+		$email = strtolower(utf8_decode(strip_tags(trim(addslashes($_POST['email'])))));
+		$telefone = utf8_decode(strip_tags(trim(addslashes($_POST['telefone']))));
+	
+		$texto_email = $banco->CarregaHtml('mail-orcamento-kit');
+		$texto_email = str_replace('<%DATA%>', date("d/m/Y H:i:s"), $texto_email);
+		$texto_email = str_replace('<%NOME%>', $nome, $texto_email);
+		$texto_email = str_replace('<%EMAIL%>', $email, $texto_email);
+		$texto_email = str_replace('<%TELEFONE%>', $telefone, $texto_email);
+		$texto_email = str_replace('<%KIT%>', $rsKit['nome'], $texto_email);
+		$texto_email = str_replace('<%CODIGO%>', $rsKit['codigo'], $texto_email);
+	#primulatkc@primulatkc.com.br
+		if($banco->enviaEmail('Prímula', 'evandrokoiti@gmail.com', '[Site Prímula] - Orçamento de Kit', $texto_email, '')){
+			echo utf8_encode('<script type="text/javascript">alert("Sua solicitação de orçamento foi enviada com sucesso! Em breve enviaremos o orçamento para o e-mail informado.");</script>');
+		}
+	}
+	
 	#Imprime valores
 	$Conteudo = utf8_encode($banco->CarregaHtml('kit'));
 	$Conteudo = str_replace('<%NOMEKIT%>', utf8_encode($rsKit['nome']), $Conteudo);
