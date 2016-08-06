@@ -34,9 +34,18 @@
 					$investimento = "<p><span>Investimento: R$ ". number_format($rs['investimento'], 2, ',', '.') ."</span></p>";
 				}
 				$Linha = str_replace('<%INVESTIMENTO%>', $investimento, $Linha);
+				$Linha = str_replace('<%IDCURSO%>', $rs['idcurso'], $Linha);
 				$Cursos .= $Linha;
 			}
 			return utf8_encode($Cursos);
+		}
+		
+		#BuscaNomeCurso
+		function BuscaNomeCurso($idcurso){
+			$Sql = "SELECT nome FROM t_cursos WHERE idcurso = $idcurso";
+			$result = parent::Execute($Sql);
+			$rs = parent::ArrayData($result);
+			return $rs['nome'];
 		}
 	}
 ?>
