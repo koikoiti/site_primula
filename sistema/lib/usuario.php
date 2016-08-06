@@ -57,7 +57,7 @@
         $login = strip_tags(trim(addslashes($_POST["login"])));
 		$senha = strip_tags(trim(addslashes($_POST["senha"])));
         $idsetor = strip_tags(trim(addslashes($_POST["setor"])));
-        if($idsetor == 2){
+        if($idsetor >= 2){
             $tipo_vendedor = $_POST['tipo_vendedor'];
         }else{
             $tipo_vendedor = "Gerente";
