@@ -126,7 +126,7 @@
 				#Monta a paginação do meio
 				if($totalPaginas < QtdPag){
 					if($pagina <= $totalPaginas){
-						for($i = 1; $i <= $totalPaginas - 1; $i++){
+						for($i = 1; $i <= $totalPaginas; $i++){
 							if($i == $pagina){
 								$pag .= '<li class="active"><a>'.$i.'</a></li>';
 							}else{

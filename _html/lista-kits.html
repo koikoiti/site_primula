@@ -25,10 +25,8 @@
 	                            <div id="collapseOne" class="accordion-body collapse in">
 	                                <div class="accordion-inner">
 	                                    <ul>
-	                                        <li><a href="<%URLPADRAO%>lista-kits/ordenar/menor+preco">Menor Preço</a></li>
-	                                        <li><a href="<%URLPADRAO%>lista-kits/ordenar/maior+preco">Maior Preço</a></li>
-	                                        <li><a href="<%URLPADRAO%>lista-kits/ordenar/a+z">A-Z</a></li>
-	                                        <li><a href="<%URLPADRAO%>lista-kits/ordenar/z+a">Z-A</a></li>
+	                                        <li><a href="<%URLPADRAO%>lista-kits/?&order=a-z&pagina=<%PAGINA%>">A-Z</a></li>
+	                                        <li><a href="<%URLPADRAO%>lista-kits/?&order=z-a&pagina=<%PAGINA%>">Z-A</a></li>
 	                                    </ul>
 	                                </div>
 	                            </div>
@@ -52,18 +50,12 @@
                 <div id="grid-view" class="products-grid products-holder active tab-pane">
                     <%KITS%>
                     <hr/>
-                    <div class="span12 text-center">
-						<div class="pagination pagination-large">
-						  <ul>
-						    <li class="disabled"><span>&laquo;</span></li>
-						    <li class="active"><span>1</span></li>
-						    <li><a href="#">2</a></li>
-						    <li><a href="#">3</a></li>
-						    <li><a href="#">4</a></li>
-						    <li><a href="#">5</a></li>
-						    <li><a href="#">&raquo;</a></li>
-						  </ul>
-						</div>
+                </div>
+                <div class="span12 text-center">
+                	<div class="pagination pagination-large">
+					  <ul>
+					    <%PAGINACAO%>
+					  </ul>
 					</div>
                 </div>
             </div>
