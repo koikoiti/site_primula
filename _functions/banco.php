@@ -276,5 +276,43 @@
 			$rs = $this->ArrayData($result);
             return $rs['nome_exibicao'];
 		}
+		
+		#Send Mail
+		function enviaEmail($nome_destinatario, $email_destinatario, $assunto, $texto_email, $alt_email, $anexo){
+			#Carrega classe MAILER
+			include_once("./app/PHPMailer/class.phpmailer.php");
+			include("./app/PHPMailer/class.smtp.php");
+			 
+			$mail = new PHPMailer(true);
+			try{
+				#$mail->SMTPDebug = 2;                                 // Enable verbose debug output
+				$mail->clearAddresses();
+				$mail->isSMTP();                                      // Set mailer to use SMTP
+				$mail->Host = 'br652.hostgator.com.br';  // Specify main and backup SMTP servers
+				$mail->SMTPAuth = true;                               // Enable SMTP authentication
+				$mail->Username = mail_login;                 // SMTP username
+				$mail->Password = mail_pw;                           // SMTP password
+				$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+				$mail->Port = 465;                                    // TCP port to connect to
+		
+				$mail->setFrom(mail_replyTo, 'Prímula TKC');
+				$mail->addAddress($email_destinatario, $nome_destinatario);     // Add a recipient
+				$mail->addReplyTo(mail_replyTo, mail_replyTo);
+		
+				if($anexo != ''){
+					$mail->addAttachment($anexo);         // Add attachments
+				}
+				$mail->isHTML(true);                                  // Set email format to HTML
+		
+				$mail->Subject = $assunto;
+				$mail->Body    = $texto_email;
+				$mail->AltBody = $alt_email;
+		
+				$mail->send();
+				return true;
+			}catch(phpmailerException $e){
+				echo $e->errorMessage();
+			}
+		}/*-------------------------------------------------------------------------------------------------------------*/
 	}
 ?>
