@@ -24,8 +24,8 @@
 		$texto_email = str_replace('<%TELEFONE%>', $telefone, $texto_email);
 		$texto_email = str_replace('<%KIT%>', $rsKit['nome'], $texto_email);
 		$texto_email = str_replace('<%CODIGO%>', $rsKit['codigo'], $texto_email);
-	#primulatkc@primulatkc.com.br
-		if($banco->enviaEmail('Prímula', 'evandrokoiti@gmail.com', '[Site Prímula] - Orçamento de Kit', $texto_email, '')){
+	
+		if($banco->enviaEmail('Prímula', 'primulatkc@primulatkc.com.br', '[Site Prímula] - Orçamento de Kit', $texto_email, '')){
 			echo utf8_encode('<script type="text/javascript">alert("Sua solicitação de orçamento foi enviada com sucesso! Em breve enviaremos o orçamento para o e-mail informado.");</script>');
 		}
 	}
