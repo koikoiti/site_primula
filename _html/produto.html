@@ -63,15 +63,11 @@
 	                            </div>
 	                            <hr/>
 	                            <div class="buttons-holder">
-	                                <a class="cusmo-btn add-button" href="#">Solicitar Orçamento</a>
+	                                <button class="cusmo-btn add-button" type="button" onclick="abreModal()">Solicitar Orçamento</button>
 	                            </div>
 	                        </div>
-	
-	
 	                    </div>
-	
-	
-	                </div>
+					</div>
 	                <div class="product-tabs">
 	                    <div class="controls-holder nav-tabs">
 	                        <ul class="inline">
@@ -79,17 +75,14 @@
 	                            <li><a data-toggle="tab" href="#how-to-use">Como Usar</a></li>
 	                        </ul>
 	                    </div>
-	
 	                    <div class="tab-content">
 	                        <div id="description" class=" active tab-pane text-justify">
 	                            <p>
 	                                <%DESCRICAO%>
 	                            </p>
 	                        </div>
-	
 	                        <div id="how-to-use" class=" tab-pane text-justify">
 	                            <p>
-	                                
 	                            </p>
 	                        </div>
 						</div>
@@ -107,3 +100,30 @@
 		</div>
 	</div>
 </section>
+<div style="top: 135px;" id="orcamento" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4 class="modal-title" id="myLargeModalLabel">Solicitar Orçamento<a class="anchorjs-link" href="#mySmallModalLabel"><span class="anchorjs-icon"></span></a></h4>
+			</div>
+			<div class="modal-body">
+				<form action="" method="post">
+					<div>
+						*Nome: <input name="nome" required class="form-control" type="text" style="width: 90%"/><br/>
+						*E-mail: <input name="email" required class="form-control" type="email" style="width: 90%"/><br/>
+						*Telefone: <input name="telefone" required class="form-control" type="text" style="width: 90%" data-mask="(00) 0000-00009" placeholder="(00) 0000-00000"/><br/>
+					</div>
+					<br/>
+					<p>(*) Campos Obrigatórios</p>
+					<button class="cusmo-btn add-button btn-success" type="submit">Solicitar</button>
+				</form>
+			</div>
+    	</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<script type="text/javascript">
+function abreModal(){
+	$("#orcamento").modal();
+}
+</script>

@@ -12,6 +12,24 @@
 	$fotos = $banco->MontaFotosProdutoUnico($idproduto);
 	$semelhantes = $banco->MontaSemelhantes($rsProduto['idcategoria']);
 	
+	if($_POST){
+		$nome = utf8_decode(strip_tags(trim(addslashes($_POST['nome']))));
+		$email = strtolower(utf8_decode(strip_tags(trim(addslashes($_POST['email'])))));
+		$telefone = utf8_decode(strip_tags(trim(addslashes($_POST['telefone']))));
+		
+		$texto_email = $banco->CarregaHtml('mail-orcamento-produto');
+		$texto_email = str_replace('<%DATA%>', date("d/m/Y H:i:s"), $texto_email);
+		$texto_email = str_replace('<%NOME%>', $nome, $texto_email);
+		$texto_email = str_replace('<%EMAIL%>', $email, $texto_email);
+		$texto_email = str_replace('<%TELEFONE%>', $telefone, $texto_email);
+		$texto_email = str_replace('<%PRODUTO%>', $rsProduto['nome'], $texto_email);
+		$texto_email = str_replace('<%CODIGO%>', $rsProduto['cod_barras'], $texto_email);
+		
+		if($banco->enviaEmail('Prímula', 'primulatkc@primulatkc.com.br', '[Site Prímula] - Orçamento de Produto', $texto_email, '')){
+			echo utf8_encode('<script type="text/javascript">alert("Sua solicitação de orçamento foi enviada com sucesso! Em breve enviaremos o orçamento para o e-mail informado.");</script>');
+		}
+	}
+	
 	#Imprime valores
 	$Conteudo = utf8_encode($banco->CarregaHtml('produto'));
 	$Conteudo = str_replace('<%NOMEPRODUTO%>', utf8_encode($rsProduto['nome']), $Conteudo);

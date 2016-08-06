@@ -17,7 +17,7 @@
 		$texto_email = str_replace('<%MENSAGEM%>', $mensagem, $texto_email);		
 		
 		if($banco->enviaEmail('Prímula', 'primulatkc@primulatkc.com.br', '[Site Prímula] - Contato', $texto_email, '')){
-			echo '<script type="text/javascript">alert("Recebemos sua mensagem com sucesso! Aguarde que em breve entraremos em contato.")</script>';
+			echo utf8_encode('<script type="text/javascript">alert("Recebemos sua mensagem com sucesso! Aguarde que em breve entraremos em contato.")</script>');
 		}
 	}
 	
