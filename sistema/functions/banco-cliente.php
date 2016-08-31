@@ -500,7 +500,7 @@
         
         #Select Busca Bairro
         function SelectBuscaBairro($busca_bairro){
-        	$Sql = "SELECT DISTINCT C.bairro AS bairro FROM t_clientes C";
+        	$Sql = "SELECT DISTINCT C.bairro AS bairro FROM t_clientes C ORDER BY C.bairro ASC";
         			#UNION SELECT DISTINCT A.bairro AS bairro FROM t_clientes_enderecosadicionais A";
         	$result = parent::Execute($Sql);
         	$linha = parent::Linha($result);
@@ -508,7 +508,7 @@
         		$retorno = "<select name='bairro' id='busca_bairro' class='form-control' style='width: 10%; float: left;'>";
         		$retorno .= "<option value=''>Bairro</option>";
 	        	while($rs = parent::ArrayData($result)){
-	        		if($rs['bairro'] == $busca_bairro){
+	        		if($rs['bairro'] == $busca_bairro && $busca_bairro != ''){
 	        			$retorno .= "<option value='".utf8_encode($rs['bairro'])."' selected>".utf8_encode($rs['bairro'])."</option>";
 	        		}else{
 	        			$retorno .= "<option value='".utf8_encode($rs['bairro'])."'>".utf8_encode($rs['bairro'])."</option>";

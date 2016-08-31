@@ -7,13 +7,23 @@
     
     $term = $_GET[ "term" ];
     
-    $Sql = 'SELECT * FROM t_clientes WHERE nome LIKE "%'.$term.'%"';
+    $Sql = 'SELECT idcliente, nome, idtipoprofissional, cnpj, cpf FROM t_clientes WHERE nome LIKE "%'.$term.'%" OR nome_contato LIKE "%'.$term.'%" OR cpf LIKE "%'.$term.'%" OR cnpj LIKE "%'.$term.'%" ORDER BY nome ASC';
     $result = $banco->Execute($Sql);
     
     while($rs = $banco->ArrayData($result)){
-        $array[] = array('label' => utf8_encode($rs['nome']),
+    	if($rs['cnpj'] == ''){
+    		if($rs['cpf'] == ''){
+    			$info = '';
+    		}else{
+    			$info = " - CPF: {$rs['cpf']}";
+    		}
+    	}else{
+    		$info = " - CNPJ: {$rs['cnpj']}";
+    	}
+        $array[] = array('label' => utf8_encode($rs['nome'] . $info),
                          'value' => utf8_encode($rs['nome']),
                          'idcliente' => $rs['idcliente'],
+        				 'idtipoprofissional' => $rs['idtipoprofissional'],
                     );
     }
     

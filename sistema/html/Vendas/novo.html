@@ -16,7 +16,8 @@
             <label class="col-sm-3 control-label form-margin">*Cliente</label>
             <div class="col-sm-6 ui-widget">
                 <input type="hidden" value="" id="hid_cliente" name="cliente" />
-                <input id="cliente" autofocus required type="text" class="form-control" value="" onblur="validaCliente(this.value)" autocomplete="off"/>
+                <input type="hidden" value="" id="hid_tipoprofissional" name="tipoprofissional" />
+                <input id="cliente" autofocus required type="text" class="form-control" value="" onblur="validaCliente(this.value)" autocomplete="off" placeholder="Nome Fantasia, Contato ou CPF/CNPJ"/>
             </div>
         </div>
         
@@ -32,6 +33,7 @@
                 <div class="col-sm-6">
                     <button onclick="mais()" type="button" class="btn btn-primary">+</button>
                     <div class="form-group" id="lista-produtos">
+                    	
                     </div>
             </div>
         </div>
@@ -51,7 +53,7 @@
         </div>
         
         <div class="form-group form-margin" style="width: 25%; float: left">
-            <label class="col-sm-6 control-label">*Valor</label>
+            <label class="col-sm-6 control-label">*Valor Frete</label>
             <div class="col-sm-6">
                 <input required type="text" class="form-control money" name="frete" value=""/>
             </div>
@@ -97,30 +99,34 @@ $(function() {
         minLength: 2,
         select: function(event, ui){
             $('#hid_cliente').val(ui.item.idcliente);
+            $('#hid_tipoprofissional').val(ui.item.idtipoprofissional);
         }
     });
 });
 
 function mais(){
     var idcliente = $('#hid_cliente').val();
+    var idtipoprofissional = $('#hid_tipoprofissional').val();
+    var idpreco;
     if(idcliente == ''){
         alert("Selecione um cliente!");
     }else{
-        
         var verifica = document.getElementById('produtonovo'+(novo-1));
         
         if(verifica == null || verifica.value.length > 1){
+        	idpreco = novo;
             novadiv = document.createElement('div');
             novadiv.setAttribute('id', 'novo'+novo);
             novadiv.setAttribute('class', 'novo-produto');
-            novadiv.innerHTML = "<div class='col-md-3' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control' /></div><div class='col-md-1'>Quantidade: <input type='text' class='form-control' value='1' name='quantidade[]' /></div><div class='col-md-1'>Desconto Valor: <input name='desconto_valor[]' type='text' class='form-control money' value='0'/></div><div class='col-md-1'>Desconto Porcentagem: <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' value='0'/></div><div class='col-md-2'><br/><label><input name='brinde[]' type='checkbox'/> Brinde</label></div><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div>";
+            novadiv.innerHTML = "<div class='col-sm-10 no-padding'><div class='col-sm-11 no-padding'><div class='col-md-12' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control' /></div><div class='col-md-2'><br/><label>Preço: R$ <span id='preco"+novo+"'></span></label></div><div class='col-md-2'>Quantidade: <input type='text' class='form-control' value='1' name='quantidade[]' /></div><div class='col-md-2'>Desconto R$: <input name='desconto_valor[]' type='text' class='form-control money' value='0'/></div><div class='col-md-2'>Desconto %: <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' value='0'/></div><div class='col-md-2'><br/><label><input name='brinde[]' type='checkbox'/> Brinde</label></div></div><div class='col-sm-1 no-padding'><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div></div></div>";
+            //novadiv.innerHTML = "<div class='col-md-3' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control' /></div><div class='col-md-1'>Quantidade: <input type='text' class='form-control' value='1' name='quantidade[]' /></div><div class='col-md-1'>Desconto Valor: <input name='desconto_valor[]' type='text' class='form-control money' value='0'/></div><div class='col-md-1'>Desconto Porcentagem: <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' value='0'/></div><div class='col-md-2'><br/><label><input name='brinde[]' type='checkbox'/> Brinde</label></div><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div>";
             document.getElementById('lista-produtos').appendChild(novadiv);
             $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
             $('.porcentagem').mask("00,00", {reverse: true,});
             
             $("#produtonovo"+novo).autocomplete({
                 source: function(request, response) {
-                            $.getJSON("<%URLPADRAO%>lib/ajax/produtoautocomplete.php", {term: request.term, idcliente: idcliente}, 
+                            $.getJSON("<%URLPADRAO%>lib/ajax/produtoautocomplete.php", {term: request.term, idtipoprofissional: idtipoprofissional}, 
                         response);
                         },
                 minLength: 2,
@@ -130,7 +136,7 @@ function mais(){
                     if(hid_produto != null){
                         hid_produto.remove();
                     }else{
-                        var imgOld = document.getElementById('img'+novo);
+                        var imgOld = document.getElementById('outer'+novo);
                         if(imgOld != null){
                             imgOld.remove();
                         }
@@ -140,18 +146,31 @@ function mais(){
                         hid_produto.setAttribute('id', 'hid_produtonovo'+novo);
                         hid_produto.setAttribute('value', ui.item.idproduto);
                         var img = document.createElement('img');
+                        var outerimg = document.createElement('div');
+                        outerimg.setAttribute('id', 'outer'+novo);
+                        outerimg.setAttribute('class', 'col-md-2 text-center');
+                        outerimg.appendChild(img);
                         img.setAttribute('id', 'img'+novo);
                         img.setAttribute('src', ui.item.caminho);
                         img.setAttribute('style', 'width: 100px; height: 100px;');
-                        $(novadiv).prepend(img);
-                        novadiv.appendChild(hid_produto);
-                        $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
+                        var i = colocaPreco(idpreco, ui.item.valor);
+                        if(i){
+	                        $(novadiv).prepend(outerimg);
+	                        novadiv.appendChild(hid_produto);
+	                        $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
+                        }
                     }
                 }
             });
             novo++;   
         }
     }
+}
+
+function colocaPreco(id, valor){
+	console.log(id + " " + valor);
+	$("#preco"+id).html(valor);
+	return true;
 }
 
 function menos(idnovo){

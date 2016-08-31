@@ -6,19 +6,13 @@
 	session_start('login');
     
     $term = $_GET[ "term" ];
-    $idcliente = $_GET['idcliente'];
+    $idtipoprofissional = $_GET['idtipoprofissional'];
     
-    $SqlTipo = "SELECT * FROM t_clientes WHERE idcliente = $idcliente";
+    $SqlTipo = "SELECT valor FROM t_valor_profissional WHERE idtipoprofissional = $idtipoprofissional";
     $resultTipo = $banco->Execute($SqlTipo);
-    $rsTipo = $banco->ArrayData($resultTipo);
+    $rsValor = $banco->ArrayData($resultTipo);
     
-    if($rsTipo['idtipocliente'] == 1){
-        $tipo = 'valor_consumidor';
-    }else{
-        $tipo = 'valor_profissional';
-    }
-    
-    $Sql = 'SELECT * FROM t_produtos WHERE (nome LIKE "%'.$term.'%" OR cod_barras LIKE "%'.$term.'%" OR marca LIKE "%'.$term.'%") AND estoque > 0';
+    $Sql = 'SELECT * FROM t_produtos WHERE (nome LIKE "%'.$term.'%" OR cod_barras LIKE "%'.$term.'%" OR marca LIKE "%'.$term.'%")';
     $result = $banco->Execute($Sql);
     
     while($rs = $banco->ArrayData($result)){
@@ -29,12 +23,11 @@
                          'value' => 'Produto: '.utf8_encode($rs['nome']),
                          'idproduto' => 'prod_'.$rs['idproduto'],
                          'caminho' => UrlFoto.$rsImagem['caminho'],
-                         'valor_consumidor' => $rs['valor_consumidor'],
-                         'valor_profissional' => $rs['valor_profissional'],
+                         'valor' => number_format(floatval($rs[$rsValor['valor']]), 2, ',', '.'),
                     );
     }
     
-    $SqlKit = 'SELECT * FROM t_kit WHERE (nome LIKE "%'.$term.'%" OR codigo LIKE "%'.$term.'%") AND estoque > 0';
+    $SqlKit = 'SELECT * FROM t_kit WHERE (nome LIKE "%'.$term.'%" OR codigo LIKE "%'.$term.'%")';
     $resultKit = $banco->Execute($SqlKit);
     
     while($rsKit = $banco->ArrayData($resultKit)){
@@ -45,8 +38,7 @@
                          'value' => 'Kit: '.utf8_encode($rsKit['nome']),
                          'idproduto' => 'kit_'.$rsKit['idkit'],
                          'caminho' => UrlFoto.$rsImagemKit['caminho'],
-                         'valor_consumidor' => $rsKit['valor_consumidor'],
-                         'valor_profissional' => $rsKit['valor_profissional'],
+                         'valor' => number_format(floatval($rs[$rsValor['valor']]), 2, ',', '.'),
                     );
     }
     
