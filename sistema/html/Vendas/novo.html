@@ -11,40 +11,38 @@
 </div>
 <div class="content">
     <div class="col-md-12">
-    
-        <div class="form-group" style="width: 90%; float: left">
-            <label class="col-sm-3 control-label form-margin">*Cliente</label>
-            <div class="col-sm-6 ui-widget">
-                <input type="hidden" value="" id="hid_cliente" name="cliente" />
-                <input type="hidden" value="" id="hid_tipoprofissional" name="tipoprofissional" />
-                <input id="cliente" autofocus required type="text" class="form-control" value="" onblur="validaCliente(this.value)" autocomplete="off" placeholder="Nome Fantasia, Contato ou CPF/CNPJ"/>
-            </div>
+	        <div class="form-group" style="width: 90%; float: left">
+	            <label class="col-sm-3 control-label form-margin">*Cliente</label>
+	            <div class="col-sm-6 ui-widget">
+	                <input type="hidden" value="" id="hid_cliente" name="cliente" />
+	                <input type="hidden" value="" id="hid_tipoprofissional" name="tipoprofissional" />
+	                <input id="cliente" autofocus required type="text" class="form-control" value="" onblur="validaCliente(this.value)" autocomplete="off" placeholder="Nome Fantasia, Contato ou CPF/CNPJ"/>
+	            </div>
+	        </div>
+	        
+	        <div class="form-group" style="width: 10%; float: left">
+	            <label class="col-sm-3 control-label form-margin">&nbsp;</label>
+	            <div class="col-sm-6">
+	                <a href="javascript:void(0)" onclick="javascript: window.open('<%URLPADRAO%>cliente')" class="btn btn-default">Novo</a>
+	            </div>
+	        </div>
         </div>
-        
-        <div class="form-group" style="width: 10%; float: left">
-            <label class="col-sm-3 control-label form-margin">&nbsp;</label>
-            <div class="col-sm-6">
-                <a href="javascript:void(0)" onclick="javascript: window.open('<%URLPADRAO%>cliente')" class="btn btn-default">Novo</a>
-            </div>
-        </div>
-            
+	<div class="col-md-12">
         <div class="form-group">
             <label class="col-sm-3 control-label form-margin">*Produtos</label>
-                <div class="col-sm-6">
-                    <button onclick="mais()" type="button" class="btn btn-primary">+</button>
-                    <div class="form-group" id="lista-produtos">
-                    	
-                    </div>
+            <div class="col-sm-6">
+    	        <button onclick="mais()" type="button" class="btn btn-primary">+</button>
+                <div class="form-group" id="lista-produtos"></div>
             </div>
         </div>
-        
+    </div>
         <!--div class="form-group">
             <label class="col-sm-6 control-label" style="margin-top: 10px;">Sub-Total Produtos: </label>
             <div class="col-sm-6">
                 <label>R$ <span id="subtotal"></span></label>
             </div>
         </div-->
-        
+    <div class="col-md-12">    
         <div class="form-group form-margin" style="width: 50%; float: left">
             <label class="col-sm-6 control-label">*Frete - <a href="http://www2.correios.com.br/sistemas/precosPrazos/" target="_blank">Correios</a></label>
             <div class="col-sm-6">
@@ -65,21 +63,38 @@
                 <label><input type="checkbox" name="por_conta" value="1"/> Frete por conta</label>
             </div>
         </div>
-        
-        <div class="form-group">
-            <div class="col-sm-6 form-margin">
-                <button onclick="checkout();" style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
-                    <i class="fa fa-check"></i> Checkout
-                </button>
-                <button style="box-shadow: none;background-color: rgb(156, 98, 218);border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
-                    <i class="fa fa-check"></i> Salvar Orçamento
-                </button>
-                <%BOTAOVOLTAR%>
-                <%BOTAOATIVARINATIVAR%>
-                <%BOTAOEXCLUIR%>
-           </div>
-        </div>
-    </div>
+	</div>
+    <div class="col-sm-12">
+		<div class="form-group">
+	        <label class="col-sm-3 control-label form-margin">Pagamento:</label>
+	        <div class="col-sm-6 ui-widget">
+	        	<button onclick="mais()" type="button" class="btn btn-primary">+</button>
+	            <button class="btn btn-success" type="button" data-toggle="tooltip" title="">Parcelar Saldo Restante</button>
+	            <div class="form-group" id="pagamentos"></div>
+	         </div>
+     	</div>
+	    <div class="form-group">
+	        <label class="col-sm-3 control-label form-margin">Troco:</label>
+	        <div class="col-sm-6 ui-widget">
+	            <label style="background-color: floralwhite; padding: 5px; border-radius: 4px;">R$ <span id="subtotal">Valor troco ou Crédito para o Cliente</span></label>
+	        </div>
+	    </div>
+	</div>
+    <div class="col-sm-12">
+		<div class="form-group">
+	    	<div class="col-sm-6 form-margin">
+	        	<button onclick="checkout();" style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
+	            	<i class="fa fa-check"></i> Checkout
+	            </button>
+	            <button style="box-shadow: none;background-color: rgb(156, 98, 218);border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
+	                <i class="fa fa-check"></i> Salvar Orçamento
+	            </button>
+	            <%BOTAOVOLTAR%>
+	            <%BOTAOATIVARINATIVAR%>
+	            <%BOTAOEXCLUIR%>
+	        </div>
+	    </div>
+	</div>
 </div>
 <input type="hidden" name="acao" value="acao" />
 <script type="text/javascript">
