@@ -79,7 +79,8 @@
                              </li>
                              <li class="parent"><a href="#"><i class="fa fa-plus-circle"></i><span>Produtos</span></a>
                                 <ul class="sub-menu">
-                                    <li><a href="<%URLPADRAO%>lista-produto">Lista Produtos</a></li>
+                                    <li><a href="<%URLPADRAO%>retirar-mostruario">Retirar Mostruário</a></li>
+                    				<li><a href="<%URLPADRAO%>lista-produto">Lista Produtos</a></li>
                                     <li><a href="<%URLPADRAO%>produto">Novo Produto</a></li>
                                     <li><a href="<%URLPADRAO%>categorias">Categorias</a></li>
                                     <li><a href="<%URLPADRAO%>entrada-produto">Entrada Produtos</a></li>

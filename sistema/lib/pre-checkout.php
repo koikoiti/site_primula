@@ -17,7 +17,7 @@
         $arrDesconto = $_POST['desconto'];
         $arrBrinde = $_POST['brinde'];
         
-        $idvenda = $banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1);
+        $idvenda = $banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0);
         $banco->RedirecionaPara('checkout/'.$idvenda);
     }
 ?>
