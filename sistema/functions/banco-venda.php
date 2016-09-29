@@ -1,5 +1,21 @@
 <?php
     class bancovenda extends banco{
+    	
+    	#Busca venda por id
+    	function BuscaVendaPorId($idvenda){
+    		$Sql = "SELECT * FROM t_vendas WHERE idvenda = $idvenda";
+    		$result = parent::Execute($Sql);
+    		$rs = parent::ArrayData($result);
+    		return $rs;
+    	}
+    	
+    	#Busca cliente
+    	function BuscaCliente($idcliente){
+    		$Sql = "SELECT * FROM t_clientes WHERE idcliente = $idcliente";
+    		$result = parent::Execute($Sql);
+    		$rs = parent::ArrayData($result);
+    		return $rs;
+    	}
         
         #Tipo frete
         function SelectTipoFrete($idtipofrete){
@@ -42,7 +58,7 @@
                     $Linha = str_replace('<%VENDIDOPOR%>', parent::BuscaUsuarioPorId($rs['idusuario']), $Linha);
                     if($rs['orcamento'] == 1){
                         $auxVO = 'Orçamento';
-                        $editar = '<a href="<%URLPADRAO%>venda/editar/<%ID%>">Editar</a>';
+                        $editar = '<a href="<%URLPADRAO%>venda/editar/'.$rs['idvenda'].'">Editar</a>';
                     }else{
                         $auxVO = 'Venda';
                         $editar = '';

@@ -7,7 +7,12 @@
 
 	#Instancia o objeto
 	$banco = new bancovenda();
-    
+	if($this->PaginaAux[0] == 'editar'){
+		$idvenda = $this->PaginaAux[1];
+		$rsVenda = $banco->BuscaVendaPorId($idvenda);
+		$AUX_cliente = $banco->BuscaCliente($rsVenda['idcliente']);
+	}
+	
     if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
         $idcliente = $_POST['cliente'];
         $tipoFrete = $_POST['tipofrete'];
@@ -35,4 +40,7 @@
     $Conteudo = str_replace("<%BOTAOEXCLUIR%>", $botao_excluir, $Conteudo);
     $Conteudo = str_replace("<%BOTAOATIVARINATIVAR%>", $botao_ativar_inativar, $Conteudo);
     $Conteudo = str_replace("<%BOTAOVOLTAR%>", $botao_voltar, $Conteudo);
+    
+    #Replaces
+    $Conteudo = str_replace("<%NOMECLIENTE%>", $AUX_cliente['nome'], $Conteudo);
 ?>
