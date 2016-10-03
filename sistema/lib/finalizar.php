@@ -5,5 +5,7 @@
 	#Instancia o objeto
 	$banco = new bancofinalizar();
     
+	$idvenda = $this->PaginaAux[0];
+		
     $banco->MontaSaida();
 ?>

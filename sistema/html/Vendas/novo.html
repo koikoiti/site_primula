@@ -39,7 +39,7 @@
     <div class="col-sm-12">
 		<div>
 			<hr/>
-			<span style="float: left; width: 100%;">Subtotal: </span><input style="width: 50%; float: left;" class="form-control" readonly="readonly" id="subtotal" type="text" value="R$ 0,00"/>
+			<span style="float: left; width: 100%;">Subtotal: </span><input name="subtotal" style="width: 50%; float: left;" class="form-control" readonly="readonly" id="subtotal" type="text" value="R$ 0,00"/>
 			<hr/> 
 		</div>
 	</div>
@@ -68,7 +68,7 @@
 	<div class="col-sm-12 text-left">
 		<div>
 			<hr/>
-			<span style="float: left; width: 100%;">Total: </span><input style="width: 50%; float: left;" class="form-control" readonly="readonly" id="total" value="R$ 0,00"/>
+			<span style="float: left; width: 100%;">Total: </span><input name="total" style="width: 50%; float: left;" class="form-control" readonly="readonly" id="total" value="R$ 0,00"/>
 			<hr/> 
 		</div>
 	</div>
@@ -290,10 +290,10 @@ function checkout(){
 
 function maisPagamento(){
     var nova = document.createElement('div');
-    nova.setAttribute('id', 'novoPagamento'+novo);
+    nova.setAttribute('id', 'novoPagamento'+novoPagamento);
     nova.setAttribute('class', 'col-sm-12');
     nova.setAttribute('style', 'margin-top: 5px;');
-    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><><option value="1">Dinheiro</option><option value="2">Cheque</option><option value="3">Cartão de Débito</option><option value="4">Cartão de Crédito</option><option value="5">Boleto</option><option value="6">Depósito Bancário</option><option value="7">Crédito a Distância</option></select></div><div class="col-sm-5"><input type="text" class="form-control money" onblur="calculaTroco();" name="pagamento[]" /></div><button onclick="menosPagamento('+novo+')" type="button" class="btn btn-danger">-</button>';
+    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><><option value="1">Dinheiro</option><option value="2">Cheque</option><option value="3">Cartão de Débito</option><option value="4">Cartão de Crédito</option><option value="5">Boleto</option><option value="6">Depósito Bancário</option><option value="7">Crédito a Distância</option></select></div><div class="col-sm-5"><input type="text" class="form-control money" onblur="calculaTroco();" name="pagamento[]" /></div><button onclick="menosPagamento('+novoPagamento+')" type="button" class="btn btn-danger">-</button>';
     var aqui = document.getElementById('pagamentos');
     aqui.appendChild(nova);
     $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
@@ -302,6 +302,7 @@ function maisPagamento(){
 
 function menosPagamento(idnovo){
     document.getElementById('novoPagamento'+idnovo).remove();
+    calculaTroco();
 }
 
 
