@@ -12,7 +12,7 @@
     $resultTipo = $banco->Execute($SqlTipo);
     $rsValor = $banco->ArrayData($resultTipo);
     
-    $Sql = 'SELECT * FROM t_produtos WHERE (nome LIKE "%'.$term.'%" OR cod_barras LIKE "%'.$term.'%" OR marca LIKE "%'.$term.'%")';
+    $Sql = 'SELECT * FROM t_produtos WHERE (nome LIKE "%'.$term.'%" OR cod_barras LIKE "%'.$term.'%" OR marca LIKE "%'.$term.'%") ORDER BY nome';
     $result = $banco->Execute($Sql);
     
     while($rs = $banco->ArrayData($result)){
@@ -28,7 +28,7 @@
                     );
     }
     
-    $SqlKit = 'SELECT * FROM t_kit WHERE (nome LIKE "%'.$term.'%" OR codigo LIKE "%'.$term.'%")';
+    $SqlKit = 'SELECT * FROM t_kit WHERE (nome LIKE "%'.$term.'%" OR codigo LIKE "%'.$term.'%") ORDER BY nome';
     $resultKit = $banco->Execute($SqlKit);
     
     while($rsKit = $banco->ArrayData($resultKit)){

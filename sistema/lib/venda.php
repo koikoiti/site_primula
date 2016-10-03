@@ -14,6 +14,7 @@
 	}
 	
     if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
+    	var_dump($_POST);die;
         $idcliente = $_POST['cliente'];
         $tipoFrete = $_POST['tipofrete'];
         $valorFrete = utf8_decode(strip_tags(trim(addslashes($_POST["frete"]))));

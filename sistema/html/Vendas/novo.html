@@ -54,14 +54,14 @@
         <div class="form-group form-margin" style="width: 25%; float: left">
             <label class="col-sm-6 control-label">*Valor Frete</label>
             <div class="col-sm-6">
-                <input onclick="this.select();" onblur="calculaSubtotal();" id="frete" required type="text" class="form-control money" name="frete" value="0"/>
+                <input onclick="this.select();" onblur="calculaTotal();" id="frete" required type="text" class="form-control money" name="frete" value="0"/>
             </div>
         </div>
         
         <div class="form-group form-margin" style="width: 25%; float: left">
             <label class="col-sm-6 control-label">&nbsp;</label>
             <div class="col-sm-6">
-                <label><input type="checkbox" name="por_conta" value="1"/> Frete por conta</label>
+                <label><input id="fretePorConta" onchange="calculaTotal();" type="checkbox" name="por_conta"/> Frete por conta</label>
             </div>
         </div>
 	</div>
@@ -82,9 +82,9 @@
 	         </div>
      	</div>
 	    <div class="form-group">
-	        <label class="col-sm-3 control-label form-margin">Troco:</label>
+	        <label class="col-sm-3 control-label form-margin"></label>
 	        <div class="col-sm-6 ui-widget">
-	            <label style="background-color: floralwhite; padding: 5px; border-radius: 4px;">R$ <span id="troco"></span></label>
+	            <label style="background-color: floralwhite; padding: 5px; border-radius: 4px;"><span id="troco"></span></label>
 	        </div>
 	    </div>
 	</div>
@@ -219,12 +219,11 @@ function converteMoedaFloat(v){
  }
 
 function calculaSubtotal(){
-	subtotal = 0;
+	var subtotal = 0;
 	$('input[name^="hid_valor_real"]').each(function(i){
 	    var valor = parseFloat($(this).val());
 	    var brinde = $('input[name^="brinde"]')[i].checked;
 	    if(brinde == false){
-	    
 		    var quantidade = parseInt($('input[name^="quantidade"]')[i].value);
 		    var desconto = converteMoedaFloat($('input[name^="desconto_valor"]')[i].value);
 		    if(desconto != 0){
@@ -232,7 +231,6 @@ function calculaSubtotal(){
 		    }
 		    subtotal = parseFloat(subtotal) + (valor * quantidade);
 	    }
-	    
 	});
 	$("#subtotal").val('R$ ' + subtotal.format(2, 3, '.', ','));
 	calculaTotal();
@@ -241,10 +239,34 @@ function calculaSubtotal(){
 function calculaTotal(){
 	var subtotalTotal = $("#subtotal").val().replace("R$ ", "");
 	subtotalTotal = converteMoedaFloat(subtotalTotal);
-	var frete = $("#frete").val();
-	frete = converteMoedaFloat(frete);
+	var fretePorConta = document.getElementById("fretePorConta").checked;
+	if(fretePorConta == false){
+		var frete = $("#frete").val();
+		frete = converteMoedaFloat(frete);
+	}else{
+		frete = 0;
+	}
 	var total = subtotalTotal + frete;
 	$("#total").val('R$ ' + total.format(2, 3, '.', ','));
+	calculaTroco();
+}
+
+function calculaTroco(){
+	var total = $("#total").val().replace("R$ ", "");
+	total = converteMoedaFloat(total);
+	var totalPagamento = 0;
+	$('input[name^="pagamento"]').each(function(i){
+		totalPagamento = totalPagamento + converteMoedaFloat($(this).val());
+	});
+	if(totalPagamento > total){
+		//Troco
+		var troco = totalPagamento - total;
+		$("#troco").html("Troco: R$ " + troco.format(2, 3, '.', ',') + " - <input type='checkbox' class='' name='credito'/> Crédito");
+	}else{
+		//Restam
+		var restam = total - totalPagamento;
+		$("#troco").html("Restam: R$ " + restam.format(2, 3, '.', ','));
+	}
 }
 
 function colocaPreco(id, valor, valor_real){
@@ -271,7 +293,7 @@ function maisPagamento(){
     nova.setAttribute('id', 'novoPagamento'+novo);
     nova.setAttribute('class', 'col-sm-12');
     nova.setAttribute('style', 'margin-top: 5px;');
-    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><><option value="1">Dinheiro</option><option value="2">Cheque</option><option value="3">Cartão de Débito</option><option value="4">Cartão de Crédito</option><option value="5">Boleto</option><option value="6">Depósito Bancário</option><option value="7">Crédito a Distância</option></select></div><div class="col-sm-5"><input type="text" class="form-control money" name="pagamento[]" /></div><button onclick="menosPagamento('+novo+')" type="button" class="btn btn-danger">-</button>';
+    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><><option value="1">Dinheiro</option><option value="2">Cheque</option><option value="3">Cartão de Débito</option><option value="4">Cartão de Crédito</option><option value="5">Boleto</option><option value="6">Depósito Bancário</option><option value="7">Crédito a Distância</option></select></div><div class="col-sm-5"><input type="text" class="form-control money" onblur="calculaTroco();" name="pagamento[]" /></div><button onclick="menosPagamento('+novo+')" type="button" class="btn btn-danger">-</button>';
     var aqui = document.getElementById('pagamentos');
     aqui.appendChild(nova);
     $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
