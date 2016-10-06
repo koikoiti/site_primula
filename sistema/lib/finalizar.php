@@ -6,6 +6,6 @@
 	$banco = new bancofinalizar();
     
 	$idvenda = $this->PaginaAux[0];
-		
-    $banco->MontaSaida();
+	
+	$banco->MontaSaida($idvenda);
 ?>

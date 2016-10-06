@@ -1,11 +1,11 @@
 <html>
-<body style="font-size: 8px; margin: 0; padding: 0">
+<body style="font-size: 8px; margin: 0; padding: 0; width: 190mm">
     <div>
         <div>
             <table style="width: 100%; text-align: center;">
                 <tr>
                     <td>
-                        Venda Nº: XXX
+                        Venda Nº: <%NUMERO%>
                     </td>
                 </tr>
                 <tr>
@@ -33,13 +33,13 @@
                     <td>(41) 3254-4704 / (41) 3029-4704</td>
                 </tr>
                 <tr>
-                    <td>22/07/2015 - 21:51</td>
+                    <td><%DATAIMPRESSAO%></td>
                 </tr>
                 <tr>
-                    <td>#Nome do Cliente#</td>
+                    <td><%NOMECLIENTE%></td>
                 </tr>
                 <tr>
-                    <td>#Endereço do Cliente#</td>
+                    <td><%ENDERECOCLIENTE%></td>
                 </tr>
             </table>
         </div>
@@ -51,61 +51,42 @@
                     <td>Vlr Unit</td>
                     <td>Valor</td>
                 </tr>
-                <tr>
-                    <td>Nome do Produto + Marca</td>
-                    <td>10</td>
-                    <td>R$ 11,00</td>
-                    <td>R$ 110,00</td>
-                </tr>
-                <tr>
-                    <td>Nome do Produto + Marca</td>
-                    <td>1</td>
-                    <td>R$ 15,00</td>
-                    <td>R$ 15,00</td>
-                </tr>
-                <tr>
-                    <td>Nome do Produto + Marca</td>
-                    <td>3</td>
-                    <td>R$ 20,00</td>
-                    <td>R$ 60,00</td>
-                </tr>
+                <%PRODUTOS%>
             </table>
         </div>
         <div style="margin-top: 10px;">
             <table style="width: 100%; text-align: right; vertical-align: middle;">
                 <tr>
+                	<td></td>
                     <td>Total dos Produtos</td>
-                    <td>R$ 185,00</td>
+                    <td><%TOTALPRODUTOS%></td>
                 </tr>
                 <tr>
-                    <td>Frete</td>
-                    <td>R$ 15,00</td>
+                	<td></td>
+                    <td>Frete <%PORCONTA%></td>
+                    <td><%FRETE%></td>
                 </tr>
                 <tr>
+                	<td></td>
                     <td>Desconto</td>
-                    <td>-</td>
+                    <td><%DESCONTO%></td>
                 </tr>
                 <tr>
+                	<td></td>
                     <td>Total da Venda</td>
-                    <td>R$ 200,00</td>
+                    <td><%TOTALVENDA%></td>
                 </tr>
                 <tr>
-                    <th colspan="2" style="text-align: center;">Forma de Pagamento</th>
+                    <th colspan="3" style="text-align: center;">Forma de Pagamento</th>
                 </tr>
-                <tr>
-                    <td>Dinheiro</td>
-                    <td>R$ 100,00</td>
-                </tr>
-                <tr>
-                    <td>Cartão de Crédito</td>
-                    <td>2x R$ 50,00</td>
-                </tr>
+               	<%PAGAMENTOS%>
+               	<%TROCO%>
             </table>
         </div>
         <div style="margin-top: 10px;">
             <table style="width: 100%; text-align: left; vertical-align: middle;">
                 <tr><td>Ass: ________________________________________________________</td></tr>
-                <tr><td>Venda realizada por: Nome do Funcionário</td></tr>
+                <tr><td>Venda realizada por: <%FUNCIONARIO%></td></tr>
             </table>
         </div>
         <hr />
@@ -113,7 +94,7 @@
             <table style="width: 100%; text-align: center;">
                 <tr>
                     <td>
-                        Venda Nº: XXX
+                        Venda Nº: <%NUMERO%>
                     </td>
                 </tr>
                 <tr>
@@ -141,13 +122,13 @@
                     <td>(41) 3254-4704 / (41) 3029-4704</td>
                 </tr>
                 <tr>
-                    <td>22/07/2015 - 21:51</td>
+                    <td><%DATAIMPRESSAO%></td>
                 </tr>
                 <tr>
-                    <td>#Nome do Cliente#</td>
+                    <td><%NOMECLIENTE%></td>
                 </tr>
                 <tr>
-                    <td>#Endereço do Cliente#</td>
+                    <td><%ENDERECOCLIENTE%></td>
                 </tr>
             </table>
         </div>
@@ -159,60 +140,42 @@
                     <td>Vlr Unit</td>
                     <td>Valor</td>
                 </tr>
-                <tr>
-                    <td>Nome do Produto + Marca</td>
-                    <td>10</td>
-                    <td>R$ 11,00</td>
-                    <td>R$ 110,00</td>
-                </tr>
-                <tr>
-                    <td>Nome do Produto + Marca</td>
-                    <td>1</td>
-                    <td>R$ 15,00</td>
-                    <td>R$ 15,00</td>
-                </tr>
-                <tr>
-                    <td>Nome do Produto + Marca</td>
-                    <td>3</td>
-                    <td>R$ 20,00</td>
-                    <td>R$ 60,00</td>
-                </tr>
+                <%PRODUTOS%>
             </table>
         </div>
         <div style="margin-top: 10px;">
             <table style="width: 100%; text-align: right; vertical-align: middle;">
                 <tr>
+					<td></td>
                     <td>Total dos Produtos</td>
-                    <td>R$ 185,00</td>
+                    <td><%TOTALPRODUTOS%></td>
                 </tr>
                 <tr>
-                    <td>Frete</td>
-                    <td>R$ 15,00</td>
+                	<td></td>
+                    <td>Frete <%PORCONTA%></td>
+                    <td><%FRETE%></td>
                 </tr>
                 <tr>
+                	<td></td>
                     <td>Desconto</td>
-                    <td>-</td>
+                    <td><%DESCONTO%></td>
                 </tr>
                 <tr>
+                	<td></td>
                     <td>Total da Venda</td>
-                    <td>R$ 200,00</td>
+                    <td><%TOTALVENDA%></td>
                 </tr>
                 <tr>
-                    <th colspan="2" style="text-align: center;">Forma de Pagamento</th>
+                    <th colspan="3" style="text-align: center;">Forma de Pagamento</th>
                 </tr>
-                <tr>
-                    <td>Dinheiro</td>
-                    <td>R$ 100,00</td>
-                </tr>
-                <tr>
-                    <td>Cartão de Crédito</td>
-                    <td>2x R$ 50,00</td>
-                </tr>
+                <%PAGAMENTOS%>
+                <%TROCO%>
             </table>
         </div>
         <div style="margin-top: 10px;">
             <table style="width: 100%; text-align: left; vertical-align: middle;">
-                <tr><td>Venda realizada por: Nome do Funcionário</td></tr>
+            	<tr><td>Ass: ________________________________________________________</td></tr>
+                <tr><td>Venda realizada por: <%FUNCIONARIO%></td></tr>
             </table>
         </div>
     </div>

@@ -77,7 +77,7 @@
 	        <label class="col-sm-3 control-label form-margin">Pagamento:</label>
 	        <div class="col-sm-6 ui-widget">
 	        	<button onclick="maisPagamento()" type="button" class="btn btn-primary">+</button>
-	            <button class="btn btn-success" type="button" data-toggle="tooltip" title="">Parcelar Saldo Restante</button>
+	            <!-- button class="btn btn-success" type="button" data-toggle="tooltip" title="">Parcelar Saldo Restante</button-->
 	            <div class="form-group" id="pagamentos"></div>
 	         </div>
      	</div>
@@ -104,7 +104,7 @@
 	    </div>
 	</div>
 </div>
-<input type="hidden" name="acao" value="acao" />
+<input id="acao" type="hidden" name="acao" value="orcamento" />
 <script type="text/javascript">
 function validaCliente(val){
     if(val == ''){
@@ -141,7 +141,7 @@ function mais(){
             novadiv = document.createElement('div');
             novadiv.setAttribute('id', 'novo'+novo);
             novadiv.setAttribute('class', 'novo-produto');
-            novadiv.innerHTML = "<div class='col-sm-10 no-padding'><div class='col-sm-11 no-padding'><div class='col-md-12' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control produto' /></div><div class='col-md-2'><br/><label>Preço: R$ <span id='preco"+novo+"'></span></label><input type='hidden' name='hid_valor_real[]' id='hid_valor_real"+novo+"'/></div><div class='col-md-2'>Quantidade: <input onblur='calculaSubtotal();' type='text' class='form-control quantidade' value='1' name='quantidade[]' /></div><div class='col-md-2'>Desconto R$ (Unitário): <input name='desconto_valor[]' type='text' class='form-control money desconto-valor' onblur='calculaSubtotal();' value='0'/></div><div class='col-md-2'>Desconto % (Unitário): <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' onblur='calculaSubtotal();' value='0'/></div><div class='col-md-2'><br/><label><input onchange='calculaSubtotal();' name='brinde[]' type='checkbox'/> Brinde</label></div></div><div class='col-sm-1 no-padding'><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div></div></div>";
+            novadiv.innerHTML = "<div class='col-sm-10 no-padding'><div class='col-sm-11 no-padding'><div class='col-md-12' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control produto' /></div><div class='col-md-2'><br/><label>Preço: R$ <span id='preco"+novo+"'></span></label><input type='hidden' name='hid_valor_real[]' id='hid_valor_real"+novo+"'/></div><div class='col-md-2'>Quantidade: <input onblur='calculaSubtotal();' type='text' class='form-control quantidade' value='1' name='quantidade[]' /></div><div class='col-md-2'>Desconto R$ (Unitário): <input name='desconto_valor[]' type='text' class='form-control money desconto-valor' onblur='calculaSubtotal();' value='0'/></div><!--div class='col-md-2'>Desconto % (Unitário): <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' onblur='calculaSubtotal();' value='0'/></div--><div class='col-md-2'><br/><label><input onchange='calculaSubtotal();' name='brinde["+novo+"]' type='checkbox'/> Brinde</label></div></div><div class='col-sm-1 no-padding'><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div></div></div>";
             //novadiv.innerHTML = "<div class='col-md-3' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control' /></div><div class='col-md-1'>Quantidade: <input type='text' class='form-control' value='1' name='quantidade[]' /></div><div class='col-md-1'>Desconto Valor: <input name='desconto_valor[]' type='text' class='form-control money' value='0'/></div><div class='col-md-1'>Desconto Porcentagem: <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' value='0'/></div><div class='col-md-2'><br/><label><input name='brinde[]' type='checkbox'/> Brinde</label></div><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div>";
             document.getElementById('lista-produtos').appendChild(novadiv);
             $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
@@ -285,7 +285,8 @@ function voltar(){
 }
 
 function checkout(){
-    $('form').attr('action', 'pre-checkout');
+    //$('form').attr('action', 'pre-checkout');
+    $("#acao").val('finaliza');
 }
 
 function maisPagamento(){

@@ -14,20 +14,35 @@
 	}
 	
     if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
-    	var_dump($_POST);die;
-        $idcliente = $_POST['cliente'];
-        $tipoFrete = $_POST['tipofrete'];
-        $valorFrete = utf8_decode(strip_tags(trim(addslashes($_POST["frete"]))));
-        $valorFrete = str_replace('.', '', $valorFrete);
-        $valorFrete = str_replace(',', '.', $valorFrete);
-        $fretePorConta = $_POST['por_conta'];
-        $arrProdutos = $_POST['produtos'];
-        $arrQuantidade = $_POST['quantidade'];
-        $arrDesconto = $_POST['desconto'];
-        $arrBrinde = $_POST['brinde'];
-        
-        $banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1);
-        $banco->RedirecionaPara('lista-venda');
+    	#var_dump($_POST);die;
+    	$idcliente = $_POST['cliente'];
+    	$tipoFrete = $_POST['tipofrete'];
+    	$valorFrete = utf8_decode(strip_tags(trim(addslashes($_POST["frete"]))));
+    	$valorFrete = str_replace('.', '', $valorFrete);
+    	$valorFrete = str_replace(',', '.', $valorFrete);
+    	$fretePorConta = $_POST['por_conta'];
+    	$arrProdutos = $_POST['produtos'];
+    	$arrQuantidade = $_POST['quantidade'];
+    	$arrDesconto = $_POST['desconto_valor'];
+    	$arrBrinde = $_POST['brinde'];
+    	$arrTipoPagamento = $_POST['tipoPagamento'];
+    	$arrPagamento = $_POST['pagamento'];
+    	$total = str_replace('R$ ', '', $_POST['total']);
+    	$total = str_replace('.', '', $total);
+    	$total = str_replace(',', '.', $total);
+    	$troco_credito = $_POST['credito'];
+    	if($idvenda){
+    		#Update
+    	}else{
+    		#Insert
+    		if($_POST['acao'] == 'orcamento'){
+    			$banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito);
+    			$banco->RedirecionaPara('lista-venda');
+    		}elseif($_POST['acao'] == 'finaliza'){
+    			$insertedID = $banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito);
+    			echo "<script>window.open('".UrlPadrao."finalizar/$insertedID');location.href='".UrlPadrao."lista-venda'</script>";
+    		}
+    	}
     }
     
     $select_tipo_frete = $banco->SelectTipoFrete();
