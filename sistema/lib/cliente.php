@@ -125,6 +125,9 @@
                 #Atualiza emails adicionais
                 $banco->AtualizaEmailsAdicionais($emailAdicionaladd);
             }
+            if($_FILES['fconsulta']['name'] !== null){
+            	$banco->UploadEmpenho($idcliente, $_FILES['fconsulta']);
+            }
             
             #Update
             $banco->AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs);
