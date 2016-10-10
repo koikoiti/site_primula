@@ -63,8 +63,10 @@
                         			<a href="<%URLPADRAO%>venda/excluir/'.$rs['idvenda'].'">Excluir</a>';
                     }else{
                         $auxVO = 'Venda';
-                        $editar = '<a target="_blank" href="<%URLPADRAO%>finalizar/'.$rs['idvenda'].'">Reimprimir</a>
-                        			<a href="<%URLPADRAO%>venda/cancelar/'.$rs['idvenda'].'">Cancelar</a>';
+                        $editar = '<a target="_blank" href="<%URLPADRAO%>finalizar/'.$rs['idvenda'].'">Reimprimir</a>';
+                        if($_SESSION['idsetor'] == 1){
+                        	$editar .= '<a href="<%URLPADRAO%>venda/cancelar/'.$rs['idvenda'].'">Cancelar</a>';
+                        }
                     }
                     $Linha = str_replace('<%VENDAORCAMENTO%>', $auxVO, $Linha);
                     $Linha = str_replace('<%EDITAR%>', $editar, $Linha);
@@ -183,6 +185,19 @@
         	}
                         
             return $lastID;
+        }
+        
+        function ExcluirOrcamento($idvenda){
+        	$Sql = "DELETE FROM t_vendas WHERE idvenda = $idvenda";
+        	parent::Execute($Sql);
+        	parent::RedirecionaPara('lista-venda');
+        }
+        
+        function CancelarVenda($idvenda){
+        	$Sql = "DELETE FROM t_vendas WHERE idvenda = $idvenda";
+        	parent::Execute($Sql);
+        	#@TODO voltar para o estoque
+        	parent::RedirecionaPara('lista-venda');
         }
     }
 ?>

@@ -11,6 +11,12 @@
 		$idvenda = $this->PaginaAux[1];
 		$rsVenda = $banco->BuscaVendaPorId($idvenda);
 		$AUX_cliente = $banco->BuscaCliente($rsVenda['idcliente']);
+	}elseif($this->PaginaAux[0] == 'excluir'){
+		$idvenda = $this->PaginaAux[1];
+		$banco->ExcluirOrcamento($idvenda);
+	}elseif($this->PaginaAux[0] == 'cancelar'){
+		$idvenda = $this->PaginaAux[1];
+		$banco->CancelarVenda($idvenda);
 	}
 	
     if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
