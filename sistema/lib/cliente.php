@@ -126,7 +126,7 @@
                 $banco->AtualizaEmailsAdicionais($emailAdicionaladd);
             }
             if($_FILES['fconsulta']['name'] !== null){
-            	$banco->UploadEmpenho($idcliente, $_FILES['fconsulta']);
+            	#$banco->UploadEmpenho($idcliente, $_FILES['fconsulta']);
             }
             
             #Update
