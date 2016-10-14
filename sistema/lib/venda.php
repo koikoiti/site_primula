@@ -11,7 +11,13 @@
 		$idvenda = $this->PaginaAux[1];
 		$rsVenda = $banco->BuscaVendaPorId($idvenda);
 		$AUX_cliente = $banco->BuscaCliente($rsVenda['idcliente']);
-		$Produtos = $banco->MontaProdutosEditar($idvenda);
+		$Produtos = $banco->MontaProdutosEditar($idvenda, $AUX_cliente['idtipoprofissional']);
+		$Pagamentos = $banco->MontaPagamentosEditar($idvenda);
+		if($rsVenda['frete_porconta'] == 1){
+			$cbfreteporconta = 'checked';
+		}else{
+			$cbfreteporconta = '';
+		}
 	}elseif($this->PaginaAux[0] == 'excluir'){
 		$idvenda = $this->PaginaAux[1];
 		$banco->ExcluirOrcamento($idvenda);
@@ -21,7 +27,6 @@
 	}
 	
     if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
-    	#var_dump($_POST);die;
     	$idcliente = $_POST['cliente'];
     	$tipoFrete = $_POST['tipofrete'];
     	$valorFrete = utf8_decode(strip_tags(trim(addslashes($_POST["frete"]))));
@@ -40,6 +45,13 @@
     	$troco_credito = $_POST['credito'];
     	if($idvenda){
     		#Update
+    		if($_POST['acao'] == 'orcamento'){
+    			$banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito);
+    			$banco->RedirecionaPara('lista-venda');
+    		}elseif($_POST['acao'] == 'finaliza'){
+    			$updatedID = $banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito);
+    			echo "<script>window.open('".UrlPadrao."finalizar/$updatedID');location.href='".UrlPadrao."lista-venda'</script>";
+    		}
     	}else{
     		#Insert
     		if($_POST['acao'] == 'orcamento'){
@@ -52,7 +64,7 @@
     	}
     }
     
-    $select_tipo_frete = $banco->SelectTipoFrete();
+    $select_tipo_frete = $banco->SelectTipoFrete($rsVenda['idtipofrete']);
     
     #Imprime valores
 	$Conteudo = utf8_encode($banco->CarregaHtml('Vendas/novo'));
@@ -65,6 +77,11 @@
     $Conteudo = str_replace("<%BOTAOVOLTAR%>", $botao_voltar, $Conteudo);
     
     #Replaces
-    $Conteudo = str_replace("<%NOMECLIENTE%>", $AUX_cliente['nome'], $Conteudo);
+    $Conteudo = str_replace("<%IDCLIENTE%>", $AUX_cliente['idcliente'], $Conteudo);
+    $Conteudo = str_replace("<%IDTIPOPROFISSIONAL%>", $AUX_cliente['idtipoprofissional'], $Conteudo);
+    $Conteudo = str_replace("<%NOMECLIENTE%>", utf8_encode($AUX_cliente['nome']), $Conteudo);
+    $Conteudo = str_replace("<%FRETE%>", $rsVenda['valor_frete'], $Conteudo);
     $Conteudo = str_replace("<%PRODUTOS%>", $Produtos, $Conteudo);
+    $Conteudo = str_replace("<%PAGAMENTOS%>", $Pagamentos, $Conteudo);
+    $Conteudo = str_replace("<%CBFRETEPORCONTA%>", $cbfreteporconta, $Conteudo);
 ?>

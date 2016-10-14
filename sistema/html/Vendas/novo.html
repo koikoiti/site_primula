@@ -14,8 +14,8 @@
 	        <div class="form-group" style="width: 90%; float: left">
 	            <label class="col-sm-3 control-label form-margin">*Cliente</label>
 	            <div class="col-sm-6 ui-widget">
-	                <input type="hidden" value="" id="hid_cliente" name="cliente" />
-	                <input type="hidden" value="" id="hid_tipoprofissional" name="tipoprofissional" />
+	                <input type="hidden" value="<%IDCLIENTE%>" id="hid_cliente" name="cliente" />
+	                <input type="hidden" value="<%IDTIPOPROFISSIONAL%>" id="hid_tipoprofissional" name="tipoprofissional" />
 	                <input id="cliente" autofocus required type="text" class="form-control" value="<%NOMECLIENTE%>" onblur="validaCliente(this.value)" autocomplete="off" placeholder="Nome Fantasia, Contato ou CPF/CNPJ"/>
 	            </div>
 	        </div>
@@ -56,14 +56,14 @@
         <div class="form-group form-margin" style="width: 25%; float: left">
             <label class="col-sm-6 control-label">*Valor Frete</label>
             <div class="col-sm-6">
-                <input onclick="this.select();" onblur="calculaTotal();" id="frete" required type="text" class="form-control money" name="frete" value="0"/>
+                <input onclick="this.select();" onblur="calculaTotal();" id="frete" required type="text" class="form-control money" name="frete" value="<%FRETE%>"/>
             </div>
         </div>
         
         <div class="form-group form-margin" style="width: 25%; float: left">
             <label class="col-sm-6 control-label">&nbsp;</label>
             <div class="col-sm-6">
-                <label><input id="fretePorConta" onchange="calculaTotal();" type="checkbox" name="por_conta"/> Frete por conta</label>
+                <label><input id="fretePorConta" onchange="calculaTotal();" type="checkbox" name="por_conta" <%CBFRETEPORCONTA%>/> Frete por conta</label>
             </div>
         </div>
 	</div>
@@ -80,7 +80,9 @@
 	        <div class="col-sm-6 ui-widget">
 	        	<button onclick="maisPagamento()" type="button" class="btn btn-primary">+</button>
 	            <button onclick="parcelarSaldo()" class="btn btn-success" type="button" data-toggle="tooltip" title="">Parcelar Saldo Restante</button>
-	            <div class="form-group" id="pagamentos"></div>
+	            <div class="form-group" id="pagamentos">
+	            	<%PAGAMENTOS%>
+	            </div>
 	         </div>
      	</div>
 	    <div class="form-group">
@@ -151,6 +153,8 @@ $(function() {
             $('#hid_tipoprofissional').val(ui.item.idtipoprofissional);
         }
     });
+    
+    calculaSubtotal();
 });
 
 function mais(){
