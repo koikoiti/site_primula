@@ -1,0 +1,61 @@
+Venda N: <%NUMERO%>
+
+VIA DO CLIENTE
+
+BIOAGE - PROMEDIC
+PRIMULATKC COSMECEUTICA
+Rua Rocha Pombo, 230 - Curitiba/PR
+(41) 3254-4704 / (41) 3029-4704
+
+<%DATAIMPRESSAO%>
+
+<%NOMECLIENTE%>                
+<%ENDERECOCLIENTE%>
+
+	Produtos
+<%PRODUTOS%>
+
+Total dos Produtos: <%TOTALPRODUTOS%>
+Frete <%PORCONTA%> <%FRETE%>
+Desconto <%DESCONTO%>
+
+Total da Venda: <%TOTALVENDA%>
+
+	Forma de Pagamento
+<%PAGAMENTOS%>
+<%TROCO%>
+
+Ass: ____________________________________
+Venda realizada por: <%FUNCIONARIO%>
+
+-----------------------------------------
+              
+Venda N: <%NUMERO%>
+
+VIA DO ESTABELECIMENTO
+
+BIOAGE - PROMEDIC
+PRIMULATKC COSMECEUTICA
+Rua Rocha Pombo, 230 - Curitiba/PR
+(41) 3254-4704 / (41) 3029-4704
+
+<%DATAIMPRESSAO%>
+
+<%NOMECLIENTE%>                
+<%ENDERECOCLIENTE%>
+
+	Produtos
+<%PRODUTOS%>
+
+Total dos Produtos: <%TOTALPRODUTOS%>
+Frete <%PORCONTA%> <%FRETE%>
+Desconto <%DESCONTO%>
+
+Total da Venda: <%TOTALVENDA%>
+
+	Forma de Pagamento
+<%PAGAMENTOS%>
+<%TROCO%>
+
+Ass: ____________________________________
+Venda realizada por: <%FUNCIONARIO%>

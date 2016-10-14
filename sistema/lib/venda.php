@@ -11,6 +11,7 @@
 		$idvenda = $this->PaginaAux[1];
 		$rsVenda = $banco->BuscaVendaPorId($idvenda);
 		$AUX_cliente = $banco->BuscaCliente($rsVenda['idcliente']);
+		$Produtos = $banco->MontaProdutosEditar($idvenda);
 	}elseif($this->PaginaAux[0] == 'excluir'){
 		$idvenda = $this->PaginaAux[1];
 		$banco->ExcluirOrcamento($idvenda);
@@ -65,4 +66,5 @@
     
     #Replaces
     $Conteudo = str_replace("<%NOMECLIENTE%>", $AUX_cliente['nome'], $Conteudo);
+    $Conteudo = str_replace("<%PRODUTOS%>", $Produtos, $Conteudo);
 ?>

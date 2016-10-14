@@ -199,5 +199,18 @@
         	#@TODO voltar para o estoque
         	parent::RedirecionaPara('lista-venda');
         }
+        
+        function MontaProdutosEditar($idvenda){
+        	$Sql = "SELECT * FROM t_vendas_produtos WHERE idvenda = $idvenda";
+        	$result = parent::Execute($Sql);
+        	while($rs = parent::ArrayData($result)){
+        		$auxProd = explode("_", $rs['produto_kit']);
+        		$SqlProduto = "SELECT * FROM t_produtos WHERE idproduto = " . $auxProd[1];
+        		$resultProduto = parent::Execute($SqlProduto);
+        		$rsProduto = parent::ArrayData($resultProduto);
+        		$retorno .= '<div id="novo'.$rs['produto_kit'].'" class="novo-produto"><div class="col-sm-10 no-padding"><div class="col-sm-11 no-padding"><div class="col-md-12" id="div_produto'.$rs['produto_kit'].'">Produto: <input id="produtonovo'.$rs['produto_kit'].'" type="text" class="form-control produto ui-autocomplete-input" autocomplete="off" value="'.$rsProduto['nome'].'"></div><div class="col-md-2"><br><label>Preço: R$ <span id="preco0"></span></label><input type="hidden" name="hid_valor_real[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rs['valor_profissional'].'"></div><div class="col-md-2">Quantidade: <input onblur="calculaSubtotal();" type="text" class="form-control quantidade" value="'.$rs['quantidade'].'" name="quantidade[]"></div><div class="col-md-2">Desconto R$ (Unitário): <input name="desconto_valor[]" type="text" class="form-control money desconto-valor" onblur="calculaSubtotal();" value="'.$rs['desconto_valor'].'" autocomplete="off"></div><div class="col-md-2"><br><label><input onchange="calculaSubtotal();" name="brinde['.$rs['produto_kit'].']" type="checkbox"> Brinde</label></div></div><div class="col-sm-1 no-padding"><div class="col-sm-1"><br><button onclick="menos('.$rs['produto_kit'].')" type="button" class="btn btn-danger">-</button></div></div></div></div>';
+        	}
+        	return utf8_encode($retorno);
+        }
     }
 ?>

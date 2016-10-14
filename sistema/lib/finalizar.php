@@ -7,5 +7,7 @@
     
 	$idvenda = $this->PaginaAux[0];
 	
-	$banco->MontaSaida($idvenda);
+	#$banco->MontaSaida($idvenda);
+	
+	$banco->MontaSaidaTxt($idvenda);
 ?>
