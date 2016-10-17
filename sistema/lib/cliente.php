@@ -98,7 +98,7 @@
         $arrRefs = $_POST["ponto_referencia"];
         
         if($idcliente){
-        	if($_FILES){
+        	if($_FILES['fconsulta']['name'] != ''){
 				$banco->AddConsulta($_FILES['fconsulta'], $idcliente);
         	}
             #Addr Adicional
