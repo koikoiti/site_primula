@@ -1,6 +1,58 @@
 <?php
     class bancocliente extends banco{
+    	
+    	function MontaConsulta($idcliente){
+    		$Sql = "SELECT * FROM t_clientes_consulta WHERE idcliente = $idcliente";
+    		$result = parent::Execute($Sql);
+    		$linha = parent::Linha($result);
+    		if($linha){
+    			$rs = parent::ArrayData($result);
+    			#Botao visualizar
+    			$retorno = '<div id="visualizarConsulta">
+    							<label style="width: 100%;" class="col-sm-3 control-label form-margin">Consulta</label>
+    							<a class="btn btn-primary" target="_blank" href="'.UrlPadrao.$rs['caminho'].'">Visualizar Consulta</a> <a href="javascript:void(0)" onclick="removeConsulta('.$idcliente.')" class="btn btn-danger">-</a><br/>
+    							Relizada por: '.parent::BuscaUsuarioPorId($rs['idusuario']).'<br/>
+    							Data: '.date("d/m/Y H:i:s", strtotime($rs['data'])).'
+    						</div>';
+    		}else{
+    			$retorno = '<label style="width: 100%;" class="col-sm-3 control-label form-margin">Consulta</label>
+				            <div class="col-sm-6">
+				                <input type="file" class="form-control" name="fconsulta" value="">
+				            </div>';
+    		}
+    		return $retorno;
+    	}
         
+    	function AddConsulta($file, $idcliente){
+    		
+    		$Sql = "SELECT * FROM t_clientes_consulta WHERE idcliente = $idcliente";
+    		$result = parent::Execute($Sql);
+    		$linha = parent::Linha($result);
+    		if($linha){
+    			#Update
+    			$caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . AuxCaminhoConsultaCliente . $idcliente;
+    			$caminho = "arq/clientes/$idcliente";
+    			
+    			preg_match("/\.(gif|png|jpg|jpeg|doc|docx|pdf){1}$/i", $file["name"], $ext);
+    			$caminhoMover = "/Consulta - $idcliente" . "." . $ext[1];
+    			move_uploaded_file($file["tmp_name"], $caminhoCriar.$caminhoMover);
+    			$Sql = "UPDATE t_clientes_consulta SET idcliente = '$idcliente', caminho = '".$caminho.$caminhoMover."', idusuario = '".$_SESSION['idusuario']."', data = '".date("Y-m-d H:i:s")."' WHERE idcliente = $idcliente";
+    			parent::Execute($Sql);
+    		}else{
+    			#Novo
+    			$caminhoCriar = $_SERVER['DOCUMENT_ROOT'] . AuxCaminhoConsultaCliente . $idcliente;
+    			$caminho = "arq/clientes/$idcliente";
+    			
+    			mkdir($caminhoCriar, 0755);
+    			
+    			preg_match("/\.(gif|png|jpg|jpeg|doc|docx|pdf){1}$/i", $file["name"], $ext);
+    			$caminhoMover = "/Consulta - $idcliente" . "." . $ext[1];
+    			move_uploaded_file($file["tmp_name"], $caminhoCriar.$caminhoMover);
+    			$Sql = "INSERT INTO t_clientes_consulta (idcliente, caminho, idusuario, data) VALUES ('$idcliente', '".$caminho.$caminhoMover."', '".$_SESSION['idusuario']."', '".date("Y-m-d H:i:s")."')";
+    			parent::Execute($Sql);
+    		}
+    	}
+    	
         #Insere Cliente
         function InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs){
             if($idtipocliente == 1){

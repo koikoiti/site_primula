@@ -48,6 +48,8 @@
         $enderecosAdicionais = $banco->MontaEnderecosAdicionais($idcliente);
         $telefonesAdicionais = $banco->MontaTelefonesAdicionais($idcliente);
         $emailsAdicionais = $banco->MontaEmailsAdicionais($idcliente);
+        
+        $consultaHTML = $banco->MontaConsulta($idcliente);
     }elseif($this->PaginaAux[0] == 'ativar'){
         $idcliente = $this->PaginaAux[1];
         $banco->Ativar($idcliente);
@@ -96,6 +98,9 @@
         $arrRefs = $_POST["ponto_referencia"];
         
         if($idcliente){
+        	if($_FILES){
+				$banco->AddConsulta($_FILES['fconsulta'], $idcliente);
+        	}
             #Addr Adicional
             $cepadd = $_POST['cepadd'];
             if(!empty($cepadd)){
@@ -183,4 +188,6 @@
     $Conteudo = str_replace("<%BOTAOEXCLUIR%>", $botao_excluir, $Conteudo);
     $Conteudo = str_replace("<%BOTAOATIVARINATIVAR%>", $botao_ativar_inativar, $Conteudo);
     $Conteudo = str_replace("<%BOTAOVOLTAR%>", $botao_voltar, $Conteudo);
+    
+    $Conteudo = str_replace("<%CONSULTA%>", $consultaHTML, $Conteudo);
 ?>
