@@ -1,11 +1,19 @@
 <!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO -->
 <div class="col-md-12">
     <div class="block-flat">
-        <div class="header">
+        <div class="header" style="overflow: hidden;">
             <p>
                 <a href="<%URLPADRAO%>venda">Iniciar Nova</a>
             </p>
-            <h3>Lista Vendas</h3>
+            <h3 style="width: 30%; float: left;">Lista Vendas</h3>
+            <div style="float: left; width: 70%;">
+                <input style="float: left; width: 10%;" id="busca_venda" type="text" class="form-control" value="<%BUSCAVENDA%>" placeholder="Número Venda"/>
+                <input style="float: left; width: 20%;" id="busca_nome" type="text" class="form-control" value="<%BUSCACLIENTE%>" placeholder="Cliente"/>
+                <input style="float: left; width: 10%;" id="busca_cnpj" type="text" class="form-control" value="<%BUSCACNPJ%>" placeholder="CNPJ"/>
+                <input style="float: left; width: 10%;" id="busca_cpf" type="text" class="form-control" value="<%BUSCACPF%>" placeholder="CPF"/>
+                <button style="float: left;" onclick="pesquisar()" type="button" class="btn btn-success btn-flat">Pesquisar</button>
+                <button style="float: left;" onclick="javascript:location.href='<%URLPADRAO%>lista-venda'" type="button" class="btn btn-danger btn-flat">Limpar</button>
+            </div>
         </div>
         <div class="content">
             <div class="table-responsive">
@@ -29,3 +37,17 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+$(function() {
+    $("#busca_cnpj").mask("00.000.000/0000-00");
+    $("#busca_cpf").mask("000.000.000-00");
+});
+function pesquisar(){
+    var busca_nome = $("#busca_nome").val().trim();
+    var busca_cnpj = $("#busca_cnpj").val().trim();
+    var busca_cpf = $("#busca_cpf").val().trim();
+    var busca_venda = $("#busca_venda").val().trim();
+    
+    location.href = "<%URLPADRAO%>lista-venda/?busca_nome=" + busca_nome + "&busca_cnpj=" + busca_cnpj + "&busca_cpf=" + busca_cpf + "&busca_venda=" + busca_venda;
+}
+</script>

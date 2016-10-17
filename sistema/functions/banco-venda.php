@@ -39,11 +39,24 @@
         }
         
         #Lista Vendas
-        function ListaVendas(){
+        function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda){
             $Auxilio = parent::CarregaHtml('Vendas/itens/lista-venda-itens');
             $Sql = "SELECT V.*, C.* FROM t_vendas V 
-                    INNER JOIN t_clientes C ON V.idcliente = C.idcliente
+                    INNER JOIN t_clientes C ON V.idcliente = C.idcliente 
+            		WHERE 1 
                     ";
+            if($busca_nome != ''){
+            	$Sql .= " AND (C.nome LIKE '%$busca_nome%' OR C.nome_socio LIKE '%$busca_nome%')";
+            }
+            if($busca_cpf != ''){
+            	$Sql .= " AND (C.cpf LIKE '%$busca_cpf%' OR C.cpf_socio LIKE '%$busca_cpf%')";
+            }
+            if($busca_cnpj != ''){
+            	$Sql .= " AND C.cnpj LIKE '%$busca_cnpj%'";
+            }
+            if($busca_venda != ''){
+            	$Sql .= " AND V.idvenda LIKE '%$busca_venda%'";
+            }
             $result = parent::Execute($Sql);
             $linha = parent::Linha($result);
             if($linha){
