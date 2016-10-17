@@ -183,7 +183,13 @@
         
         #Monta saída txt
         function MontaSaidaTxt($idvenda){
-        	$fileTXT = fopen($_SERVER['DOCUMENT_ROOT'] . "/sistema/arq/vendas/".$idvenda.".txt", "w");
+        	#Verifica SERVER (web/local)
+        	if (strpos($_SERVER['DOCUMENT_ROOT'], 'public_html') !== false) {
+        		$fileTXT = fopen($_SERVER['DOCUMENT_ROOT'] . "/sistema/arq/vendas/".$idvenda.".txt", "w");
+        	}else{
+        		die;
+        		$fileTXT = fopen($_SERVER['DOCUMENT_ROOT'] . "/site_primula/sistema/arq/vendas/".$idvenda.".txt", "w");
+        	}
         	$Auxilio = file_get_contents(UrlPadrao . "html/Vendas/saidaTXT.txt");
         	
         	#Número da venda
