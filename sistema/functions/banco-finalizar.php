@@ -64,6 +64,7 @@
             $Auxilio = str_replace('<%NUMERO%>', $numero, $Auxilio);
             $Auxilio = str_replace('<%DATAIMPRESSAO%>', date("d/m/Y H:i:s"), $Auxilio);
             $Auxilio = str_replace('<%FUNCIONARIO%>', utf8_encode(parent::BuscaUsuarioPorId($rs['idusuario'])), $Auxilio);
+            $Auxilio = str_replace('<%OBS%>', utf8_encode($rs['obs']), $Auxilio);
             
             $mpdf->WriteHTML($Auxilio);
             
