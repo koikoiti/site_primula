@@ -83,23 +83,43 @@
         	$result = parent::Execute($Sql);
         	while($rs = parent::ArrayData($result)){
         		$auxProduto = explode('_', $rs['produto_kit']);
-        		$SqlProduto = "SELECT nome, $valor_produto_cliente FROM t_produtos WHERE idproduto = {$auxProduto[1]}";
-        		$resultProduto = parent::Execute($SqlProduto);
-        		$rsProduto = parent::ArrayData($resultProduto);
-        		$Linha = '<tr>';
-        		$Linha .= "<td>{$rsProduto['nome']}</td>";
-        		$Linha .= "<td>{$rs['quantidade']}</td>";
-        		if($rs['brinde'] == 1){
-        			$Linha .= "<td>0,00 (B)</td>";
-        			$Linha .= "<td>0,00 (B)</td>";
+        		if($auxProduto[0] == 'prod'){
+	        		$SqlProduto = "SELECT nome, $valor_produto_cliente FROM t_produtos WHERE idproduto = {$auxProduto[1]}";
+	        		$resultProduto = parent::Execute($SqlProduto);
+	        		$rsProduto = parent::ArrayData($resultProduto);
+	        		$Linha = '<tr>';
+	        		$Linha .= "<td>Produto: {$rsProduto['nome']}</td>";
+	        		$Linha .= "<td>{$rs['quantidade']}</td>";
+	        		if($rs['brinde'] == 1){
+	        			$Linha .= "<td>0,00 (B)</td>";
+	        			$Linha .= "<td>0,00 (B)</td>";
+	        		}else{
+	        			$Linha .= "<td>" . number_format($rsProduto[$valor_produto_cliente], 2, ',', '.') . "</td>";
+	        			$Linha .= "<td>" . number_format($rsProduto[$valor_produto_cliente] * $rs['quantidade'], 2, ',', '.') . "</td>";
+	        			$Produtos['subtotal'] += $rsProduto[$valor_produto_cliente] * $rs['quantidade'];
+	        			$Produtos['desconto'] += $rs['desconto_valor'] * $rs['quantidade'];
+	        		}
+	        		$Linha .= '</tr>';
+	        		$Produtos['html'] .= utf8_encode($Linha);
         		}else{
-        			$Linha .= "<td>" . number_format($rsProduto[$valor_produto_cliente], 2, ',', '.') . "</td>";
-        			$Linha .= "<td>" . number_format($rsProduto[$valor_produto_cliente] * $rs['quantidade'], 2, ',', '.') . "</td>";
-        			$Produtos['subtotal'] += $rsProduto[$valor_produto_cliente] * $rs['quantidade'];
-        			$Produtos['desconto'] += $rs['desconto_valor'] * $rs['quantidade'];
+        			$SqlProduto = "SELECT nome, $valor_produto_cliente FROM t_kit WHERE idkit = {$auxProduto[1]}";
+        			$resultProduto = parent::Execute($SqlProduto);
+        			$rsProduto = parent::ArrayData($resultProduto);
+        			$Linha = '<tr>';
+        			$Linha .= "<td>Kit: {$rsProduto['nome']}</td>";
+        			$Linha .= "<td>{$rs['quantidade']}</td>";
+        			if($rs['brinde'] == 1){
+        				$Linha .= "<td>0,00 (B)</td>";
+        				$Linha .= "<td>0,00 (B)</td>";
+        			}else{
+        				$Linha .= "<td>" . number_format($rsProduto[$valor_produto_cliente], 2, ',', '.') . "</td>";
+        				$Linha .= "<td>" . number_format($rsProduto[$valor_produto_cliente] * $rs['quantidade'], 2, ',', '.') . "</td>";
+        				$Produtos['subtotal'] += $rsProduto[$valor_produto_cliente] * $rs['quantidade'];
+        				$Produtos['desconto'] += $rs['desconto_valor'] * $rs['quantidade'];
+        			}
+        			$Linha .= '</tr>';
+        			$Produtos['html'] .= utf8_encode($Linha);
         		}
-        		$Linha .= '</tr>';
-        		$Produtos['html'] .= utf8_encode($Linha);
         	}
         	return $Produtos;
         }
