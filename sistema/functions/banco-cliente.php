@@ -314,7 +314,7 @@
         }
 
         #Lista Clientes
-        function ListaClientes($busca_nome, $busca_cnpj, $busca_cpf, $busca_bairro, $busca_cliente, $pagina){
+        function ListaClientes($busca_nome, $busca_cnpj, $busca_cpf, $busca_bairro, $busca_telefone, $pagina, $busca_cidade){
             $Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-itens');
             $inicio = ($pagina * Limite) - Limite;
             $Sql = "SELECT C.*, P.tipo AS tipoprofissional FROM t_clientes C 
@@ -332,8 +332,11 @@
             if($busca_bairro != ''){
             	$Sql .= " AND C.bairro LIKE '%$busca_bairro%'";
             }
-            if($busca_cliente != ''){
-            	$Sql .= " AND C.idtipoprofissional = $busca_cliente";
+            if($busca_cidade != ''){
+            	$Sql .= " AND C.cidade LIKE '%$busca_cidade%'";
+            }
+            if($busca_telefone != ''){
+            	$Sql .= " AND C.telefone LIKE '%$busca_telefone%'";
             }
             $Sql .= " ORDER BY C.nome ASC LIMIT $inicio, ".Limite;
             
@@ -466,11 +469,11 @@
         }
         
         #Monta paginacao
-        function MontaPaginacao($busca_nome, $busca_cnpj, $busca_cpf, $busca_bairro, $busca_cliente, $pagina){
-            $totalPaginas = $this->TotalPaginas($busca_nome, $busca_cnpj, $busca_cpf, $busca_bairro, $busca_cliente, $pagina);
+        function MontaPaginacao($busca_nome, $busca_cnpj, $busca_cpf, $busca_bairro, $busca_telefone, $pagina, $busca_cidade){
+            $totalPaginas = $this->TotalPaginas($busca_nome, $busca_cnpj, $busca_cpf, $busca_bairro, $busca_telefone, $pagina, $busca_cidade);
             $pag = '';
-            if($busca_nome || $busca_cnpj || $busca_cpf || $busca_bairro || $busca_cliente){
-                $url = "busca_nome=$busca_nome&busca_cnpj=$busca_cnpj&busca_cpf=$busca_cpf&busca_bairro=".utf8_encode($busca_bairro)."&busca_cliente=$busca_cliente";
+            if($busca_nome || $busca_cnpj || $busca_cpf || $busca_bairro || $busca_telefone || $busca_cidade){
+                $url = "busca_nome=$busca_nome&busca_cnpj=$busca_cnpj&busca_cpf=$busca_cpf&busca_bairro=".utf8_encode($busca_bairro)."&busca_cidade=".utf8_encode($busca_cidade)."&busca_telefone=$busca_telefone";
             }
             $url .= "&page=";
             if($totalPaginas > 1){
@@ -541,7 +544,7 @@
         }
         
         #Total de paginas
-        function TotalPaginas($busca_nome, $busca_cnpj, $busca_cpf, $busca_bairro, $busca_cliente, $pagina){
+        function TotalPaginas($busca_nome, $busca_cnpj, $busca_cpf, $busca_bairro, $busca_telefone, $pagina, $busca_cidade){
             $Sql = "SELECT C.*, P.tipo AS tipoprofissional FROM t_clientes C 
                     INNER JOIN fixo_tipo_profissional P ON C.idtipoprofissional = P.idtipoprofissional
                     WHERE 1";
@@ -557,8 +560,11 @@
             if($busca_bairro != ''){
             	$Sql .= " AND C.bairro LIKE '%$busca_bairro%'";
             }
-            if($busca_cliente != ''){
-            	$Sql .= " AND C.idtipoprofissional = $busca_cliente";
+            if($busca_cidade != ''){
+            	$Sql .= " AND C.cidade LIKE '%$busca_cidade%'";
+            }
+            if($busca_telefone != ''){
+            	$Sql .= " AND C.telefone LIKE '%$busca_telefone%'";
             }
             $result = parent::Execute($Sql);
 			$num_rows = parent::Linha($result);
@@ -583,6 +589,27 @@
 	        		}
 	        	}
 	        	$retorno .= "</select>";
+        	}
+        	return $retorno;
+        }
+        
+        #Select Busca Bairro
+        function SelectBuscaCidade($busca_cidade){
+        	$Sql = "SELECT DISTINCT C.cidade AS cidade FROM t_clientes C ORDER BY C.cidade ASC";
+        	#UNION SELECT DISTINCT A.bairro AS bairro FROM t_clientes_enderecosadicionais A";
+        	$result = parent::Execute($Sql);
+        	$linha = parent::Linha($result);
+        	if($linha){
+        		$retorno = "<select name='cidade' id='busca_cidade' class='form-control' style='width: 10%; float: left;'>";
+        		$retorno .= "<option value=''>Cidade</option>";
+        		while($rs = parent::ArrayData($result)){
+        			if($rs['cidade'] == $busca_cidade && $busca_cidade != ''){
+        				$retorno .= "<option value='".utf8_encode($rs['cidade'])."' selected>".utf8_encode($rs['cidade'])."</option>";
+        			}else{
+        				$retorno .= "<option value='".utf8_encode($rs['cidade'])."'>".utf8_encode($rs['cidade'])."</option>";
+        			}
+        		}
+        		$retorno .= "</select>";
         	}
         	return $retorno;
         }

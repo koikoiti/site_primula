@@ -10,8 +10,9 @@
                 <input style="float: left; width: 20%;" id="busca_nome" type="text" class="form-control" value="<%BUSCANOME%>" placeholder="Nome Fantasia / Nome Cliente"/>
                 <input style="float: left; width: 10%;" id="busca_cnpj" type="text" class="form-control" value="<%BUSCACNPJ%>" placeholder="CNPJ"/>
                 <input style="float: left; width: 10%;" id="busca_cpf" type="text" class="form-control" value="<%BUSCACPF%>" placeholder="CPF"/>
+                <input style="float: left; width: 10%;" id="busca_telefone" type="text" class="form-control" value="<%BUSCATELEFONE%>" placeholder="Telefone"/>
                 <%SELECTBUSCABAIRRO%>
-                <%SELECTBUSCATIPOCLIENTE%>
+                <%SELECTBUSCACIDADE%>
                 <button style="float: left;" onclick="pesquisar()" type="button" class="btn btn-success btn-flat">Pesquisar</button>
                 <button style="float: left;" onclick="javascript:location.href='<%URLPADRAO%>lista-cliente'" type="button" class="btn btn-danger btn-flat">Limpar</button>
             </div>
@@ -51,9 +52,10 @@ function pesquisar(){
     var busca_cnpj = $("#busca_cnpj").val().trim();
     var busca_cpf = $("#busca_cpf").val().trim();
     var busca_bairro = $("#busca_bairro").val();
-    var busca_cliente = $("#busca_cliente").val();
+    var busca_telefone = $("#busca_telefone").val();
+    var busca_cidade = $("#busca_cidade").val();
     
-    location.href = "<%URLPADRAO%>lista-cliente/?busca_nome=" + busca_nome + "&busca_cnpj=" + busca_cnpj + "&busca_cpf=" + busca_cpf + "&busca_bairro=" + busca_bairro + "&busca_cliente=" + busca_cliente;
+    location.href = "<%URLPADRAO%>lista-cliente/?busca_nome=" + busca_nome + "&busca_cnpj=" + busca_cnpj + "&busca_cpf=" + busca_cpf + "&busca_bairro=" + busca_bairro + "&busca_cidade=" + busca_cidade + "&busca_telefone=" + busca_telefone;
 }
 
 function ativar(idcliente, nome){
