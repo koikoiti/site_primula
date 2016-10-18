@@ -106,9 +106,11 @@
                     $Linha = str_replace('<%FINALIZADOPOR%>', $u_finalizar, $Linha);
                     $SqlComp = "SELECT * FROM t_avisos_usuarios WHERE idaviso = {$rs['idaviso']} AND idusuario <> {$rs['idusuario_criar']}";
                     $resultComp = parent::Execute($SqlComp);
+                    $comps = '';
                     while($rsComp = parent::ArrayData($resultComp)){
                         $comps .= parent::BuscaUsuarioPorId($rsComp['idusuario']) . ' / ';
                     }
+                    $comps = rtrim($comps, ' / ');
                     $Linha = str_replace('<%COMPARTILHADOCOM%>', $comps, $Linha);
                     $Avisos .= $Linha;
                 }
