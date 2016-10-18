@@ -43,10 +43,11 @@
     	$total = str_replace('.', '', $total);
     	$total = str_replace(',', '.', $total);
     	$troco_credito = $_POST['credito'];
+    	$obs = utf8_decode(strip_tags(trim(addslashes($_POST["obs"]))));
     	if($idvenda){
     		#Update
     		if($_POST['acao'] == 'orcamento'){
-    			$banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito);
+    			$banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs);
     			$banco->RedirecionaPara('lista-venda');
     		}elseif($_POST['acao'] == 'finaliza'){
     			$updatedID = $banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito);
@@ -55,10 +56,10 @@
     	}else{
     		#Insert
     		if($_POST['acao'] == 'orcamento'){
-    			$banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito);
+    			$banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs);
     			$banco->RedirecionaPara('lista-venda');
     		}elseif($_POST['acao'] == 'finaliza'){
-    			$insertedID = $banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito);
+    			$insertedID = $banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs);
     			echo "<script>window.open('".UrlPadrao."finalizar/$insertedID');location.href='".UrlPadrao."lista-venda'</script>";
     		}
     	}
@@ -84,4 +85,5 @@
     $Conteudo = str_replace("<%PRODUTOS%>", $Produtos, $Conteudo);
     $Conteudo = str_replace("<%PAGAMENTOS%>", $Pagamentos, $Conteudo);
     $Conteudo = str_replace("<%CBFRETEPORCONTA%>", $cbfreteporconta, $Conteudo);
+    $Conteudo = str_replace("<%OBS%>", utf8_encode($rsVenda['obs']), $Conteudo);
 ?>
