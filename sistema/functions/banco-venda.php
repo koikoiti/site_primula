@@ -76,8 +76,7 @@
                         			<a href="<%URLPADRAO%>venda/excluir/'.$rs['idvenda'].'">Excluir</a>';
                     }else{
                         $auxVO = 'Venda';
-                        $editar = '<a href="<%URLPADRAO%>venda/editar/'.$rs['idvenda'].'">Editar</a>';
-                        $editar .= '<a target="_blank" href="<%URLPADRAO%>finalizar/'.$rs['idvenda'].'">Reimprimir</a>';
+                        $editar = '<a target="_blank" href="<%URLPADRAO%>finalizar/'.$rs['idvenda'].'">Reimprimir</a>';
                         if($_SESSION['idsetor'] == 1){
                         	$editar .= '<a href="<%URLPADRAO%>venda/cancelar/'.$rs['idvenda'].'">Cancelar</a>';
                         }
