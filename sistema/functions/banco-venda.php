@@ -223,16 +223,17 @@
         		#echo $Sql;die;
         		parent::Execute($Sql);
         		$lastID = $idvenda;
-        	
+        		
+        		$SqlDeleteProdutos = "DELETE FROM t_vendas_produtos WHERE idvenda = $idvenda";
+        		parent::Execute($SqlDeleteProdutos);
         		#Insere produtos
         		foreach($arrProdutos as $key => $value){
+        			
         			if($arrBrinde[$key]){
         				$brinde = 1;
         			}else{
         				$brinde = 0;
         			}
-        			$SqlDeleteProdutos = "DELETE FROM t_vendas_produtos WHERE idvenda = $idvenda";
-        			parent::Execute($SqlDeleteProdutos);
         			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$arrDesconto[$key]}', '$brinde')";
         			parent::Execute($SqlProdutos);
         		}
@@ -270,7 +271,10 @@
         				WHERE idvenda = $idvenda";
         		parent::Execute($Sql);
         		$lastID = $idvenda;
-        	
+        		
+        		$SqlDeleteProdutos = "DELETE FROM t_vendas_produtos WHERE idvenda = $idvenda";
+        		parent::Execute($SqlDeleteProdutos);
+        		
         		#Insere produtos
         		foreach($arrProdutos as $key => $value){
         			if($arrBrinde[$key]){
@@ -278,8 +282,7 @@
         			}else{
         				$brinde = 0;
         			}
-        			$SqlDeleteProdutos = "DELETE FROM t_vendas_produtos WHERE idvenda = $idvenda";
-        			parent::Execute($SqlDeleteProdutos);
+        			
         			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$arrDesconto[$key]}', '$brinde')";
         			parent::Execute($SqlProdutos);
         		}
@@ -324,18 +327,33 @@
         	$result = parent::Execute($Sql);
         	while($rs = parent::ArrayData($result)){
         		$auxProd = explode("_", $rs['produto_kit']);
-        		$SqlProduto = "SELECT * FROM t_produtos P INNER JOIN t_imagens_produto I ON I.idproduto = P.idproduto WHERE P.idproduto = " . $auxProd[1] . " AND I.ordem = 1";
-        		$resultProduto = parent::Execute($SqlProduto);
-        		$rsProduto = parent::ArrayData($resultProduto);
-        		#$retorno .= "<div class='col-sm-10 no-padding'><div class='col-sm-11 no-padding'><div class='col-md-12' id='div_produto".$rs['produto_kit']."'>Produto: <input id='produtonovo".$rs['produto_kit']."' type='text' class='form-control produto' /></div><div class='col-md-2'><br/><label>Preço: R$ <span id='preco".$rs['produto_kit']."'></span></label><input type='hidden' name='hid_valor_real[]' id='hid_valor_real".$rsProduto['valor_profissional']."'/></div><div class='col-md-2'>Quantidade: <input onblur='calculaSubtotal();' type='text' class='form-control quantidade' value='".$rs['quantidade']."' name='quantidade[]' /></div><div class='col-md-2'>Desconto R$ (Unitário): <input name='desconto_valor[]' type='text' class='form-control money desconto-valor' onblur='calculaSubtotal();' value='".$rs['desconto_valor']."'/></div><!--div class='col-md-2'>Desconto % (Unitário): <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' onblur='calculaSubtotal();' value='0'/></div--><div class='col-md-2'><br/><label><input onchange='calculaSubtotal();' name='brinde[".$rs['produto_kit']."]' type='checkbox'/> Brinde</label></div></div><div class='col-sm-1 no-padding'><div class='col-sm-1'><br/><button onclick='menos(".$rs['produto_kit'].")' type='button' class='btn btn-danger'>-</button></div></div></div>";
-        		if($rs['brinde'] == 1){
-        			$cbbrinde = 'checked';
+        		if($auxProd[0] == 'prod'){
+	        		$SqlProduto = "SELECT * FROM t_produtos P INNER JOIN t_imagens_produto I ON I.idproduto = P.idproduto WHERE P.idproduto = " . $auxProd[1] . " AND I.ordem = 1";
+	        		$resultProduto = parent::Execute($SqlProduto);
+	        		$rsProduto = parent::ArrayData($resultProduto);
+	        		#$retorno .= "<div class='col-sm-10 no-padding'><div class='col-sm-11 no-padding'><div class='col-md-12' id='div_produto".$rs['produto_kit']."'>Produto: <input id='produtonovo".$rs['produto_kit']."' type='text' class='form-control produto' /></div><div class='col-md-2'><br/><label>Preço: R$ <span id='preco".$rs['produto_kit']."'></span></label><input type='hidden' name='hid_valor_real[]' id='hid_valor_real".$rsProduto['valor_profissional']."'/></div><div class='col-md-2'>Quantidade: <input onblur='calculaSubtotal();' type='text' class='form-control quantidade' value='".$rs['quantidade']."' name='quantidade[]' /></div><div class='col-md-2'>Desconto R$ (Unitário): <input name='desconto_valor[]' type='text' class='form-control money desconto-valor' onblur='calculaSubtotal();' value='".$rs['desconto_valor']."'/></div><!--div class='col-md-2'>Desconto % (Unitário): <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' onblur='calculaSubtotal();' value='0'/></div--><div class='col-md-2'><br/><label><input onchange='calculaSubtotal();' name='brinde[".$rs['produto_kit']."]' type='checkbox'/> Brinde</label></div></div><div class='col-sm-1 no-padding'><div class='col-sm-1'><br/><button onclick='menos(".$rs['produto_kit'].")' type='button' class='btn btn-danger'>-</button></div></div></div>";
+	        		if($rs['brinde'] == 1){
+	        			$cbbrinde = 'checked';
+	        		}else{
+	        			$cbbrinde = '';
+	        		}
+	        		$retorno .= '<div id="novo'.$rs['produto_kit'].'" class="novo-produto">
+	        						<div id="" class="col-md-2 text-center"><img id="img1" src="'.UrlFoto.$rsProduto['caminho'].'" style="width: 100px; height: 100px;"></div>
+	        						<div class="col-sm-10 no-padding"><div class="col-sm-11 no-padding"><div class="col-md-12" id="div_produto'.$rs['produto_kit'].'">Produto: <input readonly id="produtonovo'.$rs['produto_kit'].'" type="text" class="form-control produto ui-autocomplete-input" autocomplete="off" value="'.$rsProduto['nome'].'"></div><div class="col-md-2"><br><label>Preço: R$ <span id="preco'.$rs['produto_kit'].'">'.number_format($rsProduto[$tipoValor], 2, ',', '.').'</span></label><input type="hidden" name="hid_valor_real[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsProduto[$tipoValor].'"></div><div class="col-md-2">Quantidade: <input onblur="calculaSubtotal();" type="text" class="form-control quantidade" value="'.$rs['quantidade'].'" name="quantidade[]"></div><div class="col-md-2">Desconto R$ (Unitário): <input name="desconto_valor[]" type="text" class="form-control money desconto-valor" onblur="calculaSubtotal();" value="'.$rs['desconto_valor'].'" autocomplete="off"></div><div class="col-md-2"><br><label><input onchange="calculaSubtotal();" name="brinde['.$rs['produto_kit'].']" type="checkbox" '.$cbbrinde.'> Brinde</label></div></div><div class="col-sm-1 no-padding"><div class="col-sm-1"><br><button onclick="menos(\''.$rs['produto_kit'].'\')" type="button" class="btn btn-danger">-</button></div></div></div><input type="hidden" name="produtos[]" id="hid_produtoeditar'.$rs['produto_kit'].'" value="'.$rs['produto_kit'].'"></div>';
         		}else{
-        			$cbbrinde = '';
+        			$SqlKit = "SELECT * FROM t_kit K INNER JOIN t_imagens_kit I ON I.idkit = K.idkit WHERE K.idkit = " . $auxProd[1] . " AND I.ordem = 1";
+        			
+        			$resultKit = parent::Execute($SqlKit);
+        			$rsKit = parent::ArrayData($resultKit);
+        			if($rs['brinde'] == 1){
+        				$cbbrinde = 'checked';
+        			}else{
+        				$cbbrinde = '';
+        			}
+        			$retorno .= '<div id="novo'.$rs['produto_kit'].'" class="novo-produto">
+	        						<div id="" class="col-md-2 text-center"><img id="img1" src="'.UrlFoto.$rsKit['caminho'].'" style="width: 100px; height: 100px;"></div>
+	        						<div class="col-sm-10 no-padding"><div class="col-sm-11 no-padding"><div class="col-md-12" id="div_produto'.$rs['produto_kit'].'">Produto: <input readonly id="produtonovo'.$rs['produto_kit'].'" type="text" class="form-control produto ui-autocomplete-input" autocomplete="off" value="'.$rsKit['nome'].'"></div><div class="col-md-2"><br><label>Preço: R$ <span id="preco'.$rs['produto_kit'].'">'.number_format($rsKit[$tipoValor], 2, ',', '.').'</span></label><input type="hidden" name="hid_valor_real[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsKit[$tipoValor].'"></div><div class="col-md-2">Quantidade: <input onblur="calculaSubtotal();" type="text" class="form-control quantidade" value="'.$rs['quantidade'].'" name="quantidade[]"></div><div class="col-md-2">Desconto R$ (Unitário): <input name="desconto_valor[]" type="text" class="form-control money desconto-valor" onblur="calculaSubtotal();" value="'.$rs['desconto_valor'].'" autocomplete="off"></div><div class="col-md-2"><br><label><input onchange="calculaSubtotal();" name="brinde['.$rs['produto_kit'].']" type="checkbox" '.$cbbrinde.'> Brinde</label></div></div><div class="col-sm-1 no-padding"><div class="col-sm-1"><br><button onclick="menos(\''.$rs['produto_kit'].'\')" type="button" class="btn btn-danger">-</button></div></div></div><input type="hidden" name="produtos[]" id="hid_produtoeditar'.$rs['produto_kit'].'" value="'.$rs['produto_kit'].'"></div>';
         		}
-        		$retorno .= '<div id="novo'.$rs['produto_kit'].'" class="novo-produto">
-        				<div id="" class="col-md-2 text-center"><img id="img1" src="'.UrlFoto.$rsProduto['caminho'].'" style="width: 100px; height: 100px;"></div>
-        				<div class="col-sm-10 no-padding"><div class="col-sm-11 no-padding"><div class="col-md-12" id="div_produto'.$rs['produto_kit'].'">Produto: <input readonly id="produtonovo'.$rs['produto_kit'].'" type="text" class="form-control produto ui-autocomplete-input" autocomplete="off" value="'.$rsProduto['nome'].'"></div><div class="col-md-2"><br><label>Preço: R$ <span id="preco'.$rs['produto_kit'].'">'.number_format($rsProduto[$tipoValor], 2, ',', '.').'</span></label><input type="hidden" name="hid_valor_real[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsProduto['valor_profissional'].'"></div><div class="col-md-2">Quantidade: <input onblur="calculaSubtotal();" type="text" class="form-control quantidade" value="'.$rs['quantidade'].'" name="quantidade[]"></div><div class="col-md-2">Desconto R$ (Unitário): <input name="desconto_valor[]" type="text" class="form-control money desconto-valor" onblur="calculaSubtotal();" value="'.$rs['desconto_valor'].'" autocomplete="off"></div><div class="col-md-2"><br><label><input onchange="calculaSubtotal();" name="brinde['.$rs['produto_kit'].']" type="checkbox" '.$cbbrinde.'> Brinde</label></div></div><div class="col-sm-1 no-padding"><div class="col-sm-1"><br><button onclick="menos(\''.$rs['produto_kit'].'\')" type="button" class="btn btn-danger">-</button></div></div></div></div>';
         	}
         	return utf8_encode($retorno);
         }
