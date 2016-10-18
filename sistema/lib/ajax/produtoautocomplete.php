@@ -35,12 +35,12 @@
         $SqlImagemKit = "SELECT caminho FROM t_imagens_kit WHERE ordem = 1 AND idkit = {$rsKit['idkit']}";
         $resultImagemKit = $banco->Execute($SqlImagemKit);
         $rsImagemKit = $banco->ArrayData($resultImagemKit);
-        $array[] = array('label' => 'Kit: '.utf8_encode('Kit: ' . $rsKit['nome'] . ' - Estoque: ' . $rsKit['estoque'] . ' UN'),
+        $array[] = array('label' => 'Kit: '.utf8_encode($rsKit['nome'] . ' - Estoque: ' . $rsKit['estoque'] . ' UN'),
                          'value' => 'Kit: '.utf8_encode($rsKit['nome']),
                          'idproduto' => 'kit_'.$rsKit['idkit'],
                          'caminho' => UrlFoto.$rsImagemKit['caminho'],
-                         'valor' => number_format(floatval($rs[$rsValor['valor']]), 2, ',', '.'),
-        				 'valor_real' => floatval($rs[$rsValor['valor']]),
+                         'valor' => number_format(floatval($rsKit[$rsValor['valor']]), 2, ',', '.'),
+        				 'valor_real' => floatval($rsKit[$rsValor['valor']]),
                     );
     }
     

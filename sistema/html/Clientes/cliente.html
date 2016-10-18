@@ -316,6 +316,23 @@ function removerEmailAdicional(idemailadicional){
     	);
     }
 }
+
+function removeConsulta(idcliente){
+	if(confirm("Deseja remover a consulta realizada nesse cliente?")){
+        $.post("<%URLPADRAO%>lib/ajax/removeConsultaCliente.php",
+ 				{idcliente: idcliente},
+ 				function(dados){
+ 				   if(dados == 1){
+ 					  	$("#visualizarConsulta").remove();
+ 					 	var novo = '<label style="width: 100%;" class="col-sm-3 control-label form-margin">Consulta</label><div class="col-sm-6"><input type="file" class="form-control" name="fconsulta" value=""></div>';
+ 					 	$("#consultaOuter").html(novo);
+                    }else{
+                        alert("Erro no banco de dados!");
+                    }
+				}
+    	);
+    }
+}
 </script>
     <script type="text/javascript" src="<%URLPADRAO%>html/js/jasny.bootstrap/extend/js/jasny-bootstrap.min.js"></script>
     <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.daterangepicker/moment.min.js"></script>

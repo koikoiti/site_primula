@@ -2,6 +2,10 @@
     $titulo = "Novo Cliente";
     $botao_voltar = '<button onclick="voltar()" style="box-shadow: none;background-color: #000000;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Voltar</button>';
     $displaysocio = 'none';
+    $consultaHTML = '<label style="width: 100%;" class="col-sm-3 control-label form-margin">Consulta</label>
+		            <div class="col-sm-6">
+		                <input type="file" class="form-control" name="fconsulta" value="">
+		            </div>';
     
 	#include das funcoes da tela
 	include('functions/banco-cliente.php');
@@ -144,7 +148,7 @@
                 echo utf8_encode("<script type='text/javascript'>alert('Cliente já cadastrado!')</script>");
             }else{
                 #Insert
-                $banco->InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs);
+                $banco->InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $_FILES);
             }
         }
     }#Fim POST

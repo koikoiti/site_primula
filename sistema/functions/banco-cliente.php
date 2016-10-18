@@ -54,7 +54,7 @@
     	}
     	
         #Insere Cliente
-        function InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs){
+        function InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $file){
             if($idtipocliente == 1){
                 $auxcnpjcpf = 'cpf';
             }elseif($idtipocliente == 2){
@@ -79,6 +79,11 @@
             
             if($arrCeps[0] != ''){
                 $this->InsereEnderecosAdicionais($lastid, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs);
+            }
+            
+            #Arquivo de consulta
+            if($file['fconsulta']['name'] != ''){
+            	$this->AddConsulta($file['fconsulta'], $lastid);
             }
             
             parent::RedirecionaPara('lista-cliente');
