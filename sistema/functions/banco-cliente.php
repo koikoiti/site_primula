@@ -361,6 +361,17 @@
                     	$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="ativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Ativar</a>', $Linha);
                     }
                     $Linha = str_replace('<%CNPJCPF%>', $cnpjcpf, $Linha);
+                    #Verifica consulta
+                    $SqlConsulta = "SELECT * FROM t_clientes_consulta WHERE idcliente = " . $rs['idcliente'];
+                    $resultConsulta = parent::Execute($SqlConsulta);
+                    $linhaConsulta = parent::Linha($resultConsulta);
+                    if($linhaConsulta){
+                    	$rsConsulta = parent::ArrayData($resultConsulta);
+                    	$consultaHTML = '<a target="_blank" href="'.UrlPadrao.$rsConsulta['caminho'].'">Consulta</a>';
+                    }else{
+                    	$consultaHTML = "";
+                    }
+                    $Linha = str_replace('<%CONSULTA%>', $consultaHTML, $Linha);
                     $Clientes .= $Linha;
                 }
             }else{
