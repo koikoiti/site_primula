@@ -39,6 +39,7 @@
     	$arrBrinde = $_POST['brinde'];
     	$arrTipoPagamento = $_POST['tipoPagamento'];
     	$arrPagamento = $_POST['pagamento'];
+    	$arrDataPagamento = $_POST['dataPagamento'];
     	$total = str_replace('R$ ', '', $_POST['total']);
     	$total = str_replace('.', '', $total);
     	$total = str_replace(',', '.', $total);
@@ -47,19 +48,19 @@
     	if($idvenda){
     		#Update
     		if($_POST['acao'] == 'orcamento'){
-    			$banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs);
+    			$banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento);
     			$banco->RedirecionaPara('lista-venda');
     		}elseif($_POST['acao'] == 'finaliza'){
-    			$updatedID = $banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito);
+    			$updatedID = $banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $arrDataPagamento);
     			echo "<script>window.open('".UrlPadrao."finalizar/$updatedID');location.href='".UrlPadrao."lista-venda'</script>";
     		}
     	}else{
     		#Insert
     		if($_POST['acao'] == 'orcamento'){
-    			$banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs);
+    			$banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento);
     			$banco->RedirecionaPara('lista-venda');
     		}elseif($_POST['acao'] == 'finaliza'){
-    			$insertedID = $banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs);
+    			$insertedID = $banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento);
     			echo "<script>window.open('".UrlPadrao."finalizar/$insertedID');location.href='".UrlPadrao."lista-venda'</script>";
     		}
     	}

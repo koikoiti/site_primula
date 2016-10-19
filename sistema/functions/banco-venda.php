@@ -112,7 +112,7 @@
         }
         
         #Insere Venda/Orçamento
-        function InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs){
+        function InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento){
         	if($orcamento == 1){
         		#Orçamento (Não altera estoque e não vai pro fluxo)
         		
@@ -149,7 +149,7 @@
         				$pagamento = $arrPagamento[$key];
         				$pagamento = str_replace('.', '', $pagamento);
         				$pagamento = str_replace(',', '.', $pagamento);
-        				$SqlPagamento = "INSERT INTO t_vendas_pagamentos (idvenda, idformapagamento, parcela, valor) VALUES ('$lastID', '$value', '$parcela', '$pagamento')";
+        				$SqlPagamento = "INSERT INTO t_vendas_pagamentos (idvenda, idformapagamento, parcela, valor, data) VALUES ('$lastID', '$value', '$parcela', '$pagamento', '".$arrDataPagamento[$key]."')";
         				$parcela++;
         				parent::Execute($SqlPagamento);
         			}
@@ -190,7 +190,7 @@
         				$pagamento = $arrPagamento[$key];
         				$pagamento = str_replace('.', '', $pagamento);
         				$pagamento = str_replace(',', '.', $pagamento);
-        				$SqlPagamento = "INSERT INTO t_vendas_pagamentos (idvenda, idformapagamento, parcela, valor) VALUES ('$lastID', '$value', '$parcela', '$pagamento')";
+        				$SqlPagamento = "INSERT INTO t_vendas_pagamentos (idvenda, idformapagamento, parcela, valor, data) VALUES ('$lastID', '$value', '$parcela', '$pagamento', '".$arrDataPagamento[$key]."')";
         				$parcela++;
         				parent::Execute($SqlPagamento);
         			}
@@ -200,7 +200,7 @@
             return $lastID;
         }
         
-        function UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs){
+        function UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento){
         	if($orcamento == 1){
         		#Orçamento (Não altera estoque e não vai pro fluxo)
         	
@@ -245,7 +245,7 @@
         				$pagamento = $arrPagamento[$key];
         				$pagamento = str_replace('.', '', $pagamento);
         				$pagamento = str_replace(',', '.', $pagamento);
-        				$SqlPagamento = "INSERT INTO t_vendas_pagamentos (idvenda, idformapagamento, parcela, valor) VALUES ('$lastID', '$value', '$parcela', '$pagamento')";
+        				$SqlPagamento = "INSERT INTO t_vendas_pagamentos (idvenda, idformapagamento, parcela, valor, data) VALUES ('$lastID', '$value', '$parcela', '$pagamento', '".$arrDataPagamento[$key]."')";
         				$parcela++;
         				parent::Execute($SqlPagamento);
         			}
@@ -294,7 +294,7 @@
         				$pagamento = $arrPagamento[$key];
         				$pagamento = str_replace('.', '', $pagamento);
         				$pagamento = str_replace(',', '.', $pagamento);
-        				$SqlPagamento = "INSERT INTO t_vendas_pagamentos (idvenda, idformapagamento, parcela, valor) VALUES ('$lastID', '$value', '$parcela', '$pagamento')";
+        				$SqlPagamento = "INSERT INTO t_vendas_pagamentos (idvenda, idformapagamento, parcela, valor, data) VALUES ('$lastID', '$value', '$parcela', '$pagamento', '".$arrDataPagamento[$key]."')";
         				$parcela++;
         				parent::Execute($SqlPagamento);
         			}
@@ -364,21 +364,48 @@
         	$linhas = parent::Linha($result);
         	if($linhas){
 	        	while($rs = parent::ArrayData($result)){
+	        		switch($rs['idformapagamento']){
+	        			case 1:
+	        				$selDinheiro = 'selected';
+	        				break;
+	        			case 2:
+	        				$selCheque = 'selected';
+	        				break;
+	        			case 3:
+	        				$selDebito = 'selected';
+	        				break;
+	        			case 4:
+	        				$selCredito = 'selected';
+	        				break;
+	        			case 5:
+	        				$selBoleto = 'selected';
+	        				break;
+	        			case 6:
+	        				$selDeposito = 'selected';
+	        				break;
+	        			case 7:
+	        				$selDistancia = 'selected';
+	        				break;
+	        		}
 	        		$retorno .= '<div id="novoPagamentoEdit'.$rs['idvendapagamento'].'" class="col-sm-12" style="margin-top: 5px;">
 	        					<div class="col-sm-4">
 	        					<select class="form-control" name="tipoPagamento[]">
-	        				<option value="1">Dinheiro</option><option value="2">Cheque</option>
-	        				<option value="3">Cartão de Débito</option><option value="4">Cartão de Crédito</option>
-	        				<option value="5">Boleto</option><option value="6">Depósito Bancário</option>
-	        				<option value="7">Crédito a Distância</option></select></div><div class="col-sm-5">
+	        				<option value="1" '.$selDinheiro.'>Dinheiro</option><option value="2" '.$selCheque.'>Cheque</option>
+	        				<option value="3" '.$selDebito.'>Cartão de Débito</option><option value="4" '.$selCredito.'>Cartão de Crédito</option>
+	        				<option value="5" '.$selBoleto.'>Boleto</option><option value="6" '.$selDeposito.'>Depósito Bancário</option>
+	        				<option value="7" '.$selDistancia.'>Crédito a Distância</option></select></div>
+	        				<div class="col-sm-3">
 	        				<input type="text" class="form-control money" onblur="calculaTroco();" name="pagamento[]" autocomplete="off" value="'.$rs['valor'].'">
+	        				</div>
+	        				<div class="col-sm-3">
+	        				<input type="date" class="form-control" name="dataPagamento[]" autocomplete="off" value="'.$rs['data'].'">
 	        				</div>
 	        				<button onclick="menosPagamento(\'Edit'.$rs['idvendapagamento'].'\')" type="button" class="btn btn-danger">-</button></div>';
 	        	}
         	}else{
         		$retorno = '';
         	}
-        	return $retorno;
+        	return utf8_encode($retorno);
         }
     }
 ?>

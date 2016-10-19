@@ -79,7 +79,7 @@
 	        <label class="col-sm-3 control-label form-margin">Pagamento:</label>
 	        <div class="col-sm-6 ui-widget">
 	        	<button onclick="maisPagamento()" type="button" class="btn btn-primary">+</button>
-	            <button onclick="parcelarSaldo()" class="btn btn-success" type="button" data-toggle="tooltip" title="">Parcelar Saldo Restante</button>
+	            <button onclick="parcelarSaldo()" class="btn btn-success" type="button" data-toggle="tooltip" title="">Parcelar</button>
 	            <div class="form-group" id="pagamentos">
 	            	<%PAGAMENTOS%>
 	            </div>
@@ -122,22 +122,65 @@
 		<div class="modal-content">
 			<div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Parcelar Saldo Restante</h4>
+		        <h4 class="modal-title" id="myModalLabel">Parcelar</h4>
 			</div>
 		    <div class="modal-body" style="overflow: hidden">
 		    	<div class="col-sm-12">
-		    		Tipo: <select class="form-control"><option>Cheque</option><option>Cartão de Crédito</option><option>Boleto</option></select>
-		    		Parcelas: <input type="text" class="form-control" />
+		    		Tipo: <select id="tipo" class="form-control"><option value=''>Selecione</option><option value="2">Cheque</option><option value="4">Cartão de Crédito</option><option value="4">Boleto</option><option value="7">Crédito a Distância</option></select>
+		    		Parcelas: <input id="parcelas" type="text" class="form-control" />
 		    	</div>
 		    </div>
 		    <div class="modal-footer">
 		    	<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-		        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="montaParcelas();">OK</button>
 		    </div>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
+function montaParcelas(){
+	var tipo = $("#tipo").val();
+	var parcelas = $("#parcelas").val();
+	var total = $("#total").val().replace("R$ ", "");
+	total = converteMoedaFloat(total);
+	var parcela = total/parcelas;
+	parcela = parcela.toFixed(2).replace(".", ',');
+	var sel_cheque = '';
+	var sel_credito = '';
+	var sel_boleto = '';
+	var sel_distancia = '';
+	switch(tipo){
+		case '2':
+			sel_cheque = 'selected';
+			break;
+		case '4':
+			sel_credito = 'selected';
+			break;
+		case '5':
+			sel_boleto = 'selected';
+			break;
+		case '7':
+			sel_distancia = 'selected';
+			break;
+	}
+	
+	if(tipo != '' && parcelas != '' && parcelas > 0){
+		$("#pagamentos").empty();
+		for(var i = 0; i < parcelas; i++){
+			var nova = document.createElement('div');
+		    nova.setAttribute('id', 'novoPagamento'+i);
+		    nova.setAttribute('class', 'col-sm-12');
+		    nova.setAttribute('style', 'margin-top: 5px;');
+		    now = new Date;
+		    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><option value="1">Dinheiro</option><option value="2" '+sel_cheque+'>Cheque</option><option value="3">Cartão de Débito</option><option value="4" '+sel_credito+'>Cartão de Crédito</option><option value="5" '+sel_boleto+'>Boleto</option><option value="6">Depósito Bancário</option><option value="7" '+sel_distancia+'>Crédito a Distância</option></select></div><div class="col-sm-3"><input type="text" value="'+parcela+'" class="form-control money" onblur="calculaTroco();" name="pagamento[]" placeholder="0,00" /></div><div class="col-sm-3"><input type="date" class="form-control" value="'+now.getFullYear()+'-' + (("0" + (now.getMonth() + 1)).slice(-2)) + '-' + (("0" + now.getDate()).slice(-2)) + '" name="dataPagamento[]" /></div><button onclick="menosPagamento('+i+')" type="button" class="btn btn-danger">-</button>';
+		    var aqui = document.getElementById('pagamentos');
+		    aqui.appendChild(nova);
+		    $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
+		}
+		calculaTroco();
+	}
+}
+
 function parcelarSaldo(){
 	$("#parcelarSaldoRestante").modal();
 }
@@ -332,7 +375,8 @@ function maisPagamento(){
     nova.setAttribute('id', 'novoPagamento'+novoPagamento);
     nova.setAttribute('class', 'col-sm-12');
     nova.setAttribute('style', 'margin-top: 5px;');
-    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><><option value="1">Dinheiro</option><option value="2">Cheque</option><option value="3">Cartão de Débito</option><option value="4">Cartão de Crédito</option><option value="5">Boleto</option><option value="6">Depósito Bancário</option><option value="7">Crédito a Distância</option></select></div><div class="col-sm-5"><input type="text" class="form-control money" onblur="calculaTroco();" name="pagamento[]" /></div><button onclick="menosPagamento('+novoPagamento+')" type="button" class="btn btn-danger">-</button>';
+    now = new Date;
+    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><option value="1">Dinheiro</option><option value="2">Cheque</option><option value="3">Cartão de Débito</option><option value="4">Cartão de Crédito</option><option value="5">Boleto</option><option value="6">Depósito Bancário</option><option value="7">Crédito a Distância</option></select></div><div class="col-sm-3"><input type="text" class="form-control money" onblur="calculaTroco();" name="pagamento[]" placeholder="0,00" /></div><div class="col-sm-3"><input type="date" class="form-control" value="'+now.getFullYear()+'-' + (("0" + (now.getMonth() + 1)).slice(-2)) + '-' + (("0" + now.getDate()).slice(-2)) + '" name="dataPagamento[]" /></div><button onclick="menosPagamento('+novoPagamento+')" type="button" class="btn btn-danger">-</button>';
     var aqui = document.getElementById('pagamentos');
     aqui.appendChild(nova);
     $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
