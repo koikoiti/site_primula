@@ -77,6 +77,10 @@
     <div class="col-sm-12">
 		<div class="form-group">
 	        <label class="col-sm-3 control-label form-margin">Pagamento:</label>
+	        <div class="col-sm-6">
+	        	Tarifa: <input name="tarifa" id="tarifa" value="<%TARIFA%>" onblur="calculaTotal();" type="text" class="form-control money" style="width: 20%" />
+	        	<br/>
+	        </div>
 	        <div class="col-sm-6 ui-widget">
 	        	<button onclick="maisPagamento()" type="button" class="btn btn-primary">+</button>
 	            <button onclick="parcelarSaldo()" class="btn btn-success" type="button" data-toggle="tooltip" title="">Parcelar</button>
@@ -349,6 +353,12 @@ function calculaSubtotal(){
 function calculaTotal(){
 	var subtotalTotal = $("#subtotal").val().replace("R$ ", "");
 	subtotalTotal = converteMoedaFloat(subtotalTotal);
+	var tarifa = $("#tarifa").val();
+	if(tarifa != ''){
+		tarifa = converteMoedaFloat(tarifa);
+	}else{
+		tarifa = 0;
+	}
 	var fretePorConta = document.getElementById("fretePorConta").checked;
 	if(fretePorConta == false){
 		var frete = $("#frete").val();
@@ -356,7 +366,7 @@ function calculaTotal(){
 	}else{
 		frete = 0;
 	}
-	var total = subtotalTotal + frete;
+	var total = subtotalTotal + frete + tarifa;
 	$("#total").val('R$ ' + total.format(2, 3, '.', ','));
 	calculaTroco();
 }
