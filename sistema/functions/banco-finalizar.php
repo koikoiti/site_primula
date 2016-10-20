@@ -282,6 +282,7 @@
         	$Auxilio = str_replace('<%NUMERO%>', $numero, $Auxilio);
         	$Auxilio = str_replace('<%DATAIMPRESSAO%>', date("d/m/Y H:i:s"), $Auxilio);
         	$Auxilio = str_replace('<%FUNCIONARIO%>', (parent::BuscaUsuarioPorId($rs['idusuario'])), $Auxilio);
+        	$Auxilio = str_replace('<%OBS%>', $rs['obs'], $Auxilio);
         	fwrite($fileTXT, $Auxilio);
         	parent::RedirecionaPara('arq/vendas/'.$idvenda.".txt");
         }

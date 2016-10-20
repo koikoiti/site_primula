@@ -28,6 +28,8 @@ Total da Venda: <%TOTALVENDA%>
 Ass: ____________________________________
 Venda realizada por: <%FUNCIONARIO%>
 
+Observações:
+<%OBS%>
 -----------------------------------------
               
 Venda N: <%NUMERO%>
@@ -59,3 +61,6 @@ Total da Venda: <%TOTALVENDA%>
 
 Ass: ____________________________________
 Venda realizada por: <%FUNCIONARIO%>
+
+Observações:
+<%OBS%>
