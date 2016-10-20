@@ -164,15 +164,22 @@ function montaParcelas(){
 			break;
 	}
 	
+	//Data - '+now.getFullYear()+'-' + (("0" + (now.getMonth() + 1)).slice(-2)) + '-' + (("0" + now.getDate()).slice(-2)) + '
+	var now = new Date();
+	
 	if(tipo != '' && parcelas != '' && parcelas > 0){
 		$("#pagamentos").empty();
-		for(var i = 0; i < parcelas; i++){
+		for(var i = 1; i <= parcelas; i++){
 			var nova = document.createElement('div');
 		    nova.setAttribute('id', 'novoPagamento'+i);
 		    nova.setAttribute('class', 'col-sm-12');
 		    nova.setAttribute('style', 'margin-top: 5px;');
-		    now = new Date;
-		    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><option value="1">Dinheiro</option><option value="2" '+sel_cheque+'>Cheque</option><option value="3">Cartão de Débito</option><option value="4" '+sel_credito+'>Cartão de Crédito</option><option value="5" '+sel_boleto+'>Boleto</option><option value="6">Depósito Bancário</option><option value="7" '+sel_distancia+'>Crédito a Distância</option></select></div><div class="col-sm-3"><input type="text" value="'+parcela+'" class="form-control money" onblur="calculaTroco();" name="pagamento[]" placeholder="0,00" /></div><div class="col-sm-3"><input type="date" class="form-control" value="'+now.getFullYear()+'-' + (("0" + (now.getMonth() + 1)).slice(-2)) + '-' + (("0" + now.getDate()).slice(-2)) + '" name="dataPagamento[]" /></div><button onclick="menosPagamento('+i+')" type="button" class="btn btn-danger">-</button>';
+		    var novaData = addMonths(now, i);
+		    var ano = novaData.getFullYear();
+		    var mes = ("0" + parseInt(novaData.getMonth() + 1)).slice(-2);
+		    
+		    var dia = ("0" + novaData.getDate()).slice(-2);
+		    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><option value="1">Dinheiro</option><option value="2" '+sel_cheque+'>Cheque</option><option value="3">Cartão de Débito</option><option value="4" '+sel_credito+'>Cartão de Crédito</option><option value="5" '+sel_boleto+'>Boleto</option><option value="6">Depósito Bancário</option><option value="7" '+sel_distancia+'>Crédito a Distância</option></select></div><div class="col-sm-3"><input type="text" value="'+parcela+'" class="form-control money" onblur="calculaTroco();" name="pagamento[]" placeholder="0,00" /></div><div class="col-sm-3"><input type="date" class="form-control" value="'+ano+'-' + mes + '-' + dia + '" name="dataPagamento[]" /></div><button onclick="menosPagamento('+i+')" type="button" class="btn btn-danger">-</button>';
 		    var aqui = document.getElementById('pagamentos');
 		    aqui.appendChild(nova);
 		    $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
@@ -180,6 +187,28 @@ function montaParcelas(){
 		calculaTroco();
 	}
 }
+
+/* Funções para adicionar 1 mês, tratando ano bissexto e meses com menos de 31 dias */
+function isLeapYear(year) { 
+    return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)); 
+}
+
+function getDaysInMonth(year, month) {
+    return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+}
+
+function addMonths(date, value){
+	console.log(value);
+	//console.log(date);
+    var d = new Date(date),
+        n = date.getDate();
+    d.setDate(1);
+    d.setMonth(d.getMonth() + parseInt(value));
+    d.setDate(Math.min(n, getDaysInMonth(d.getFullYear(), d.getMonth())));
+    return d;
+}
+/**/
+
 
 function parcelarSaldo(){
 	$("#parcelarSaldoRestante").modal();
