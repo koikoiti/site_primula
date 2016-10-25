@@ -2,9 +2,18 @@
 <div class="col-md-12">
     <div class="block-flat">
         <div class="header" style="overflow: hidden;">
-            <p>
-                <a href="<%URLPADRAO%>venda">Iniciar Nova</a>
-            </p>
+            <div style="width: 100%; float: left;">
+                <div style="width: 30%; float: left;">
+                	<a href="<%URLPADRAO%>venda">Iniciar Nova</a>
+                </div>
+                <div style="width: 70%; float: left;">
+                	<div style="width: 80%; float: left;">
+                		<input style="float: left; width: 49%;" id="busca_dataIni" type="date" class="form-control" value="<%BUSCADATAINI%>" placeholder="Data Inicial"/>
+                		<span style="float: left; width: 2%;" class="no-padding">&nbsp;a</span> 
+                		<input style="float: left; width: 49%;" id="busca_dataFim" type="date" class="form-control" value="<%BUSCADATAFIM%>" placeholder="Data Final"/>
+                	</div>
+                </div>
+            </div>
             <h3 style="width: 30%; float: left;">Lista Vendas</h3>
             <div style="float: left; width: 70%;">
                 <input style="float: left; width: 10%;" id="busca_venda" type="text" class="form-control" value="<%BUSCAVENDA%>" placeholder="Número Venda"/>
@@ -47,7 +56,9 @@ function pesquisar(){
     var busca_cnpj = $("#busca_cnpj").val().trim();
     var busca_cpf = $("#busca_cpf").val().trim();
     var busca_venda = $("#busca_venda").val().trim();
+    var busca_dataIni = $("#busca_dataIni").val().trim();
+    var busca_dataFim = $("#busca_dataFim").val().trim();
     
-    location.href = "<%URLPADRAO%>lista-venda/?busca_nome=" + busca_nome + "&busca_cnpj=" + busca_cnpj + "&busca_cpf=" + busca_cpf + "&busca_venda=" + busca_venda;
+    location.href = "<%URLPADRAO%>lista-venda/?busca_nome=" + busca_nome + "&busca_cnpj=" + busca_cnpj + "&busca_cpf=" + busca_cpf + "&busca_venda=" + busca_venda + "&busca_dataIni=" + busca_dataIni + "&busca_dataFim=" + busca_dataFim;
 }
 </script>

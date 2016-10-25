@@ -39,7 +39,7 @@
         }
         
         #Lista Vendas
-        function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda){
+        function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim){
             $Auxilio = parent::CarregaHtml('Vendas/itens/lista-venda-itens');
             $Sql = "SELECT V.*, C.* FROM t_vendas V 
                     INNER JOIN t_clientes C ON V.idcliente = C.idcliente 
@@ -56,6 +56,9 @@
             }
             if($busca_venda != ''){
             	$Sql .= " AND V.idvenda LIKE '%$busca_venda%'";
+            }
+            if($busca_dataFim != '' || $busca_dataIni != ''){
+            	$Sql .= " AND data BETWEEN '$busca_dataIni' AND '$busca_dataFim'";
             }
             $result = parent::Execute($Sql);
             $linha = parent::Linha($result);
