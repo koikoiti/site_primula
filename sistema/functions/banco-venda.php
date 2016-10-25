@@ -58,7 +58,7 @@
             	$Sql .= " AND V.idvenda LIKE '%$busca_venda%'";
             }
             if($busca_dataFim != '' || $busca_dataIni != ''){
-            	$Sql .= " AND data BETWEEN '$busca_dataIni' AND '$busca_dataFim'";
+            	$Sql .= " AND data BETWEEN '$busca_dataIni 00:00:00' AND '$busca_dataFim 23:59:59'";
             }
             $result = parent::Execute($Sql);
             $linha = parent::Linha($result);
