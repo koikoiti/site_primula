@@ -54,7 +54,7 @@
     			$banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa);
     			$banco->RedirecionaPara('lista-venda');
     		}elseif($_POST['acao'] == 'finaliza'){
-    			$updatedID = $banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $arrDataPagamento, $tarifa);
+    			$updatedID = $banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa);
     			echo "<script>window.open('".UrlPadrao."finalizar/$updatedID');location.href='".UrlPadrao."lista-venda'</script>";
     		}
     	}else{

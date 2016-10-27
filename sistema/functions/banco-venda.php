@@ -258,8 +258,7 @@
         		}
         	}else{
         		#Venda (Altera estoque, add fluxo)@TODO
-        	
-        	if($fretePorConta){
+        		if($fretePorConta){
         			$fretePorConta = 1;
         		}else{
         			$fretePorConta = 0;
