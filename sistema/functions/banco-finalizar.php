@@ -181,7 +181,7 @@
         	while($rs = parent::ArrayData($result)){
         		$Linha = '<tr>';
         		$Linha .= "<td>{$rs['forma_pagamento']}</td>";
-        		$Linha .= "<td>Parcela: {$rs['parcela']}</td>";
+        		$Linha .= "<td>".date("d/m/Y", strtotime($rs['data']))."</td>";
         		$Linha .= "<td>" . number_format($rs['valor'], 2, ',', '.') . "</td>";
         		$Linha .= '</tr>';
         		$Pagamentos['html'] .= utf8_encode($Linha);
