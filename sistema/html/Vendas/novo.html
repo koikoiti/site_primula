@@ -42,7 +42,8 @@
 		<div>
 			<hr/>
 			<span style="float: left; width: 100%;">Subtotal: </span><input name="subtotal" style="width: 50%; float: left;" class="form-control" readonly="readonly" id="subtotal" type="text" value="R$ 0,00"/>
-			<hr/> 
+			<span style="float: left; width: 100%; margin-left: 100px;">Desconto Produtos: </span><input onblur="calculaSubtotal();" name="desconto_subtotal" style="width: 40%; float: left; margin-left: 100px;" class="form-control money" id="desconto_subtotal" type="text" value="<%DESCONTOSUBTOTAL%>"/>
+			<hr/>
 		</div>
 	</div>
     <div class="col-md-12">    
@@ -346,6 +347,8 @@ function calculaSubtotal(){
 		    subtotal = parseFloat(subtotal) + (valor * quantidade);
 	    }
 	});
+	var descontoSub = $("#desconto_subtotal").val();
+	subtotal = parseFloat(subtotal) - converteMoedaFloat(descontoSub);
 	$("#subtotal").val('R$ ' + subtotal.format(2, 3, '.', ','));
 	calculaTotal();
 }

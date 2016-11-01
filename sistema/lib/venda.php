@@ -1,4 +1,5 @@
 <?php
+	$desconto_subtotal = '';
     $titulo = "Venda / Orçamento";
     $botao_voltar = '<button onclick="voltar()" style="box-shadow: none;background-color: #000000;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Voltar</button>';
     
@@ -11,6 +12,7 @@
 		$idvenda = $this->PaginaAux[1];
 		$rsVenda = $banco->BuscaVendaPorId($idvenda);
 		$AUX_cliente = $banco->BuscaCliente($rsVenda['idcliente']);
+		$desconto_subtotal = $rsVenda['desconto_subtotal'];
 		$Produtos = $banco->MontaProdutosEditar($idvenda, $AUX_cliente['idtipoprofissional']);
 		$Pagamentos = $banco->MontaPagamentosEditar($idvenda);
 		if($rsVenda['frete_porconta'] == 1){
@@ -48,22 +50,25 @@
     	$tarifa = str_replace(',', '.', $tarifa);
     	$troco_credito = $_POST['credito'];
     	$obs = utf8_decode(strip_tags(trim(addslashes($_POST["obs"]))));
+    	$desconto_subtotal = $_POST['desconto_subtotal'];
+    	$desconto_subtotal = str_replace('.', '', $desconto_subtotal);
+    	$desconto_subtotal = str_replace(',', '.', $desconto_subtotal);
     	if($idvenda){
     		#Update
     		if($_POST['acao'] == 'orcamento'){
-    			$banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa);
+    			$banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal);
     			$banco->RedirecionaPara('lista-venda');
     		}elseif($_POST['acao'] == 'finaliza'){
-    			$updatedID = $banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa);
+    			$updatedID = $banco->UpdateOrcamento($idvenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal);
     			echo "<script>window.open('".UrlPadrao."finalizar/$updatedID');location.href='".UrlPadrao."lista-venda'</script>";
     		}
     	}else{
     		#Insert
     		if($_POST['acao'] == 'orcamento'){
-    			$banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa);
+    			$banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 1, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal);
     			$banco->RedirecionaPara('lista-venda');
     		}elseif($_POST['acao'] == 'finaliza'){
-    			$insertedID = $banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa);
+    			$insertedID = $banco->InsereOrcamento($idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, 0, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal);
     			echo "<script>window.open('".UrlPadrao."finalizar/$insertedID');location.href='".UrlPadrao."lista-venda'</script>";
     		}
     	}
@@ -91,4 +96,5 @@
     $Conteudo = str_replace("<%PAGAMENTOS%>", $Pagamentos, $Conteudo);
     $Conteudo = str_replace("<%CBFRETEPORCONTA%>", $cbfreteporconta, $Conteudo);
     $Conteudo = str_replace("<%OBS%>", utf8_encode($rsVenda['obs']), $Conteudo);
+    $Conteudo = str_replace("<%DESCONTOSUBTOTAL%>", $desconto_subtotal, $Conteudo);
 ?>
