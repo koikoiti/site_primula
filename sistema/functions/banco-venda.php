@@ -80,7 +80,7 @@
                     }else{
                         $auxVO = 'Venda';
                         $editar = '<a target="_blank" href="<%URLPADRAO%>finalizar/'.$rs['idvenda'].'">Reimprimir</a>
-                        			<a href="<%URLPADRAO%>venda/editar/'.$rs['idvenda'].'">Editar</a>';
+                        			';
                         if($_SESSION['idsetor'] == 1){
                         	$editar .= '<a href="<%URLPADRAO%>venda/cancelar/'.$rs['idvenda'].'">Cancelar</a>';
                         }
