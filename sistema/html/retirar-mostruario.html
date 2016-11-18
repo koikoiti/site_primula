@@ -52,7 +52,7 @@ function retiraMostruario(){
 			    if(retorno == 1){
 			        //console.log(retorno);
 					alert("Estoque atualizado com sucesso!");
-					location.reload();
+					location.href = "<%URLPADRAO%>lista-mostruario";
 				}else if(retorno == 9){
 					alert('Ocorreu um erro com o banco de dados. Tente novamente.');
 				}

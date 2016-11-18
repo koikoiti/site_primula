@@ -9,8 +9,12 @@
     $idproduto_kit = $_POST['idproduto'];
     $quantidade = $_POST['quantidade'];
     
-    $auxProd = explode("_", $idproduto_kit);
+    #Insere no BD
+    $SqlInsert = "INSERT INTO t_mostruario (produto_kit, quantidade, usuario, data) VALUES ('$idproduto_kit', '$quantidade', '".$banco->BuscaNomeExibicao()."', '".date("Y-m-d -H:i:s")."')";
+    $banco->Execute($SqlInsert);
     
+    $auxProd = explode("_", $idproduto_kit);
+        
     if($auxProd[0] == 'prod'){
     	#Remove produto
     	$Sql = "UPDATE t_produtos SET estoque = estoque - $quantidade WHERE idproduto = " . $auxProd[1];
