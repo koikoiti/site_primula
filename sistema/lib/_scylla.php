@@ -5,14 +5,12 @@
 	#Instancia o objeto
 	$banco = new bancoscylla();
 	
-	
 	switch($this->PaginaAux[0]){
 		case 'arrumarEstoque':
-			$banco->ArrumaEstoque();
+			#$banco->ArrumaEstoque();
 			break;
 		default:
-			$banco->RedirecionaPara('inicio');
+			#$banco->RedirecionaPara('inicio');
 			break;
 	}
-	
 ?>

@@ -160,7 +160,7 @@
         			}
         		}
         	}else{
-        		#Venda (Altera estoque, add fluxo)@TODO
+        		#Venda (Altera estoque (OK), add fluxo)@TODO
         		
         		if($fretePorConta){
         			$fretePorConta = 1;
@@ -190,6 +190,10 @@
         			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$arrDesconto[$key]}', '$brinde')";
         			parent::Execute($SqlProdutos);
         		}
+        		
+        		#Arruma Estoque
+        		$this->arrumaEstoque($lastID);
+        		
         		if($arrTipoPagamento){
         			$parcela = 1;
         			foreach($arrTipoPagamento as $key => $value){
@@ -257,7 +261,7 @@
         			}
         		}
         	}else{
-        		#Venda (Altera estoque, add fluxo)@TODO
+        		#Venda (Altera estoque (OK), add fluxo)@TODO
         		if($fretePorConta){
         			$fretePorConta = 1;
         		}else{
@@ -291,6 +295,10 @@
         			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$arrDesconto[$key]}', '$brinde')";
         			parent::Execute($SqlProdutos);
         		}
+        		
+        		#Arruma Estoque
+        		$this->ArrumaEstoque($idvenda);
+        		
         		if($arrTipoPagamento){
         			$SqlDeletePagamentos = "DELETE FROM t_vendas_pagamentos WHERE idvenda = $idvenda";
         			parent::Execute($SqlDeletePagamentos);
@@ -307,6 +315,25 @@
         	}
         	
         	return $lastID;
+        }
+        
+        #Arruma Estoque
+        function arrumaEstoque($idvenda){
+        	$Sql = "SELECT * FROM t_vendas_produtos WHERE idvenda = $idvenda";
+        	$result = parent::Execute($Sql);
+        	while($rs = parent::ArrayData($result)){
+        		#Verifica se é kit ou produto
+        		$auxPK = explode('_', $rs['produto_kit']);
+        		if($auxPK[0] == 'prod'){
+        			$idproduto = $auxPK[1];
+        			$SqlProduto = "UPDATE t_produtos SET estoque = estoque - ".$rs['quantidade'] . " WHERE idproduto = $idproduto";
+        			parent::Execute($SqlProduto);
+        		}elseif($auxPK[0] == 'kit'){
+        			$idkit = $auxPK[1];
+        			$SqlKit = "UPDATE t_kit SET estoque = estoque - ".$rs['quantidade']. " WHERE idkit = $idkit";
+        			parent::Execute($SqlKit);
+        		}
+        	}
         }
         
         function ExcluirOrcamento($idvenda){
