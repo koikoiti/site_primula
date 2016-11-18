@@ -316,9 +316,24 @@
         }
         
         function CancelarVenda($idvenda){
+        	$SqlItens = "SELECT * FROM t_vendas_produtos WHERE idvenda = $idvenda";
+        	$resultItens = parent::Execute($SqlItens);
+        	while($rsItens = parent::ArrayData($resultItens)){
+        		#Verifica se é kit ou produto
+        		$auxPK = explode('_', $rsItens['produto_kit']);
+        		if($auxPK[0] == 'prod'){
+        			$idproduto = $auxPK[1];
+        			$SqlProduto = "UPDATE t_produtos SET estoque = estoque + ".$$rsItens['quantidade'] . " WHERE idproduto = $idproduto";
+        			parent::Execute($SqlProduto);
+        		}elseif($auxPK[0] == 'kit'){
+        			$idkit = $auxPK[1];
+        			$SqlKit = "UPDATE t_kit SET estoque = estoque + ".$rsItens['quantidade']. " WHERE idkit = $idkit";
+        			parent::Execute($SqlKit);
+        		}
+        	}
+        	        	
         	$Sql = "DELETE FROM t_vendas WHERE idvenda = $idvenda";
         	parent::Execute($Sql);
-        	#@TODO voltar para o estoque
         	parent::RedirecionaPara('lista-venda');
         }
         
