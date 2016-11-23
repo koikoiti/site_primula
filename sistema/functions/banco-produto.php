@@ -327,6 +327,12 @@
             parent::RedirecionaPara('produto/editar/'.$idproduto);
         }
         
+        #Ocultar produto no site
+        function OcultarNoSite($idproduto, $valor){
+        	$Sql = "UPDATE t_produtos SET ocultar = $valor WHERE idproduto = $idproduto";
+        	parent::Execute($Sql);
+        }
+        
         #Ficha produto
         function VisualizaFichaProduto($idproduto){
             $Sql = "SELECT P.*, C.nome AS categoria, X.* FROM t_produtos P 

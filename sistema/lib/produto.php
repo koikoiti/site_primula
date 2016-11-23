@@ -37,12 +37,18 @@
         #Botões
         #$botao_excluir = '<button onclick="excluir(\''.$idproduto.'\')" style="box-shadow: none;background-color: #B6195B;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Excluir</button>';
         if($rsProduto['ativo'] == 0){
-            $botao_ativar_inativar = '<button onclick="ativar(\''.$idproduto.'\')" style="box-shadow: none;background-color: #191BB6;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Ativar</button>';;
+            $botao_ativar_inativar = '<button onclick="ativar(\''.$idproduto.'\')" style="box-shadow: none;background-color: #191BB6;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Ativar</button>';
         }else{
-            $botao_ativar_inativar = '<button onclick="inativar(\''.$idproduto.'\')" style="box-shadow: none;background-color: #B0A46A;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Inativar</button>';;
+            $botao_ativar_inativar = '<button onclick="inativar(\''.$idproduto.'\')" style="box-shadow: none;background-color: #B0A46A;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Inativar</button>';
         }
         $botao_voltar = '<button onclick="voltar()" style="box-shadow: none;background-color: #000000;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Voltar</button>'; 
-    
+    	
+        if($rsProduto['ocultar'] == 0){
+        	$botao_ocultar = '<button onclick="ocultarNoSite(\''.$idproduto.'\', 1)" style="box-shadow: none;background-color: #784d9e;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Ocultar no Site</button>';
+        }else{
+        	$botao_ocultar = '<button onclick="ocultarNoSite(\''.$idproduto.'\', 0)" style="box-shadow: none;background-color: #784d9e;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Mostrar no Site</button>';
+        }
+        
     }elseif($this->PaginaAux[0] == 'visualizar'){
         $idproduto = $this->PaginaAux[1];
         $banco->VisualizaFichaProduto($idproduto);
@@ -54,6 +60,11 @@
         $idproduto = $this->PaginaAux[1];
         $banco->Inativar($idproduto);
         $banco->RedirecionaPara('lista-produto');
+    }elseif($this->PaginaAux[0] == 'ocultar'){
+    	$idproduto = $this->PaginaAux[1];
+    	$valor = $this->PaginaAux[2];
+    	$banco->OcultarNoSite($idproduto, $valor);
+    	$banco->RedirecionaPara('produto/editar/'.$idproduto);
     }
     
     #Trabalha com Post
@@ -195,5 +206,6 @@
     $Conteudo = str_replace("<%BOTAOEXCLUIR%>", $botao_excluir, $Conteudo);
     $Conteudo = str_replace("<%BOTAOATIVARINATIVAR%>", $botao_ativar_inativar, $Conteudo);
     $Conteudo = str_replace("<%BOTAOVOLTAR%>", $botao_voltar, $Conteudo);
+    $Conteudo = str_replace("<%BOTAOOCULTAR%>", $botao_ocultar, $Conteudo);
     $Conteudo = str_replace("<%HIDDEN%>", $hidden, $Conteudo);
 ?>

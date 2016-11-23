@@ -100,6 +100,7 @@
                 <%BOTAOVOLTAR%>
                 <%BOTAOATIVARINATIVAR%>
                 <%BOTAOEXCLUIR%>
+                <%BOTAOOCULTAR%>
            </div>
        </div>
     </div>
@@ -121,6 +122,10 @@ function ativar(idproduto){
 
 function inativar(idproduto){
     location.href = "<%URLPADRAO%>produto/inativar/" + idproduto;
+}
+
+function ocultarNoSite(idproduto, valor){
+    location.href = "<%URLPADRAO%>produto/ocultar/" + idproduto + "/" + valor;
 }
 
 </script>
