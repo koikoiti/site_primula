@@ -14,6 +14,7 @@
 			}else{
 				$order = " ORDER BY P.data_cadastro DESC ";
 			}
+			$where .= " AND ocultar = 0";
 			$Sql = "SELECT P.* FROM t_produtos P 
 					INNER JOIN fixo_categorias_produto C ON C.idcategoria = P.idcategoria 
 					WHERE 1 $where $order LIMIT $inicio, " . Limite;
@@ -183,6 +184,7 @@
 			if($idcategoria){
 				$where .= " AND P.idcategoria = $idcategoria";
 			}
+			$where .= " AND ocultar = 0";
 			$Sql = "SELECT P.* FROM t_produtos P
 					INNER JOIN fixo_categorias_produto C ON C.idcategoria = P.idcategoria
 					WHERE 1 $where
