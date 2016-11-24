@@ -46,7 +46,7 @@
         #Últimos Adicionados
 		function MontaUltimos(){
 			$Auxilio = parent::CarregaHtml('itens/inicio-destaque-itens');
-			$SqlDestaques = "SELECT idproduto FROM t_produtos ORDER BY idproduto DESC LIMIT 8";
+			$SqlDestaques = "SELECT idproduto FROM t_produtos WHERE 1 AND ocultar = 0 ORDER BY idproduto DESC LIMIT 8";
 			$resultDestaques = parent::Execute($SqlDestaques);
 			$cont = 0;
 			while($rsDestaques = mysql_fetch_array($resultDestaques, MYSQL_ASSOC)){

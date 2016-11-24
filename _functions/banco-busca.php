@@ -3,7 +3,7 @@
 		
 		function MontaBuscaProduto($busca){
 			$busca = utf8_decode($busca);
-			$Sql = "SELECT P.idproduto, P.nome, I.caminho FROM t_produtos P INNER JOIN t_imagens_produto I ON I.idproduto = P.idproduto WHERE I.ordem = 1 AND P.nome LIKE '%$busca%'";
+			$Sql = "SELECT P.idproduto, P.nome, I.caminho FROM t_produtos P INNER JOIN t_imagens_produto I ON I.idproduto = P.idproduto WHERE I.ordem = 1 AND P.nome LIKE '%$busca%' AND P.ocultar = 0";
 			$result = parent::Execute($Sql);
 			$linha = parent::Linha($result);
 			if($linha){
