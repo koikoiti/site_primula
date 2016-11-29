@@ -1,0 +1,129 @@
+<!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO -->
+<div class="col-md-12">
+    <div class="block-flat">
+        <div class="header" style="overflow: hidden;">
+            <p>
+               Cliente: <%CLIENTE%> <button class="btn btn-success" type="button" onclick="modalHistorico();">Novo</button>
+            </p>
+        </div>
+        <div class="content">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="datatable">
+                    <thead>
+                        <tr>
+                        	<th>Data</th>
+                            <th>Funcionário</th>
+                            <th>Histórico</th>
+                            <th>Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%HISTORICO%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="top: 60px;" id="novoHistorico" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Novo Histórico</h4>
+			</div>
+		    <div class="modal-body" style="overflow: hidden">
+		    	<div class="col-sm-12">
+		    		<textarea class="form-control" id="text_historico" style="height: 150px;"></textarea>
+		    	</div>
+		    </div>
+		    <div class="modal-footer">
+		    	<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="gravaHistorico();">OK</button>
+		    </div>
+		</div>
+	</div>
+</div>
+<div style="top: 60px;" id="editaHistorico" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Editar Histórico</h4>
+			</div>
+		    <div class="modal-body" style="overflow: hidden">
+		    	<div class="col-sm-12">
+		    		<textarea class="form-control" id="text_historico_edita" style="height: 150px;"></textarea>
+		    	</div>
+		    </div>
+		    <input type="hidden" id="idhistoricocliente_edita" value="" />
+		    <div class="modal-footer">
+		    	<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="gravaEditaHistorico();">OK</button>
+		    </div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function modalHistorico(){
+	$("#novoHistorico").modal();
+}
+
+function gravaHistorico(){
+	var historico = $("#text_historico").val();
+	var idcliente = <%IDCLIENTE%>;
+	if(historico != ''){
+		$.post("<%URLPADRAO%>lib/ajax/gravaHistoricoCliente.php",
+				{historico:historico, idcliente:idcliente},
+				function(retorno){
+				    if(retorno){
+				    	location.reload();
+				    }
+				}
+			);
+	}else{
+		alert("Histórico não deve ser vazio");
+	}
+}
+
+function excluirHistorico(idhistoricocliente){
+	$.post("<%URLPADRAO%>lib/ajax/excluiHistoricoCliente.php",
+			{idhistoricocliente:idhistoricocliente},
+			function(retorno){
+			    if(retorno){
+			    	location.reload();
+			    }
+			}
+		);
+}
+
+function editarHistorico(idhistoricocliente){
+	$.post("<%URLPADRAO%>lib/ajax/editaHistoricoCliente.php",
+			{idhistoricocliente:idhistoricocliente},
+			function(retorno){
+			    if(retorno){
+			    	$("#idhistoricocliente_edita").val(idhistoricocliente);
+			    	$("#text_historico_edita").val(retorno);
+			    	$("#editaHistorico").modal();
+			    }
+			}
+		);
+}
+
+function gravaEditaHistorico(){
+	var historico = $("#text_historico_edita").val();
+	var idhistoricocliente = $("#idhistoricocliente_edita").val();
+	if(historico != ''){
+		$.post("<%URLPADRAO%>lib/ajax/gravaEditaHistoricoCliente.php",
+				{historico:historico, idhistoricocliente:idhistoricocliente},
+				function(retorno){
+				    if(retorno){
+				    	location.reload();
+				    }
+				}
+			);
+	}else{
+		alert("Histórico não deve ser vazio");
+	}
+}
+</script>

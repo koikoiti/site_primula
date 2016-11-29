@@ -45,7 +45,11 @@
 		
 		#funcao imprime conteudo
 		function Imprime($Conteudo){
-		    $menu = $this->MontaMenu();
+			if(in_array('historico', $this->PaginaAux)){
+				$menu = '';
+			}else{
+		    	$menu = $this->MontaMenu();
+			}
 			$SaidaHtml = $this->CarregaHtml('modelo');
 			$SaidaHtml = str_replace('<%CONTEUDO%>',$Conteudo,$SaidaHtml);
             $SaidaHtml = str_replace('<%MENU%>',$menu,$SaidaHtml);

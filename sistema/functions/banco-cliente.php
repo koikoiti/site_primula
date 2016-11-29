@@ -1,6 +1,48 @@
 <?php
     class bancocliente extends banco{
     	
+    	function MontaHistoricoCliente($idcliente){
+    		$Sql = "SELECT * FROM t_clientes_historico WHERE idcliente = $idcliente ORDER BY data DESC";
+    		$result = parent::Execute($Sql);
+    		$linha = parent::Linha($result);
+    		$Auxilio = parent::CarregaHtml('Clientes/itens/historico-itens');
+    		if($linha){
+	    		while($rs = parent::ArrayData($result)){
+	    			$Linha = $Auxilio;
+	    			if($rs['usuario'] == $_SESSION['nomeexibicao'] || $_SESSION['idsetor'] == 1){
+	    				$opcoes = '<ul role="menu" class="dropdown-menu">
+					                <li>
+					                    <a href="javascript:void(0)" onclick="editarHistorico('.$rs['idhistoricocliente'].')">Editar</a>
+					                </li>
+					                <li class="divider"></li>
+					                <li>
+					                    <a href="javascript:void(0)" onclick="excluirHistorico('.$rs['idhistoricocliente'].')">Excluir</a>
+					                </li>
+					            </ul>';
+	    			}else{
+	    				$opcoes = '';
+	    			}
+	    			$Linha = str_replace('<%DATA%>', date("d/m/Y H:i", strtotime($rs['data'])), $Linha);
+	    			$Linha = str_replace('<%FUNCIONARIO%>', $rs['usuario'], $Linha);
+	    			$Linha = str_replace('<%HISTORICO%>', $rs['historico'], $Linha);
+	    			$Linha = str_replace('<%OPCOES%>', $opcoes, $Linha);
+	    			$historico .= $Linha;
+	    		}
+    		}else{
+    			$historico = '<tr class="odd gradeX">
+                                <td colspan="4">Não foram encontrados registros de histórico para esse cliente.</td>
+                             <tr>';
+    		}
+    		return utf8_encode($historico);
+    	}
+    	
+    	function BuscaNomeCliente($idcliente){
+    		$Sql = "SELECT nome FROM t_clientes WHERE idcliente = $idcliente";
+    		$result = parent::Execute($Sql);
+    		$rs = parent::ArrayData($result);
+    		return $rs['nome'];
+    	}
+    	
     	function MontaConsulta($idcliente){
     		$Sql = "SELECT * FROM t_clientes_consulta WHERE idcliente = $idcliente";
     		$result = parent::Execute($Sql);
