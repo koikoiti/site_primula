@@ -2,3 +2,16 @@
 <div class="col-sm-12" style="margin-top: 50px;">
     <%AVISOS%>
 </div>
+
+<script type="text/javascript">
+function finalizaAviso(idaviso){
+	$.post("<%URLPADRAO%>lib/ajax/finalizaAviso.php",
+			{idaviso:idaviso},
+			function(retorno){
+			    if(retorno){
+			    	location.reload();
+			    }
+			}
+		);
+} 
+</script>

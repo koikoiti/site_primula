@@ -4,7 +4,7 @@
         #Monta checkboxes dos funcionários
         function MontaCBFuncionarios($idaviso, $disabled){
             $arrComp = array();
-            $Sql = "SELECT * FROM t_usuarios WHERE login <> 'admin' AND login <> '{$_SESSION['nomeusuario']}'";
+            $Sql = "SELECT * FROM t_usuarios WHERE login <> 'admin' AND login <> '{$_SESSION['nomeusuario']}' AND ativo = 1";
             $result = parent::Execute($Sql);
             
             #Check, caso edit
