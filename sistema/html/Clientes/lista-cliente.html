@@ -2,19 +2,26 @@
 <div class="col-md-12">
     <div class="block-flat">
         <div class="header" style="overflow: hidden;">
-            <p>
-                <a href="<%URLPADRAO%>cliente">Criar Novo</a>
-            </p>
-            <h3 style="width: 30%; float: left;">Lista de Clientes</h3>
-            <div style="float: left; width: 70%;">
-                <input style="float: left; width: 20%;" id="busca_nome" type="text" class="form-control" value="<%BUSCANOME%>" placeholder="Nome Fantasia / Nome Cliente"/>
-                <input style="float: left; width: 10%;" id="busca_cnpj" type="text" class="form-control" value="<%BUSCACNPJ%>" placeholder="CNPJ"/>
-                <input style="float: left; width: 10%;" id="busca_cpf" type="text" class="form-control" value="<%BUSCACPF%>" placeholder="CPF"/>
-                <input style="float: left; width: 10%;" id="busca_telefone" type="text" class="form-control" value="<%BUSCATELEFONE%>" placeholder="Telefone"/>
-                <%SELECTBUSCABAIRRO%>
-                <%SELECTBUSCACIDADE%>
-                <button style="float: left;" onclick="pesquisar()" type="button" class="btn btn-success btn-flat">Pesquisar</button>
-                <button style="float: left;" onclick="javascript:location.href='<%URLPADRAO%>lista-cliente'" type="button" class="btn btn-danger btn-flat">Limpar</button>
+            <div class="col-sm-12 no-padding">
+            	<div class="col-sm-10">
+                	<a href="<%URLPADRAO%>cliente">Criar Novo</a>
+                </div>
+                <div class="col-sm-2 text-right">
+                	<button class="btn btn-info">Minhas Interações</button>
+                </div>
+            </div>
+            <div class="col-sm-12 no-padding">
+	            <h3 style="width: 30%; float: left;">Lista de Clientes</h3>
+	            <div style="float: left; width: 70%;">
+	                <input style="float: left; width: 20%;" id="busca_nome" type="text" class="form-control" value="<%BUSCANOME%>" placeholder="Nome Fantasia / Nome Cliente"/>
+	                <input style="float: left; width: 10%;" id="busca_cnpj" type="text" class="form-control" value="<%BUSCACNPJ%>" placeholder="CNPJ"/>
+	                <input style="float: left; width: 10%;" id="busca_cpf" type="text" class="form-control" value="<%BUSCACPF%>" placeholder="CPF"/>
+	                <input style="float: left; width: 10%;" id="busca_telefone" type="text" class="form-control" value="<%BUSCATELEFONE%>" placeholder="Telefone"/>
+	                <%SELECTBUSCABAIRRO%>
+	                <%SELECTBUSCACIDADE%>
+	                <button style="float: left;" onclick="pesquisar()" type="button" class="btn btn-success btn-flat">Pesquisar</button>
+	                <button style="float: left;" onclick="javascript:location.href='<%URLPADRAO%>lista-cliente'" type="button" class="btn btn-danger btn-flat">Limpar</button>
+	            </div>
             </div>
         </div>
         <div class="content">
@@ -27,6 +34,7 @@
                             <th>Endereço</th>
                             <th>Telefone</th>
                             <th>CNPJ / CPF</th>
+                            <th>Última Interação</th>
                             <th>Ativo / Inativo</th>
                             <th>Opções</th>
                         </tr>

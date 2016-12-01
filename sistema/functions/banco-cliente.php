@@ -406,7 +406,7 @@
                     	$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="ativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Ativar</a>', $Linha);
                     }
                     $Linha = str_replace('<%CNPJCPF%>', $cnpjcpf, $Linha);
-                    #Verifica consulta
+                    #Verifica consulta, se tiver
                     $SqlConsulta = "SELECT * FROM t_clientes_consulta WHERE idcliente = " . $rs['idcliente'];
                     $resultConsulta = parent::Execute($SqlConsulta);
                     $linhaConsulta = parent::Linha($resultConsulta);
@@ -417,6 +417,18 @@
                     	$consultaHTML = "";
                     }
                     $Linha = str_replace('<%CONSULTA%>', $consultaHTML, $Linha);
+                    #Verifica última interação
+                    $SqlInteracao = "SELECT data, usuario FROM t_clientes_historico WHERE idcliente = " . $rs['idcliente'] . " ORDER BY data DESC LIMIT 0, 1";
+                    $resultInteracao = parent::Execute($SqlInteracao);
+                    $linhaInteracao = parent::Linha($resultInteracao);
+                    if($linhaInteracao){
+                    	$rsInteracao = parent::ArrayData($resultInteracao);
+                    	$dataInteracao = date("d/m/Y - H:i", strtotime($rsInteracao['data']));
+                    	$interacaoHTML = "$dataInteracao <br/> {$rsInteracao['usuario']}";
+                    }else{
+                    	$interacaoHTML = "";
+                    }
+                    $Linha = str_replace('<%ULTIMAINTERACAO%>', $interacaoHTML, $Linha);
                     $Clientes .= $Linha;
                 }
             }else{
