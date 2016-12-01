@@ -24,11 +24,17 @@
     $select_busca_bairro = $banco->SelectBuscaBairro(utf8_decode($busca_bairro));
     $select_busca_cidade = $banco->SelectBuscaCidade(utf8_decode($busca_cidade));
     #$select_busca_tipo_cliente = $banco->SelectBuscaTipoCliente(utf8_decode($busca_cliente));
-        
-    $Clientes = $banco->ListaClientes(utf8_decode($busca_nome), $busca_cnpj, $busca_cpf, utf8_decode($busca_bairro), $busca_telefone, $pagina, utf8_decode($busca_cidade));
     
-    $paginacao = $banco->MontaPaginacao($busca_nome, $busca_cnpj, $busca_cpf, utf8_decode($busca_bairro), $busca_telefone, $pagina, utf8_decode($busca_cidade));
-        
+    if(isset($_GET['minhas_interacoes'])){
+    	$Clientes = $banco->MontaMinhasInteracoes();
+    	$paginacao = '';
+    	$minhas_interacoes_title = utf8_encode(" - Minhas Interações");
+    }else{
+    	$Clientes = $banco->ListaClientes(utf8_decode($busca_nome), $busca_cnpj, $busca_cpf, utf8_decode($busca_bairro), $busca_telefone, $pagina, utf8_decode($busca_cidade));
+    	$paginacao = $banco->MontaPaginacao($busca_nome, $busca_cnpj, $busca_cpf, utf8_decode($busca_bairro), $busca_telefone, $pagina, utf8_decode($busca_cidade));
+    	$minhas_interacoes_title = '';
+    }
+           
 	#Imprime valores
 	$Conteudo = utf8_encode($banco->CarregaHtml('Clientes/lista-cliente'));
     $Conteudo = str_replace("<%CLIENTES%>", $Clientes, $Conteudo);
@@ -39,5 +45,5 @@
     $Conteudo = str_replace("<%BUSCATELEFONE%>", $busca_telefone, $Conteudo);
     $Conteudo = str_replace("<%SELECTBUSCABAIRRO%>", $select_busca_bairro, $Conteudo);
     $Conteudo = str_replace("<%SELECTBUSCACIDADE%>", $select_busca_cidade, $Conteudo);
-    #$Conteudo = str_replace("<%SELECTBUSCATIPOCLIENTE%>", $select_busca_tipo_cliente, $Conteudo);
+    $Conteudo = str_replace("<%MINHASINTERACOESTITLE%>", $minhas_interacoes_title, $Conteudo);
 ?>

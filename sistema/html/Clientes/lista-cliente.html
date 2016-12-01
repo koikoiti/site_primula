@@ -7,11 +7,11 @@
                 	<a href="<%URLPADRAO%>cliente">Criar Novo</a>
                 </div>
                 <div class="col-sm-2 text-right">
-                	<button class="btn btn-info">Minhas Interações</button>
+                	<a href="<%URLPADRAO%>lista-cliente/?minhas_interacoes=true" class="btn btn-info">Minhas Interações</a>
                 </div>
             </div>
             <div class="col-sm-12 no-padding">
-	            <h3 style="width: 30%; float: left;">Lista de Clientes</h3>
+	            <h3 style="width: 30%; float: left;">Lista de Clientes <%MINHASINTERACOESTITLE%></h3>
 	            <div style="float: left; width: 70%;">
 	                <input style="float: left; width: 20%;" id="busca_nome" type="text" class="form-control" value="<%BUSCANOME%>" placeholder="Nome Fantasia / Nome Cliente"/>
 	                <input style="float: left; width: 10%;" id="busca_cnpj" type="text" class="form-control" value="<%BUSCACNPJ%>" placeholder="CNPJ"/>

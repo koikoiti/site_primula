@@ -1,6 +1,73 @@
 <?php
     class bancocliente extends banco{
     	
+    	function MontaMinhasInteracoes(){
+    		$Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-itens');
+    		$SqlHistorico = "SELECT idcliente FROM t_clientes_historico WHERE usuario = '".$_SESSION['nomeexibicao']."' GROUP BY idcliente";
+    		$resultHistorico = parent::Execute($SqlHistorico);
+    		$linhaHistorico = parent::Linha($resultHistorico);
+    		if($linhaHistorico){
+    			while($rsHistorico = parent::ArrayData($resultHistorico)){
+	    			$Linha = $Auxilio;
+	    			$Sql = "SELECT C.*, P.tipo AS tipoprofissional FROM t_clientes C
+		                    INNER JOIN fixo_tipo_profissional P ON C.idtipoprofissional = P.idtipoprofissional
+		                    WHERE 1 AND idcliente = " . $rsHistorico['idcliente'];
+	    			$result = parent::Execute($Sql);
+	    			$rs = parent::ArrayData($result);
+	    			
+	    			$Linha = str_replace('<%ID%>', $rs['idcliente'], $Linha);
+	    			$Linha = str_replace('<%NOME%>', $rs['nome'], $Linha);
+	    			$Linha = str_replace('<%TIPOPROFISSIONAL%>', $rs['tipoprofissional'], $Linha);
+	    			$addr = $rs['endereco'] . ", Nº " . $rs['numero'] . " - " . $rs['bairro'] . " - " . $rs['cidade'] . "/" . $rs['estado'];
+	    			$Linha = str_replace('<%ENDERECO%>', $addr, $Linha);
+	    			$Linha = str_replace('<%TELEFONE%>', $rs['telefone'], $Linha);
+	    			if($rs['idtipocliente'] == 1){
+	    				$cnpjcpf = 'CPF: ' . $rs['cpf'];
+	    			}elseif($rs['idtipocliente'] == 2){
+	    				$cnpjcpf = 'CNPJ: ' . $rs['cnpj'];
+	    			}
+	    			if($rs['ativo'] == 1){
+	    				$Linha = str_replace("<%ATIVOINATIVO%>", 'Ativo', $Linha);
+	    				$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
+	    			}else{
+	    				$Linha = str_replace("<%ATIVOINATIVO%>", 'Inativo', $Linha);
+	    				$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="ativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Ativar</a>', $Linha);
+	    			}
+	    			$Linha = str_replace('<%CNPJCPF%>', $cnpjcpf, $Linha);
+	    			#Verifica consulta, se tiver
+	    			$SqlConsulta = "SELECT * FROM t_clientes_consulta WHERE idcliente = " . $rs['idcliente'];
+	    			$resultConsulta = parent::Execute($SqlConsulta);
+	    			$linhaConsulta = parent::Linha($resultConsulta);
+	    			if($linhaConsulta){
+	    				$rsConsulta = parent::ArrayData($resultConsulta);
+	    				$consultaHTML = '<a target="_blank" href="'.UrlPadrao.$rsConsulta['caminho'].'">Consulta</a>';
+	    			}else{
+	    				$consultaHTML = "";
+	    			}
+	    			$Linha = str_replace('<%CONSULTA%>', $consultaHTML, $Linha);
+	    			#Verifica última interação
+	    			$SqlInteracao = "SELECT data, usuario FROM t_clientes_historico WHERE idcliente = " . $rs['idcliente'] . " ORDER BY data DESC LIMIT 0, 1";
+	    			$resultInteracao = parent::Execute($SqlInteracao);
+	    			$linhaInteracao = parent::Linha($resultInteracao);
+	    			if($linhaInteracao){
+	    				$rsInteracao = parent::ArrayData($resultInteracao);
+	    				$dataInteracao = date("d/m/Y - H:i", strtotime($rsInteracao['data']));
+	    				$interacaoHTML = "$dataInteracao <br/> {$rsInteracao['usuario']}";
+	    			}else{
+	    				$interacaoHTML = "";
+	    			}
+	    			$Linha = str_replace('<%ULTIMAINTERACAO%>', $interacaoHTML, $Linha);
+	    			$Clientes .= $Linha;
+    			}
+    		}else{
+    			$Clientes = '<tr class="odd gradeX">
+                                <td colspan="8">Não foram encontrados clientes cadastrados.</td>
+                             <tr>';
+    		}
+    		            
+            return utf8_encode($Clientes);
+    	}
+    	
     	function MontaHistoricoCliente($idcliente){
     		$Sql = "SELECT * FROM t_clientes_historico WHERE idcliente = $idcliente ORDER BY data DESC";
     		$result = parent::Execute($Sql);
@@ -433,7 +500,7 @@
                 }
             }else{
                 $Clientes = '<tr class="odd gradeX">
-                                <td colspan="7">Não foram encontrados clientes cadastrados.</td>
+                                <td colspan="8">Não foram encontrados clientes cadastrados.</td>
                              <tr>';
             }
             
