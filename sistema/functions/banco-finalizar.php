@@ -50,11 +50,23 @@
             	$por_conta = '';
             }
             
+            #Tarifa Boleto
+            if($rs['tarifa'] == '0.00'){
+            	$linha_tarifa = "";
+            }else{
+            	$linha_tarifa = "<tr>
+				                	<td></td>
+				                    <td>Tarifa</td>
+				                    <td>".number_format($rs['tarifa'], 2, ',', '.')."</td>
+				                </tr>";
+            }
+            
             #Replaces
             $Auxilio = str_replace('<%PAGAMENTOS%>', $Pagamentos['html'], $Auxilio);
             $Auxilio = str_replace('<%TROCO%>', $Troco, $Auxilio);
             $Auxilio = str_replace('<%FRETE%>', number_format($rs['valor_frete'], 2, ',', '.'), $Auxilio);
             $Auxilio = str_replace('<%PORCONTA%>', $por_conta, $Auxilio);
+            $Auxilio = str_replace('<%LINHATARIFA%>', $linha_tarifa, $Auxilio);
             $Auxilio = str_replace('<%PRODUTOS%>', $Produtos['html'], $Auxilio);
             $Auxilio = str_replace('<%DESCONTO%>', number_format($Produtos['desconto'], 2, ',', '.'), $Auxilio);
             $Auxilio = str_replace('<%TOTALPRODUTOS%>', number_format($Produtos['subtotal'], 2, ',', '.'), $Auxilio);
@@ -268,11 +280,19 @@
         		$por_conta = '';
         	}
         	
+        	#Tarifa Boleto
+        	if($rs['tarifa'] == '0.00'){
+        		$linha_tarifa = "";
+        	}else{
+        		$linha_tarifa = "Tarifa ".number_format($rs['tarifa'], 2, ',', '.');
+        	}
+        	
         	#Replaces
         	$Auxilio = str_replace('<%PAGAMENTOS%>', $Pagamentos['html'], $Auxilio);
         	$Auxilio = str_replace('<%TROCO%>', $Troco, $Auxilio);
         	$Auxilio = str_replace('<%FRETE%>', number_format($rs['valor_frete'], 2, ',', '.'), $Auxilio);
         	$Auxilio = str_replace('<%PORCONTA%>', $por_conta, $Auxilio);
+        	$Auxilio = str_replace('<%LINHATARIFA%>', $linha_tarifa, $Auxilio);
         	$Auxilio = str_replace('<%PRODUTOS%>', $Produtos['html'], $Auxilio);
         	$Auxilio = str_replace('<%DESCONTO%>', number_format($Produtos['desconto'], 2, ',', '.'), $Auxilio);
         	$Auxilio = str_replace('<%TOTALPRODUTOS%>', number_format($Produtos['subtotal'], 2, ',', '.'), $Auxilio);

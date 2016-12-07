@@ -17,6 +17,7 @@ Rua Rocha Pombo, 230 - Curitiba/PR
 
 Total dos Produtos: <%TOTALPRODUTOS%>
 Frete <%PORCONTA%> <%FRETE%>
+<%LINHATARIFA%>
 Desconto <%DESCONTO%>
 
 Total da Venda: <%TOTALVENDA%>
@@ -51,6 +52,7 @@ Rua Rocha Pombo, 230 - Curitiba/PR
 
 Total dos Produtos: <%TOTALPRODUTOS%>
 Frete <%PORCONTA%> <%FRETE%>
+<%LINHATARIFA%>
 Desconto <%DESCONTO%>
 
 Total da Venda: <%TOTALVENDA%>
