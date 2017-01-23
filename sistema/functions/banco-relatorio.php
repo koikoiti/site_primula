@@ -2,7 +2,7 @@
 	class bancorelatorio extends banco{
 		
 		#Monta o relatório
-		function MontaRelatorio($dataIni, $dataFim, $idresponsavel){
+		function MontaRelatorio($dataIni, $dataFim, $idresponsavel, $marca){
 			$Auxilio = parent::CarregaHtml('itens/relatorio-itens');
 			$where = '';
 			if($dataIni){
@@ -17,9 +17,28 @@
 				$where .= " AND V.idusuario = $idresponsavel";
 			}
 			
-			$Sql = "SELECT C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario FROM t_vendas V 
-					INNER JOIN t_clientes C ON V.idcliente = C.idcliente 
-					WHERE 1 $where";
+			if($marca){
+				$SqlMarcaProduto = "SELECT idproduto FROM t_produtos WHERE marca LIKE '%$marca%'";
+				$resultMarcaProduto = parent::Execute($SqlMarcaProduto);
+				$linhaMarcaProduto = parent::Linha($resultMarcaProduto);
+				if($linhaMarcaProduto){
+					$where .= " AND (";
+					while($rsMarcaProduto = parent::ArrayData($resultMarcaProduto)){
+						$where .= " X.produto_kit = 'prod_" . $rsMarcaProduto['idproduto'] . "' OR";
+					}
+					$where = rtrim($where, " OR");
+					$where .= ")";
+					$Sql = "SELECT DISTINCT C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario 
+							FROM t_vendas V
+							INNER JOIN t_clientes C ON V.idcliente = C.idcliente 
+							INNER JOIN t_vendas_produtos X ON V.idvenda = X.idvenda 
+							WHERE 1 $where";
+				}
+			}else{
+				$Sql = "SELECT C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario FROM t_vendas V 
+						INNER JOIN t_clientes C ON V.idcliente = C.idcliente 
+						WHERE 1 $where";
+			}
 			
 			$quantidade_vendas = 0;
 			$total_vendas_sem_frete = 0;

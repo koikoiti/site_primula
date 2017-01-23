@@ -2,14 +2,16 @@
 <div class="col-md-12">
     <div class="block-flat">
         <div class="header" style="overflow: hidden;">
-            <h3 style="width: 30%; float: left;">Relatório</h3>
-            <div style="width: 70%; float: left;">
-               	<div style="width: 70%; float: right;" class="">
-               		<input style="float: left; width: 25%;" id="busca_dataIni" type="date" class="form-control" value="<%BUSCADATAINI%>" placeholder="Data Inicial"/>
+            <h3 style="width: 15%; float: left;">Relatório</h3>
+            <div style="width: 85%; float: left;">
+               	<div style="width: 100%; float: right;" class="">
+               		<input style="float: left; width: 20%;" id="busca_dataIni" type="date" class="form-control" value="<%BUSCADATAINI%>" placeholder="Data Inicial"/>
                		<span style="float: left; width: 2%;" class="no-padding">&nbsp;a</span> 
-               		<input style="float: left; width: 25%;" id="busca_dataFim" type="date" class="form-control" value="<%BUSCADATAFIM%>" placeholder="Data Final"/>
+               		<input style="float: left; width: 20%;" id="busca_dataFim" type="date" class="form-control" value="<%BUSCADATAFIM%>" placeholder="Data Final"/>
                		<span style="float: left; width: 2%;" class="no-padding">&nbsp;&nbsp;</span>
                		<%SELECTUSUARIOS%>
+               		<span style="float: left; width: 2%;" class="no-padding">&nbsp;</span>
+               		<input style="float: left; width: 20%;" id="busca_marca" type="text" class="form-control" value="<%BUSCAMARCA%>" placeholder="Marca"/>
                		<div style="float: right;">
                 		<button type="button" onclick="pesquisar();" class="btn btn-success"><i class="fa fa-search"></i></button>
                 		<%BOTAOLIMPARFILTRO%>
@@ -44,7 +46,8 @@ function pesquisar(){
     var dataIni = $("#busca_dataIni").val().trim();
     var dataFim = $("#busca_dataFim").val().trim();
     var busca_responsavel = $("#busca_responsavel").val().trim();
+    var busca_marca = $("#busca_marca").val().trim();
     
-    location.href = "<%URLPADRAO%>relatorios/?dataIni=" + dataIni + "&dataFim=" + dataFim + "&busca_responsavel=" + busca_responsavel;
+    location.href = "<%URLPADRAO%>relatorios/?dataIni=" + dataIni + "&dataFim=" + dataFim + "&busca_responsavel=" + busca_responsavel + "&busca_marca=" + busca_marca;
 }
 </script>
