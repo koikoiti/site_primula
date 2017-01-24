@@ -68,7 +68,7 @@
             $Auxilio = str_replace('<%PORCONTA%>', $por_conta, $Auxilio);
             $Auxilio = str_replace('<%LINHATARIFA%>', $linha_tarifa, $Auxilio);
             $Auxilio = str_replace('<%PRODUTOS%>', $Produtos['html'], $Auxilio);
-            $Auxilio = str_replace('<%DESCONTO%>', number_format($Produtos['desconto'], 2, ',', '.'), $Auxilio);
+            $Auxilio = str_replace('<%DESCONTO%>', number_format(($Produtos['desconto'] + $rs['desconto_subtotal']), 2, ',', '.'), $Auxilio);
             $Auxilio = str_replace('<%TOTALPRODUTOS%>', number_format($Produtos['subtotal'], 2, ',', '.'), $Auxilio);
             $Auxilio = str_replace('<%TOTALVENDA%>', number_format($rs['valor_venda'], 2, ',', '.'), $Auxilio);
             $Auxilio = str_replace('<%NOMECLIENTE%>', utf8_encode($rsCliente['nome']), $Auxilio);
@@ -294,7 +294,7 @@
         	$Auxilio = str_replace('<%PORCONTA%>', $por_conta, $Auxilio);
         	$Auxilio = str_replace('<%LINHATARIFA%>', $linha_tarifa, $Auxilio);
         	$Auxilio = str_replace('<%PRODUTOS%>', $Produtos['html'], $Auxilio);
-        	$Auxilio = str_replace('<%DESCONTO%>', number_format($Produtos['desconto'], 2, ',', '.'), $Auxilio);
+        	$Auxilio = str_replace('<%DESCONTO%>', number_format(($Produtos['desconto'] + $rs['desconto_subtotal']), 2, ',', '.'), $Auxilio);
         	$Auxilio = str_replace('<%TOTALPRODUTOS%>', number_format($Produtos['subtotal'], 2, ',', '.'), $Auxilio);
         	$Auxilio = str_replace('<%TOTALVENDA%>', number_format($rs['valor_venda'], 2, ',', '.'), $Auxilio);
         	$Auxilio = str_replace('<%NOMECLIENTE%>', ($rsCliente['nome']), $Auxilio);
