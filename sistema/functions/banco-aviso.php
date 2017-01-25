@@ -88,7 +88,7 @@
                 while($rs = parent::ArrayData($result)){
                     $Linha = $Auxilio;
                     $Linha = str_replace('<%ID%>', $rs['idaviso'], $Linha);
-                    $Linha = str_replace('<%AVISO%>', $rs['aviso'], $Linha);
+                    $Linha = str_replace('<%AVISO%>', nl2br($rs['aviso']), $Linha);
                     $datahoraAux = explode(' ', $rs['data']);
                     $Linha = str_replace('<%DATA%>', date("d/m/Y", strtotime($datahoraAux[0])), $Linha);
                     if($datahoraAux[1] == '00:00:00'){

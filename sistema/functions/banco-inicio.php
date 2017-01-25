@@ -28,7 +28,7 @@
             while($rs = parent::ArrayData($result)){
                 $Linha = $Auxilio;
                 $Linha = str_replace('<%IDAVISO%>', $rs['idaviso'], $Linha);
-                $Linha = str_replace('<%AVISO%>', $rs['aviso'], $Linha);
+                $Linha = str_replace('<%AVISO%>', nl2br($rs['aviso']), $Linha);
                 $auxDataHora = explode(' ', $rs['data']);
                 $Linha = str_replace('<%DATA%>', date("d/m/Y", strtotime($auxDataHora[0])), $Linha);
                 $Linha = str_replace('<%HORA%>', $auxDataHora[1], $Linha);
