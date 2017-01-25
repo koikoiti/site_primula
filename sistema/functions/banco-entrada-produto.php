@@ -19,7 +19,7 @@
             parent::RedirecionaPara('lista-entrada-produto');
         }
         
-        #Arruma Estoque Diminui
+        #Arruma Estoque Diminui @TODO
         function arrumaEstoqueDiminui($identrada){
         	$Sql = "SELECT * FROM t_vendas_produtos WHERE idvenda = $idvenda";
         	$result = parent::Execute($Sql);
@@ -47,7 +47,8 @@
         		$auxPK = explode('_', $rs['produto_kit']);
         		if($auxPK[0] == 'prod'){
         			$idproduto = $auxPK[1];
-        			$SqlProduto = "UPDATE t_produtos SET estoque = estoque + ".$rs['quantidade'] . " WHERE idproduto = $idproduto";
+        			$quantidade = $rs['quantidade'];
+        			$SqlProduto = "UPDATE t_produtos SET estoque = estoque + $quantidade WHERE idproduto = $idproduto";
         			parent::Execute($SqlProduto);
         		}elseif($auxPK[0] == 'kit'){
         			$idkit = $auxPK[1];

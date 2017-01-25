@@ -326,12 +326,17 @@
         		$auxPK = explode('_', $rs['produto_kit']);
         		if($auxPK[0] == 'prod'){
         			$idproduto = $auxPK[1];
-        			$SqlProduto = "UPDATE t_produtos SET estoque = estoque - ".$rs['quantidade'] . " WHERE idproduto = $idproduto";
+        			$quantidade = $rs['quantidade'];
+        			$SqlProduto = "UPDATE t_produtos SET estoque = estoque - $quantidade WHERE idproduto = $idproduto";
         			parent::Execute($SqlProduto);
         		}elseif($auxPK[0] == 'kit'){
         			$idkit = $auxPK[1];
-        			$SqlKit = "UPDATE t_kit SET estoque = estoque - ".$rs['quantidade']. " WHERE idkit = $idkit";
-        			parent::Execute($SqlKit);
+        			$SqlKit = "SELECT idproduto, quantidade FROM t_kit_produtos WHERE idkit = $idkit";
+        			$resultKit = parent::Execute($SqlKit);
+        			while($rsKit = parent::ArrayData($resultKit)){
+        				$SqlProduto = "UPDATE t_produtos SET estoque = estoque - ".$rsKit['quantidade'] * $rs['quantidade'] . " WHERE idproduto = " . $rsKit['idproduto'];
+        				parent::Execute($SqlProduto);
+        			}
         		}
         	}
         }
@@ -350,15 +355,19 @@
         		$auxPK = explode('_', $rsItens['produto_kit']);
         		if($auxPK[0] == 'prod'){
         			$idproduto = $auxPK[1];
-        			$SqlProduto = "UPDATE t_produtos SET estoque = estoque + ".$$rsItens['quantidade'] . " WHERE idproduto = $idproduto";
+        			$quantidade = $rsItens['quantidade'];
+        			$SqlProduto = "UPDATE t_produtos SET estoque = estoque + $quantidade WHERE idproduto = $idproduto";
         			parent::Execute($SqlProduto);
         		}elseif($auxPK[0] == 'kit'){
         			$idkit = $auxPK[1];
-        			$SqlKit = "UPDATE t_kit SET estoque = estoque + ".$rsItens['quantidade']. " WHERE idkit = $idkit";
-        			parent::Execute($SqlKit);
+        			$SqlKit = "SELECT idproduto, quantidade FROM t_kit_produtos WHERE idkit = $idkit";
+        			$resultKit = parent::Execute($SqlKit);
+        			while($rsKit = parent::ArrayData($resultKit)){
+        				$SqlProduto = "UPDATE t_produtos SET estoque = estoque + ".$rsKit['quantidade'] * $rsItens['quantidade'] . " WHERE idproduto = " . $rsKit['idproduto'];
+        				parent::Execute($SqlProduto);
+        			}
         		}
         	}
-        	        	
         	$Sql = "DELETE FROM t_vendas WHERE idvenda = $idvenda";
         	parent::Execute($Sql);
         	parent::RedirecionaPara('lista-venda');
