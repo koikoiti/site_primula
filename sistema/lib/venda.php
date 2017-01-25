@@ -1,4 +1,5 @@
 <?php
+	$contProdutos = 0;
 	$desconto_subtotal = '';
     $titulo = "Venda / Orçamento";
     $botao_voltar = '<button onclick="voltar()" style="box-shadow: none;background-color: #000000;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Voltar</button>';
@@ -13,7 +14,10 @@
 		$rsVenda = $banco->BuscaVendaPorId($idvenda);
 		$AUX_cliente = $banco->BuscaCliente($rsVenda['idcliente']);
 		$desconto_subtotal = $rsVenda['desconto_subtotal'];
-		$Produtos = $banco->MontaProdutosEditar($idvenda, $AUX_cliente['idtipoprofissional']);
+		$AUXProdutos = $banco->MontaProdutosEditar($idvenda, $AUX_cliente['idtipoprofissional']);
+		$Produtos = $AUXProdutos["HTML"];
+		
+		$contProdutos = $AUXProdutos['cont'];
 		$Pagamentos = $banco->MontaPagamentosEditar($idvenda);
 		if($rsVenda['frete_porconta'] == 1){
 			$cbfreteporconta = 'checked';
@@ -29,6 +33,7 @@
 	}
 	
     if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
+    	#var_dump($_POST);die;
     	$idcliente = $_POST['cliente'];
     	$tipoFrete = $_POST['tipofrete'];
     	$valorFrete = utf8_decode(strip_tags(trim(addslashes($_POST["frete"]))));
@@ -93,6 +98,7 @@
     $Conteudo = str_replace("<%FRETE%>", $rsVenda['valor_frete'], $Conteudo);
     $Conteudo = str_replace("<%TARIFA%>", $rsVenda['tarifa'], $Conteudo);
     $Conteudo = str_replace("<%PRODUTOS%>", $Produtos, $Conteudo);
+    $Conteudo = str_replace("<%CONTPRODUTOS%>", $contProdutos, $Conteudo);
     $Conteudo = str_replace("<%PAGAMENTOS%>", $Pagamentos, $Conteudo);
     $Conteudo = str_replace("<%CBFRETEPORCONTA%>", $cbfreteporconta, $Conteudo);
     $Conteudo = str_replace("<%OBS%>", utf8_encode($rsVenda['obs']), $Conteudo);
