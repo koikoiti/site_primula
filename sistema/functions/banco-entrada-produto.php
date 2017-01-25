@@ -71,6 +71,7 @@
             if($linha){
                 while($rs = parent::ArrayData($result)){
                     $Linha = $Auxilio;
+                    $Linha = str_replace('<%ID%>', $rs['identrada'], $Linha);
                     $Linha = str_replace('<%NF%>', $rs['nf'], $Linha);
                     $Linha = str_replace('<%FORNECEDOR%>', $rs['fornecedor'], $Linha);
                     $Linha = str_replace('<%VALOR%>', number_format($rs['valor'], 2, ',', '.'), $Linha);
