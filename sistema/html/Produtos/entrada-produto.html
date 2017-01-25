@@ -12,10 +12,17 @@
 <div class="content">
     <div class="col-md-12">
         
-        <div class="form-group">
+        <div class="form-group" style="float: left; width: 50%;">
+            <label class="col-sm-3 control-label form-margin">*Data Entrada</label>
+            <div class="col-sm-6">
+                <input autofocus required type="date" class="form-control" name="data_entrada" value="<%DATAENTRADA%>">
+            </div>
+        </div>
+        
+        <div class="form-group" style="float: left; width: 50%;">
             <label class="col-sm-3 control-label form-margin">*Fornecedor</label>
             <div class="col-sm-6">
-                <input autofocus required type="text" class="form-control" name="fornecedor" value="<%FORNECEDOR%>">
+                <input required type="text" class="form-control" name="fornecedor" value="<%FORNECEDOR%>">
             </div>
         </div>
         
@@ -34,12 +41,12 @@
         <div class="form-group" style="float: left; width: 33.33%;">
             <label class="col-sm-3 control-label form-margin">Frete</label>
             <div class="col-sm-6">
-                <input required type="text" class="form-control money" name="frete" value="<%FRETE%>">
+                <input type="text" class="form-control money" name="frete" value="<%FRETE%>">
             </div>
         </div>
         
         <div class="form-group">
-            <label class="col-sm-3 control-label form-margin">*Produtos</label>
+            <label class="col-sm-3 control-label form-margin">*Produto/Kit</label>
                 <div class="col-sm-6">
                     <button onclick="mais()" type="button" class="btn btn-primary">+</button>
                     <div class="form-group" id="lista-produtos">
@@ -71,27 +78,32 @@ function voltar(){
 }
     
 function mais(){
-    var verifica = document.getElementById('produtonovo'+(novo-1));
+	var verifica = document.getElementById('produtonovo'+(novo-1));
     
     if(verifica == null || verifica.value.length > 1){
+    	idpreco = novo;
         novadiv = document.createElement('div');
         novadiv.setAttribute('id', 'novo'+novo);
         novadiv.setAttribute('class', 'novo-produto');
-        novadiv.innerHTML = "<div class='col-md-3' id='div_produto"+novo+"'>*Produto: <input required id='produtonovo"+novo+"' type='text' class='form-control' /></div><div class='col-md-1'>*Quantidade: <input required type='number' class='form-control' name='quantidade[]' value='1' /></div><div class='col-md-3'>Lote: <input type='text' name='lote[]' class='form-control'/></div><div class='col-md-3'>Data Vencimento: <input type='date' name='vencimento[]' class='form-control'/></div><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div>";
+        novadiv.innerHTML = "<div class='col-sm-10 no-padding'><div class='col-sm-11 no-padding'><div class='col-md-12' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control produto' /></div><div class='col-md-2'>Quantidade: <input type='text' class='form-control quantidade' value='1' name='quantidade[]' /></div><div class='col-md-2'>Lote: <input name='lote[]' type='text' class='form-control' value='0'/></div><div class='col-md-2'>Validade: <input name='validade[]' type='date' class='form-control'/></div></div><div class='col-sm-1 no-padding'><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div></div></div>";
+        //novadiv.innerHTML = "<div class='col-md-3' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control' /></div><div class='col-md-1'>Quantidade: <input type='text' class='form-control' value='1' name='quantidade[]' /></div><div class='col-md-1'>Desconto Valor: <input name='desconto_valor[]' type='text' class='form-control money' value='0'/></div><div class='col-md-1'>Desconto Porcentagem: <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' value='0'/></div><div class='col-md-2'><br/><label><input name='brinde[]' type='checkbox'/> Brinde</label></div><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div>";
         document.getElementById('lista-produtos').appendChild(novadiv);
+        $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
+        $('.porcentagem').mask("00,00", {reverse: true,});
         
         $("#produtonovo"+novo).autocomplete({
             source: function(request, response) {
-                        $.getJSON("<%URLPADRAO%>lib/ajax/produtoautocomplete.php", {term: request.term, idcliente: 0}, 
+                        $.getJSON("<%URLPADRAO%>lib/ajax/produtoautocompleteENTRADA.php", {term: request.term}, 
                     response);
                     },
             minLength: 2,
             select: function(event, ui){
+                //<input type='hidden' name='produtos[]' value='' id='hid_produtonovo"+novo+"' />
                 var hid_produto = document.getElementById("hid_produto"+novo);
                 if(hid_produto != null){
                     hid_produto.remove();
                 }else{
-                    var imgOld = document.getElementById('img'+novo);
+                    var imgOld = document.getElementById('outer'+novo);
                     if(imgOld != null){
                         imgOld.remove();
                     }
@@ -101,15 +113,20 @@ function mais(){
                     hid_produto.setAttribute('id', 'hid_produtonovo'+novo);
                     hid_produto.setAttribute('value', ui.item.idproduto);
                     var img = document.createElement('img');
+                    var outerimg = document.createElement('div');
+                    outerimg.setAttribute('id', 'outer'+novo);
+                    outerimg.setAttribute('class', 'col-md-2 text-center');
+                    outerimg.appendChild(img);
                     img.setAttribute('id', 'img'+novo);
                     img.setAttribute('src', ui.item.caminho);
                     img.setAttribute('style', 'width: 100px; height: 100px;');
-                    $(novadiv).prepend(img);
+                    $(novadiv).prepend(outerimg);
                     novadiv.appendChild(hid_produto);
+                    $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
                 }
             }
         });
-        novo++;
+        novo++;   
     }
 }
 
