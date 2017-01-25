@@ -9,6 +9,8 @@
 		case 'arrumarEstoque':
 			#$banco->ArrumaEstoque();
 			break;
+		case 'arrumaProdutosVendaKit':
+			#$banco->ArrumaVendasKit();
 		default:
 			#$banco->RedirecionaPara('inicio');
 			break;
