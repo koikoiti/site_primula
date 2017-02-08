@@ -3,11 +3,16 @@
     <div class="block-flat">
         <div class="header" style="overflow: hidden;">
             <div class="col-sm-12 no-padding">
-            	<div class="col-sm-10">
+            	<div class="col-sm-6" style="width: 50%;">
                 	<a href="<%URLPADRAO%>cliente">Criar Novo</a>
                 </div>
                 <div class="col-sm-2 text-right">
-                	<a href="<%URLPADRAO%>lista-cliente/?minhas_interacoes=true" class="btn btn-info">Minhas Interações</a>
+                	<%BOTAOINTERACOES%>
+                </div>
+                <div class="col-sm-4 text-right">
+                		<input style="float: left; width: 45%;" id="busca_dataIni" type="date" class="form-control" value="<%BUSCADATAINI%>" placeholder="Data Inicial"/>
+                		<span style="float: left; width: 2%;" class="no-padding">&nbsp;a&nbsp;</span> 
+                		<input style="float: left; width: 45%;" id="busca_dataFim" type="date" class="form-control" value="<%BUSCADATAFIM%>" placeholder="Data Final"/>
                 </div>
             </div>
             <div class="col-sm-12 no-padding">
@@ -55,15 +60,29 @@ $(function() {
     $("#busca_cnpj").mask("00.000.000/0000-00");
     $("#busca_cpf").mask("000.000.000-00");
 });
-function pesquisar(){
+function pesquisar(minhas){
+	if(minhas != '' && typeof minhas != "undefined"){
+		minhas_interacoes = "&minhas_interacoes=true";
+	}else{
+		minhas_interacoes = '';
+	}
     var busca_nome = $("#busca_nome").val().trim();
     var busca_cnpj = $("#busca_cnpj").val().trim();
     var busca_cpf = $("#busca_cpf").val().trim();
     var busca_bairro = $("#busca_bairro").val();
     var busca_telefone = $("#busca_telefone").val();
     var busca_cidade = $("#busca_cidade").val();
+    //Funcionário
+    var func = $("#interacoes_funcionario").val();
+	var busca_dataIni = $("#busca_dataIni").val().trim();
+    var busca_dataFim = $("#busca_dataFim").val().trim();
     
-    location.href = "<%URLPADRAO%>lista-cliente/?busca_nome=" + busca_nome + "&busca_cnpj=" + busca_cnpj + "&busca_cpf=" + busca_cpf + "&busca_bairro=" + busca_bairro + "&busca_cidade=" + busca_cidade + "&busca_telefone=" + busca_telefone;
+    if(func == '' || typeof func == "undefined"){
+    	location.href = "<%URLPADRAO%>lista-cliente/?busca_nome=" + busca_nome + "&busca_cnpj=" + busca_cnpj + "&busca_cpf=" + busca_cpf + "&busca_bairro=" + busca_bairro + "&busca_cidade=" + busca_cidade + "&busca_telefone=" + busca_telefone+"&dataIni="+busca_dataIni+"&dataFim="+busca_dataFim+minhas_interacoes;
+    	//location.href = "<%URLPADRAO%>lista-cliente/?dataIni="+busca_dataIni+"&dataFim="+busca_dataFim;
+    }else{
+    	location.href = "<%URLPADRAO%>lista-cliente/?filtra_funcionario="+func+"&dataIni="+busca_dataIni+"&dataFim="+busca_dataFim;
+    }
 }
 
 function ativar(idcliente, nome){

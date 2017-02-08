@@ -1,9 +1,104 @@
 <?php
     class bancocliente extends banco{
     	
-    	function MontaMinhasInteracoes(){
+    	function MontaInteracoesUsuario($idusuario, $buscaDataIni, $buscaDataFim){
+    		if($buscaDataIni == ''){
+    			$buscaDataIni = '0000-00-00';
+    		}
+    		if($buscaDataFim == ''){
+    			$buscaDataFim = '0000-00-00';
+    		}
     		$Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-itens');
-    		$SqlHistorico = "SELECT idcliente FROM t_clientes_historico WHERE usuario = '".$_SESSION['nomeexibicao']."' GROUP BY idcliente";
+    		$SqlHistorico = "SELECT idcliente FROM t_clientes_historico WHERE usuario = '".parent::BuscaUsuarioPorId($idusuario)."' AND data >= '$buscaDataIni' AND data <= '$buscaDataFim' GROUP BY idcliente ORDER BY data DESC";
+    		$resultHistorico = parent::Execute($SqlHistorico);
+    		$linhaHistorico = parent::Linha($resultHistorico);
+    		if($linhaHistorico){
+    			while($rsHistorico = parent::ArrayData($resultHistorico)){
+    				$Linha = $Auxilio;
+    				$Sql = "SELECT C.*, P.tipo AS tipoprofissional FROM t_clientes C
+		                    INNER JOIN fixo_tipo_profissional P ON C.idtipoprofissional = P.idtipoprofissional
+		                    WHERE 1 AND idcliente = " . $rsHistorico['idcliente'];
+    				$result = parent::Execute($Sql);
+    				$rs = parent::ArrayData($result);
+    		
+    				$Linha = str_replace('<%ID%>', $rs['idcliente'], $Linha);
+    				$Linha = str_replace('<%NOME%>', $rs['nome'], $Linha);
+    				$Linha = str_replace('<%TIPOPROFISSIONAL%>', $rs['tipoprofissional'], $Linha);
+    				$addr = $rs['endereco'] . ", Nº " . $rs['numero'] . " - " . $rs['bairro'] . " - " . $rs['cidade'] . "/" . $rs['estado'];
+    				$Linha = str_replace('<%ENDERECO%>', $addr, $Linha);
+    				$Linha = str_replace('<%TELEFONE%>', $rs['telefone'], $Linha);
+    				if($rs['idtipocliente'] == 1){
+    					$cnpjcpf = 'CPF: ' . $rs['cpf'];
+    				}elseif($rs['idtipocliente'] == 2){
+    					$cnpjcpf = 'CNPJ: ' . $rs['cnpj'];
+    				}
+    				if($rs['ativo'] == 1){
+    					$Linha = str_replace("<%ATIVOINATIVO%>", 'Ativo', $Linha);
+    					$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
+    				}else{
+    					$Linha = str_replace("<%ATIVOINATIVO%>", 'Inativo', $Linha);
+    					$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="ativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Ativar</a>', $Linha);
+    				}
+    				$Linha = str_replace('<%CNPJCPF%>', $cnpjcpf, $Linha);
+    				#Verifica consulta, se tiver
+    				$SqlConsulta = "SELECT * FROM t_clientes_consulta WHERE idcliente = " . $rs['idcliente'];
+    				$resultConsulta = parent::Execute($SqlConsulta);
+    				$linhaConsulta = parent::Linha($resultConsulta);
+    				if($linhaConsulta){
+    					$rsConsulta = parent::ArrayData($resultConsulta);
+    					$consultaHTML = '<a target="_blank" href="'.UrlPadrao.$rsConsulta['caminho'].'">Consulta</a>';
+    				}else{
+    					$consultaHTML = "";
+    				}
+    				$Linha = str_replace('<%CONSULTA%>', $consultaHTML, $Linha);
+    				#Verifica última interação
+    				$SqlInteracao = "SELECT data, usuario FROM t_clientes_historico WHERE idcliente = " . $rs['idcliente'] . " ORDER BY data DESC LIMIT 0, 1";
+    				$resultInteracao = parent::Execute($SqlInteracao);
+    				$linhaInteracao = parent::Linha($resultInteracao);
+    				if($linhaInteracao){
+    					$rsInteracao = parent::ArrayData($resultInteracao);
+    					$dataInteracao = date("d/m/Y - H:i", strtotime($rsInteracao['data']));
+    					$interacaoHTML = "$dataInteracao <br/> {$rsInteracao['usuario']}";
+    				}else{
+    					$interacaoHTML = "";
+    				}
+    				$Linha = str_replace('<%ULTIMAINTERACAO%>', $interacaoHTML, $Linha);
+    				$Clientes .= $Linha;
+    			}
+    		}else{
+    			$Clientes = '<tr class="odd gradeX">
+                                <td colspan="8">Não foram encontrados clientes cadastrados.</td>
+                             <tr>';
+    		}
+    		
+    		return utf8_encode($Clientes);
+    	}
+    	
+    	function MontaSelectInteracoes($idusuario){
+    		$Sql = "SELECT * FROM t_usuarios WHERE ativo = 1 && login <> 'admin'";
+    		$result = parent::Execute($Sql);
+    		$select = '<select id="interacoes_funcionario" class="form-control"><option value="">Selecione um funcionário</option>';
+    		while($rs = parent::ArrayData($result)){
+    			if($rs['idusuario'] == $idusuario){
+    				$select .= "<option selected value='{$rs['idusuario']}'>{$rs['nome_exibicao']}</option>";
+    			}else{
+    				$select .= "<option value='{$rs['idusuario']}'>{$rs['nome_exibicao']}</option>";
+    			}
+    		}
+    		$select .= '</select>';
+    		return utf8_encode($select);
+    	}
+    	
+    	function MontaMinhasInteracoes($buscaDataIni, $buscaDataFim){
+    		if($buscaDataIni == ''){
+    			$buscaDataIni = '0000-00-00';
+    		}
+    		if($buscaDataFim == ''){
+    			$buscaDataFim = '0000-00-00';
+    		}
+    		$Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-itens');
+    		$SqlHistorico = "SELECT idcliente FROM t_clientes_historico WHERE usuario = '".$_SESSION['nomeexibicao']."' AND data >= '$buscaDataIni' AND data <= '$buscaDataFim' GROUP BY idcliente ORDER BY data DESC";
+    		
     		$resultHistorico = parent::Execute($SqlHistorico);
     		$linhaHistorico = parent::Linha($resultHistorico);
     		if($linhaHistorico){
@@ -423,7 +518,13 @@
         }
 
         #Lista Clientes
-        function ListaClientes($busca_nome, $busca_cnpj, $busca_cpf, $busca_bairro, $busca_telefone, $pagina, $busca_cidade){
+        function ListaClientes($busca_nome, $busca_cnpj, $busca_cpf, $busca_bairro, $busca_telefone, $pagina, $busca_cidade, $buscaDataIni, $buscaDataFim){
+        	if($buscaDataIni == ''){
+        		$buscaDataIni = '0000-00-00';
+        	}
+        	if($buscaDataFim == ''){
+        		$buscaDataFim = '0000-00-00';
+        	}
             $Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-itens');
             $inicio = ($pagina * Limite) - Limite;
             $Sql = "SELECT C.*, P.tipo AS tipoprofissional FROM t_clientes C 
