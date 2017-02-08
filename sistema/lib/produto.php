@@ -21,6 +21,7 @@
         
         $idcategoria = $rsProduto['idcategoria'];
         $cod_barras = $rsProduto['cod_barras'];
+        $ncm = $rsProduto['ncm'];
         $cod_fornecedor = $rsProduto['cod_fornecedor'];
         $nome = utf8_encode($rsProduto['nome']);
         $marca = utf8_encode($rsProduto['marca']);
@@ -70,6 +71,7 @@
     #Trabalha com Post
 	if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
         $cod_barras = strip_tags(trim(addslashes($_POST["cod_barras"])));
+        $ncm = strip_tags(trim(addslashes($_POST["ncm"])));
         $cod_fornecedor = strip_tags(trim(addslashes($_POST["cod_fornecedor"])));
         $nome = utf8_decode(strip_tags(trim(addslashes($_POST["nome"]))));
         $marca = utf8_decode(strip_tags(trim(addslashes($_POST["marca"]))));
@@ -129,7 +131,7 @@
     				}
     			}
     		}
-            $banco->AtualizaProduto($idproduto, $cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $auxImagens);
+            $banco->AtualizaProduto($idproduto, $cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $auxImagens, $ncm);
             $banco->RedirecionaPara('lista-produto');
         }else{
             #Pega as imagens e arruma num array
@@ -167,7 +169,7 @@
                 $msg = "Produto com esse código já cadastrado!";
             }else{
                 #Insert
-                $banco->InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $auxImagens);
+                $banco->InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $auxImagens, $ncm);
                 $banco->RedirecionaPara('lista-produto');
             }
         }
@@ -190,6 +192,7 @@
     $Conteudo = str_replace("<%TITULO%>", $titulo, $Conteudo);
     $Conteudo = str_replace("<%SELECTCATEGORIAS%>", $select_categorias, $Conteudo);
     $Conteudo = str_replace("<%CODBARRAS%>", $cod_barras, $Conteudo);
+    $Conteudo = str_replace("<%NCM%>", $ncm, $Conteudo);
     $Conteudo = str_replace("<%CODFORNECEDOR%>", $cod_fornecedor, $Conteudo);
     $Conteudo = str_replace("<%NOME%>", $nome, $Conteudo);
     $Conteudo = str_replace("<%MARCA%>", $marca, $Conteudo);
