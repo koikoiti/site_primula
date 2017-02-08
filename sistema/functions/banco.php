@@ -119,6 +119,7 @@
 	                            	<ul class="sub-menu">
 	                                	<li><a href="<%URLPADRAO%>relatorios">Relatórios</a></li>
 	                                    <li><a href="<%URLPADRAO%>fluxo-financeiro">Fluxo Financeiro</a></li>
+                        				<li><a href="<%URLPADRAO%>lista-ultima-venda">Últimas Vendas</a></li>
 	                                </ul>
 	                            </li>
                         		<li class="parent"><a href="#"><i class="fa  fa-user"></i><span>Usuários</span></a>
