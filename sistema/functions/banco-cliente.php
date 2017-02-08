@@ -258,14 +258,14 @@
     	}
     	
         #Insere Cliente
-        function InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $file){
+        function InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $file, $inscricao_estadual){
             if($idtipocliente == 1){
                 $auxcnpjcpf = 'cpf';
             }elseif($idtipocliente == 2){
                 $auxcnpjcpf = 'cnpj';
             }
-            $Sql = "INSERT INTO t_clientes (nome, idtipocliente, endereco, numero, bairro, idtipoenderecoprincipal, cep, cidade, estado, complemento, ponto_referencia, telefone, celular, $auxcnpjcpf, idtipoprofissional, email, data_cadastro, nome_socio, cpf_socio) 
-                    VALUES ('".ucwords($nome)."', '$idtipocliente', '".ucwords($endereco)."', '$numero', '".ucwords($bairro)."', '$idtipoendereco', '$cep', '".ucwords($cidade)."', '$estado', '".ucfirst($complemento)."', '".ucfirst($ponto_referencia)."', '$telefone', '$celular', '$cnpj_cpf', '$idtipoprofissional', '$email', '".date("Y-m-d H:i:s")."', '".ucwords($nome_socio)."', '$cpf_socio')";
+            $Sql = "INSERT INTO t_clientes (nome, idtipocliente, endereco, numero, bairro, idtipoenderecoprincipal, cep, cidade, estado, complemento, ponto_referencia, telefone, celular, $auxcnpjcpf, idtipoprofissional, email, data_cadastro, nome_socio, cpf_socio, inscricao_estadual) 
+                    VALUES ('".ucwords($nome)."', '$idtipocliente', '".ucwords($endereco)."', '$numero', '".ucwords($bairro)."', '$idtipoendereco', '$cep', '".ucwords($cidade)."', '$estado', '".ucfirst($complemento)."', '".ucfirst($ponto_referencia)."', '$telefone', '$celular', '$cnpj_cpf', '$idtipoprofissional', '$email', '".date("Y-m-d H:i:s")."', '".ucwords($nome_socio)."', '$cpf_socio', '$inscricao_estadual')";
             if(parent::Execute($Sql)){
                 $lastid = mysql_insert_id();
             }else{
@@ -490,14 +490,14 @@
         }
         
         #Atualiza Cliente
-        function AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs){
+        function AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $inscricao_estadual){
             if($idtipocliente == 1){
                 $auxcnpjcpf = 'cpf';
             }elseif($idtipocliente == 2){
                 $auxcnpjcpf = 'cnpj';
             }
             $Sql = "UPDATE t_clientes SET nome = '$nome', idtipocliente = '$idtipocliente', endereco = '".ucwords($endereco)."', numero = '$numero', bairro = '".ucwords($bairro)."', idtipoenderecoprincipal = '$idtipoendereco', cep = '$cep', cidade = '".ucwords($cidade)."', estado = '$estado', complemento = '".ucfirst($complemento)."', ponto_referencia = '".ucfirst($ponto_referencia)."', 
-                    telefone = '$telefone', celular = '$celular', $auxcnpjcpf = '$cnpj_cpf', idtipoprofissional = '$idtipoprofissional', email = '$email', nome_socio = '".ucwords($nome_socio)."', cpf_socio = '$cpf_socio' WHERE idcliente = $idcliente";
+                    telefone = '$telefone', celular = '$celular', $auxcnpjcpf = '$cnpj_cpf', idtipoprofissional = '$idtipoprofissional', email = '$email', nome_socio = '".ucwords($nome_socio)."', cpf_socio = '$cpf_socio', inscricao_estadual = '$inscricao_estadual' WHERE idcliente = $idcliente";
             if(parent::Execute($Sql)){
                 #Verifica adicionais
                 if($arrTipoTelefones[0] != ''){

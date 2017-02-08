@@ -29,6 +29,7 @@
         }elseif($idtipocliente == 1){
             $cnpj_cpf = $rsCliente['cpf'];
         }
+        $inscricao_estadual = $rsCliente['inscricao_estadual'];
         $cep = $rsCliente['cep'];
         $cidade = $rsCliente['cidade'];
         $estado = $rsCliente['estado'];
@@ -83,6 +84,7 @@
 	        $idtipoprofissional = $_POST["tipoprofissional"];
 	        $nome = ucwords(utf8_decode(strip_tags(trim(addslashes($_POST["nome"])))));
 	        $cnpj_cpf = $_POST['cnpj_cpf'];
+	        $inscricao_estadual = utf8_decode(strip_tags(trim(addslashes($_POST["inscricao_estadual"]))));
 	        $idtipoendereco = $_POST['tipoendereco_p'];
 	        $cep = strip_tags(trim(addslashes($_POST["cep_p"])));
 	        $cidade = utf8_decode(strip_tags(trim(addslashes($_POST["cidade_p"]))));
@@ -148,7 +150,7 @@
 	            }
 	            
 	            #Update
-	            $banco->AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs);
+	            $banco->AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $inscricao_estadual);
 	        }else{
 	            #Verifica cliente cadastrado
 	            $result = $banco->BuscaClienteExistente($idtipocliente, $cnpj_cpf);
@@ -157,7 +159,7 @@
 	                echo utf8_encode("<script type='text/javascript'>alert('Cliente já cadastrado!')</script>");
 	            }else{
 	                #Insert
-	                $banco->InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $_FILES);
+	                $banco->InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $_FILES, $inscricao_estadual);
 	            }
 	        }
 	    }#Fim POST
@@ -181,6 +183,7 @@
 	    $Conteudo = str_replace("<%NOMESOCIO%>", $nome_socio, $Conteudo);
 	    $Conteudo = str_replace("<%CPFSOCIO%>", $cpf_socio, $Conteudo);
 	    $Conteudo = str_replace("<%CNPJCPF%>", $cnpj_cpf, $Conteudo);
+	    $Conteudo = str_replace("<%INSCRICAOESTADUAL%>", $inscricao_estadual, $Conteudo);
 	    $Conteudo = str_replace("<%NOME%>", utf8_encode($nome), $Conteudo);
 	    $Conteudo = str_replace("<%CEP%>", $cep, $Conteudo);
 	    $Conteudo = str_replace("<%ENDERECO%>", utf8_encode($endereco), $Conteudo);
