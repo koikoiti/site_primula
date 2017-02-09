@@ -258,7 +258,7 @@
     	}
     	
         #Insere Cliente
-        function InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $file, $inscricao_estadual){
+        function InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $file, $inscricao_estadual){
             if($idtipocliente == 1){
                 $auxcnpjcpf = 'cpf';
             }elseif($idtipocliente == 2){
@@ -274,7 +274,7 @@
             
             #Verifica adicionais
             if($arrTipoTelefones[0] != ''){
-                $this->InsereTelefonesAdicionais($lastid, $arrTipoTelefones, $arrTelefones);
+                $this->InsereTelefonesAdicionais($lastid, $arrTipoTelefones, $arrTelefones, $arrTelContatos);
             }
             
             if($arrEmails[0] != ''){
@@ -294,10 +294,10 @@
         }
         
         #Telefones adicionais
-        function InsereTelefonesAdicionais($idcliente, $arrTipoTelefones, $arrTelefones){
+        function InsereTelefonesAdicionais($idcliente, $arrTipoTelefones, $arrTelefones, $arrTelContatos){
             foreach($arrTipoTelefones as $key => $value){
                 if($arrTelefones[$key] != ''){
-                    $Sql = "INSERT INTO t_clientes_telefonesadicionais (tipotelefone, telefone, idcliente) VALUES ('".utf8_decode($value)."', '{$arrTelefones[$key]}', '$idcliente')";
+                    $Sql = "INSERT INTO t_clientes_telefonesadicionais (tipotelefone, telefone, idcliente, contato) VALUES ('".utf8_decode($value)."', '{$arrTelefones[$key]}', '$idcliente', '".utf8_decode($arrTelContatos[$key])."')";
                     parent::Execute($Sql);
                 }
             }
@@ -445,10 +445,13 @@
                                         <option '.$selCel.' value="Celular">Celular</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-5">
+                                <div class="col-sm-3">
                                     <input type="text" class="form-control telefone" name="telAdicionaladd['.$rs['idtelefoneadicional'].']" placeholder="(00) 0000-0000#" maxlength="15" autocomplete="off" value="'.$rs['telefone'].'">
                                 </div>
                                 <div class="col-sm-3">
+                                    <input type="text" class="form-control" name="telContatoadd['.$rs['idtelefoneadicional'].']" placeholder="Contato" autocomplete="off" value="'.utf8_encode($rs['contato']).'">
+                                </div>
+                                <div class="col-sm-2">
                                     <button type="button" onclick="removerTelefoneAdicional(\''.$rs['idtelefoneadicional'].'\')" class="btn btn-danger">Remover</button>
                                 </div>
                             </div>';
@@ -457,9 +460,9 @@
         }
                 
         #Atualiza Telefones Adicionais
-        function AtualizaTelefonesAdicionais($tipoTelefoneadd, $telAdicionaladd){
+        function AtualizaTelefonesAdicionais($tipoTelefoneadd, $telAdicionaladd, $telContatoadd){
             foreach($tipoTelefoneadd as $key => $value){
-                $Sql = "UPDATE t_clientes_telefonesadicionais SET tipotelefone = '$value', telefone = '{$telAdicionaladd[$key]}' WHERE idtelefoneadicional = $key";
+                $Sql = "UPDATE t_clientes_telefonesadicionais SET tipotelefone = '$value', telefone = '{$telAdicionaladd[$key]}', contato = '".utf8_decode($telContatoadd[$key])."' WHERE idtelefoneadicional = $key";
                 parent::Execute($Sql);
             }
         }
@@ -490,7 +493,7 @@
         }
         
         #Atualiza Cliente
-        function AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $inscricao_estadual){
+        function AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $inscricao_estadual){
             if($idtipocliente == 1){
                 $auxcnpjcpf = 'cpf';
             }elseif($idtipocliente == 2){
@@ -501,7 +504,7 @@
             if(parent::Execute($Sql)){
                 #Verifica adicionais
                 if($arrTipoTelefones[0] != ''){
-                    $this->InsereTelefonesAdicionais($idcliente, $arrTipoTelefones, $arrTelefones);
+                    $this->InsereTelefonesAdicionais($idcliente, $arrTipoTelefones, $arrTelefones, $arrTelContatos);
                 }
                 
                 if($arrEmails[0] != ''){

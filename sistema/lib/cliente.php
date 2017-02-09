@@ -101,6 +101,7 @@
 	        #Adicionais
 	        $arrTelefones = $_POST["telAdicional"];
 	        $arrTipoTelefones = $_POST["tipoTelefone"];
+	        $arrTelContatos = $_POST['telContato'];
 	        $arrEmails = $_POST["emailAdicional"];
 	        $arrTipoEnd = $_POST['tipoendereco'];
 	        $arrCeps = $_POST["cep"];
@@ -133,11 +134,12 @@
 	            }
 	            #Telefone Adicional
 	            $tipoTelefoneadd = $_POST['tipoTelefoneadd'];
+	            $telContatoadd = $_POST['telContatoadd'];
 	            if(!empty($tipoTelefoneadd)){
 	                $telAdicionaladd = $_POST['telAdicionaladd'];
 	                
 	                #Atualiza Telefones Adicionais
-	                $banco->AtualizaTelefonesAdicionais($tipoTelefoneadd, $telAdicionaladd);
+	                $banco->AtualizaTelefonesAdicionais($tipoTelefoneadd, $telAdicionaladd, $telContatoadd);
 	            }
 	            #Email Adicional
 	            $emailAdicionaladd = $_POST['emailAdicionaladd'];
@@ -150,7 +152,7 @@
 	            }
 	            
 	            #Update
-	            $banco->AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $inscricao_estadual);
+	            $banco->AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $inscricao_estadual);
 	        }else{
 	            #Verifica cliente cadastrado
 	            $result = $banco->BuscaClienteExistente($idtipocliente, $cnpj_cpf);
@@ -159,7 +161,7 @@
 	                echo utf8_encode("<script type='text/javascript'>alert('Cliente já cadastrado!')</script>");
 	            }else{
 	                #Insert
-	                $banco->InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $_FILES, $inscricao_estadual);
+	                $banco->InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $_FILES, $inscricao_estadual);
 	            }
 	        }
 	    }#Fim POST
