@@ -9,6 +9,22 @@
 	#Instancia o objeto
 	$banco = new bancoentradaproduto();
     
+	if($this->PaginaAux[0] == 'editar'){
+		$identrada = $this->PaginaAux[1];
+		$rsEntrada = $banco->BuscaEntradaPorId($identrada);
+		$dataEntrada = $rsEntrada['data_entrada'];
+		$fornecedor = utf8_encode($rsEntrada['fornecedor']);
+		$nf = $rsEntrada['nf'];
+		$valor = $rsEntrada['valor'];
+		$frete = $rsEntrada['frete'];
+		$Produtos = $banco->BuscaProdutosEditar($identrada);
+	}elseif($this->PaginaAux[0] == 'visualizar'){
+		$identrada = $this->PaginaAux[1];
+	}elseif($this->PaginaAux[0] == 'excluir'){
+		$identrada = $this->PaginaAux[1];
+		$banco->ExcluirEntrada($identrada);
+	}
+	
     if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
     	$dataEntrada = $_POST['data_entrada'];
         $fornecedor = utf8_decode(strip_tags(trim(addslashes($_POST["fornecedor"]))));
@@ -22,9 +38,13 @@
         $arrProdutos = $_POST['produtos'];
         $arrQuantidade = $_POST['quantidade'];
         $arrLote = $_POST['lote'];
-        $arrVencimento = $_POST['vencimento'];
+        $arrVencimento = $_POST['validade'];
         
-        $banco->InsereEntrada($fornecedor, $nf, $valor, $frete, $arrProdutos, $arrQuantidade, $arrLote, $arrVencimento, $dataEntrada);
+        if($identrada){
+        	$banco->AtualizaEntrada($identrada, $fornecedor, $nf, $valor, $frete, $arrProdutos, $arrQuantidade, $arrLote, $arrVencimento, $dataEntrada);
+        }else{
+        	$banco->InsereEntrada($fornecedor, $nf, $valor, $frete, $arrProdutos, $arrQuantidade, $arrLote, $arrVencimento, $dataEntrada);
+        }
     }
     
     $Conteudo = utf8_encode($banco->CarregaHtml('Produtos/entrada-produto'));
@@ -34,6 +54,7 @@
     $Conteudo = str_replace("<%NF%>", $nf, $Conteudo);
     $Conteudo = str_replace("<%VALOR%>", $valor, $Conteudo);
     $Conteudo = str_replace("<%FRETE%>", $frete, $Conteudo);
+    $Conteudo = str_replace("<%PRODUTOS%>", $Produtos, $Conteudo);
     #Botões
     $Conteudo = str_replace("<%BOTAOEXCLUIR%>", $botao_excluir, $Conteudo);
     $Conteudo = str_replace("<%BOTAOATIVARINATIVAR%>", $botao_ativar_inativar, $Conteudo);

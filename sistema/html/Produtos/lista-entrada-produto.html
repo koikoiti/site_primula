@@ -11,6 +11,7 @@
                 <table class="table table-bordered" id="datatable">
                     <thead>
                         <tr>
+                        	<th>Nº</th>
                             <th>NF</th>
                             <th>Fornecedor</th>
                             <th>Valor da NF</th>
@@ -28,3 +29,10 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+function excluir(identrada){
+    if(confirm('Deseja excluir a entrada Nº '+identrada+' ?')){
+        location.href = "<%URLPADRAO%>entrada-produto/excluir/" + identrada;
+    }
+}
+</script>
