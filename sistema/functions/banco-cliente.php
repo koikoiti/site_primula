@@ -186,7 +186,7 @@
 	    			}
 	    			$Linha = str_replace('<%DATA%>', date("d/m/Y H:i", strtotime($rs['data'])), $Linha);
 	    			$Linha = str_replace('<%FUNCIONARIO%>', $rs['usuario'], $Linha);
-	    			$Linha = str_replace('<%HISTORICO%>', $rs['historico'], $Linha);
+	    			$Linha = str_replace('<%HISTORICO%>', nl2br($rs['historico']), $Linha);
 	    			$Linha = str_replace('<%OPCOES%>', $opcoes, $Linha);
 	    			$historico .= $Linha;
 	    		}
@@ -882,6 +882,64 @@
         		$SqlDelete = "DELETE FROM t_clientes WHERE idcliente = $idcliente";
         		$result = parent::Execute($SqlDelete);
         	}
+        }
+        
+        function MontaHistoricoVendasCliente($idcliente){
+        	$Sql = "SELECT * FROM t_vendas WHERE idcliente = $idcliente ORDER BY data DESC";
+        	$result = parent::Execute($Sql);
+        	$linha = parent::Linha($result);
+        	$Auxilio = parent::CarregaHtml('Clientes/itens/historico-vendas-itens');
+        	if($linha){
+        		while($rs = parent::ArrayData($result)){
+        			$produtos = '';
+        			$Linha = $Auxilio;
+        			if($rs['orcamento'] == 1){
+        				$auxVO = 'Orçamento';
+        				$opcoes = '';
+        			}else{
+        				$auxVO = 'Venda';
+        				$opcoes = '<ul role="menu" class="dropdown-menu">
+						                <li>
+						                   	<a target="_blank" href="<%URLPADRAO%>finalizar/'.$rs['idvenda'].'">Reimprimir</a>
+						                </li>
+						                <li class="divider"></li>
+						                <li>
+						                    <a target="_blank" href="<%URLPADRAO%>gerar-pdf/'.$rs['idvenda'].'">Gerar PDF</a>
+						                </li>
+						            </ul>';
+        			}
+        			$SqlProdutos = "SELECT produto_kit, quantidade FROM t_vendas_produtos WHERE idvenda = " . $rs['idvenda'];
+        			$resultProdutos = parent::Execute($SqlProdutos);
+        			while($rsProdutos = parent::ArrayData($resultProdutos)){
+        				$auxKP = explode('_', $rsProdutos['produto_kit']);
+        				
+        				if($auxKP[0] == 'prod'){
+        					$SqlNome = "SELECT nome FROM t_produtos WHERE idproduto = " . $auxKP[1];
+        					$auxNome = "Produto";
+        				}else{
+        					$SqlNome = "SELECT nome FROM t_kit WHERE idkit = " . $auxKP[1];
+        					$auxNome = "Kit";
+        				}
+        				
+        				$resultNome = parent::Execute($SqlNome);
+        				$rsNome = parent::ArrayData($resultNome);
+        				
+        				$produtos .= "$auxNome: {$rsNome['nome']} / {$rsProdutos['quantidade']}UN <br/>";
+        			}
+        			$Linha = str_replace('<%PRODUTOS%>', $produtos, $Linha);
+        			$Linha = str_replace('<%VENDAORCAMENTO%>', $auxVO, $Linha);
+        			$Linha = str_replace('<%DATA%>', date("d/m/Y H:i", strtotime($rs['data'])), $Linha);
+        			$Linha = str_replace('<%FUNCIONARIO%>', parent::BuscaUsuarioPorId($rs['idusuario']), $Linha);
+        			$Linha = str_replace('<%VALORTOTAL%>', "R$ ".number_format($rs['valor_venda'], 2, ',', '.'), $Linha);
+        			$Linha = str_replace('<%OPCOES%>', $opcoes, $Linha);
+        			$historico .= $Linha;
+        		}
+        	}else{
+        		$historico = '<tr class="odd gradeX">
+                                <td colspan="6">Não foram encontrados registros de histórico para esse cliente.</td>
+                             <tr>';
+        	}
+        	return utf8_encode($historico);
         }
     }
 ?>

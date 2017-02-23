@@ -70,6 +70,7 @@
                     $Linha = str_replace('<%NUMERO%>', str_pad($rs['idvenda'], 5, "0", STR_PAD_LEFT), $Linha);
                     $Linha = str_replace('<%DATA%>', date("d/m/Y H:i", strtotime($rs['data'])), $Linha);
                     $Linha = str_replace('<%CLIENTE%>', $rs['nome'], $Linha);
+                    $Linha = str_replace('<%IDCLIENTE%>', $rs['idcliente'], $Linha);
                     $Linha = str_replace('<%NF%>', $rs['nf'], $Linha);
                     $Linha = str_replace('<%VALOR%>', 'R$ '.number_format($rs['valor_venda'], 2, ',', '.'), $Linha);
                     $Linha = str_replace('<%VENDIDOPOR%>', parent::BuscaUsuarioPorId($rs['idusuario']), $Linha);

@@ -45,7 +45,7 @@
 		
 		#funcao imprime conteudo
 		function Imprime($Conteudo){
-			if(in_array('historico', $this->PaginaAux)){
+			if(in_array('historico', $this->PaginaAux) || in_array('historico-vendas', $this->PaginaAux)){
 				$menu = '';
 			}else{
 		    	$menu = $this->MontaMenu();

@@ -61,4 +61,8 @@ function pesquisar(){
     
     location.href = "<%URLPADRAO%>lista-venda/?busca_nome=" + busca_nome + "&busca_cnpj=" + busca_cnpj + "&busca_cpf=" + busca_cpf + "&busca_venda=" + busca_venda + "&busca_dataIni=" + busca_dataIni + "&busca_dataFim=" + busca_dataFim;
 }
+
+function abreHistoricoVendas(idcliente){
+	window.open('<%URLPADRAO%>cliente/historico-vendas/' + idcliente, 'historico-vendas', 'toolbar=no, titlebar=no, status=no, resizable=0, menubar=no, location=no, left=200, top=50, height=800, width=1100');
+}
 </script>

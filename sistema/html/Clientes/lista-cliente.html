@@ -104,7 +104,11 @@ function excluir(idcliente, nome){
 }
 
 function abreHistorico(idcliente){
-	window.open('<%URLPADRAO%>cliente/historico/' + idcliente, 'name', 'toolbar=no, titlebar=no, status=no, resizable=0, menubar=no, location=no, left=200, top=50, height=500, width=1000');
+	window.open('<%URLPADRAO%>cliente/historico/' + idcliente, 'historico', 'toolbar=no, titlebar=no, status=no, resizable=0, menubar=no, location=no, left=200, top=50, height=500, width=1000');
+}
+
+function abreHistoricoVendas(idcliente){
+	window.open('<%URLPADRAO%>cliente/historico-vendas/' + idcliente, 'historico-vendas', 'toolbar=no, titlebar=no, status=no, resizable=0, menubar=no, location=no, left=200, top=50, height=800, width=1100');
 }
 </script>
 <style>

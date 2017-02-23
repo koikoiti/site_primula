@@ -77,6 +77,13 @@
     	$Conteudo = str_replace("<%IDCLIENTE%>", $idcliente, $Conteudo);
     	$Conteudo = str_replace("<%CLIENTE%>", $nome_cliente, $Conteudo);
     	$Conteudo = str_replace("<%HISTORICO%>", $historico_cliente, $Conteudo);
+    }elseif($this->PaginaAux[0] == 'historico-vendas'){
+    	$idcliente = $this->PaginaAux[1];
+    	$nome_cliente = $banco->BuscaNomeCliente($idcliente);
+    	$historico_vendas = $banco->MontaHistoricoVendasCliente($idcliente);
+    	$Conteudo = utf8_encode($banco->CarregaHtml('Clientes/historico-vendas-cliente'));
+    	$Conteudo = str_replace("<%CLIENTE%>", $nome_cliente, $Conteudo);
+    	$Conteudo = str_replace("<%HISTORICOVENDAS%>", $historico_vendas, $Conteudo);
     }else{
 	    #Trabalha com Post
 		if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
