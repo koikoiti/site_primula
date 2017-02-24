@@ -43,7 +43,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label form-margin" id="nome">*Nome</label>
             <div class="col-sm-6">
-                <input required type="text" class="form-control" name="nome" value="<%NOME%>">
+                <input required type="text" class="form-control" id="input_nome" name="nome" value="<%NOME%>">
             </div>
         </div>
         
@@ -172,17 +172,19 @@
         
       <div class="form-group">
             <div class="col-sm-6 form-margin">
-                <button style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
+                <button name="botao" style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" value="salvar" class="btn btn-success btn-flat">
                     <i class="fa fa-check"></i> Salvar
                 </button>
                 <%BOTAOVOLTAR%>
                 <%BOTAOATIVARINATIVAR%>
                 <%BOTAOEXCLUIR%>
+                <%BOTAOPRECADASTRO%>
            </div>
        </div>
     </div>
 </div>
 <input type="hidden" name="acao" value="acao" />
+<input id="botao" type="hidden" name="botao" value="salvar" />
 <script type="text/javascript">
 $(function() {
     $('.cep').mask('00000-000');
@@ -339,6 +341,23 @@ function removeConsulta(idcliente){
 				}
     	);
     }
+}
+
+function preCadastrar(){
+	$("#botao").val("precadastrar");
+	$(":input").not("#input_nome").removeAttr("required");
+	$("select").removeAttr("required");
+	var nome = $("#input_nome").val();
+	var tipocliente = $("#tipocliente").val();
+	if(tipocliente == '' || tipocliente == 'undefined'){
+		alert("Para fazer o pré-cadastro, preencha pelo menos o tipo do cliente e o nome!");
+	}else{
+		if(nome == '' || nome == 'undefined'){
+			alert("Para fazer o pré-cadastro, preencha pelo menos o nome do cliente!");
+		}else{
+			$('form').submit();
+		}
+	}
 }
 </script>
     <script type="text/javascript" src="<%URLPADRAO%>html/js/jasny.bootstrap/extend/js/jasny-bootstrap.min.js"></script>

@@ -1,6 +1,7 @@
 <?php
     $titulo = "Novo Cliente";
     $botao_voltar = '<button onclick="voltar()" style="box-shadow: none;background-color: #000000;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Voltar</button>';
+    $botao_precadastro = utf8_encode('<button onclick="preCadastrar();" name="botao" value="precadastrar" style="color: #000000; box-shadow: none;background-color: #f2fcad;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Pré-Cadastrar</button>');
     $displaysocio = 'none';
     $consultaHTML = '<label style="width: 100%;" class="col-sm-3 control-label form-margin">Consulta</label>
 		            <div class="col-sm-6">
@@ -89,10 +90,16 @@
 		if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
 	        $idtipocliente = $_POST["tipocliente"];
 	        $idtipoprofissional = $_POST["tipoprofissional"];
+	        if($_POST['botao'] == 'precadastrar' && $idtipoprofissional == ''){
+	        	$idtipoprofissional = 13;
+	        }
 	        $nome = ucwords(utf8_decode(strip_tags(trim(addslashes($_POST["nome"])))));
 	        $cnpj_cpf = $_POST['cnpj_cpf'];
 	        $inscricao_estadual = utf8_decode(strip_tags(trim(addslashes($_POST["inscricao_estadual"]))));
 	        $idtipoendereco = $_POST['tipoendereco_p'];
+	        if($_POST['botao'] == 'precadastrar' && $idtipoendereco == ''){
+	        	$idtipoendereco = 2;
+	        }
 	        $cep = strip_tags(trim(addslashes($_POST["cep_p"])));
 	        $cidade = utf8_decode(strip_tags(trim(addslashes($_POST["cidade_p"]))));
 	        $estado = utf8_decode(strip_tags(trim(addslashes($_POST["estado_p"]))));
@@ -121,6 +128,12 @@
 	        $arrRefs = $_POST["ponto_referencia"];
 	        
 	        if($idcliente){
+	        	if($_POST['botao'] == 'precadastrar'){
+	        		$ativo = 9;
+	        	}else{
+	        		$ativo = 1;
+	        	}
+	        	
 	        	if($_FILES['fconsulta']['name'] != ''){
 					$banco->AddConsulta($_FILES['fconsulta'], $idcliente);
 	        	}
@@ -159,16 +172,26 @@
 	            }
 	            
 	            #Update
-	            $banco->AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $inscricao_estadual);
+	            $banco->AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $inscricao_estadual, $ativo);
 	        }else{
-	            #Verifica cliente cadastrado
-	            $result = $banco->BuscaClienteExistente($idtipocliente, $cnpj_cpf);
-	            $num_rows = $banco->Linha($result);
+	        	if($_POST['botao'] == 'salvar'){
+	            	#Verifica cliente cadastrado
+		            $result = $banco->BuscaClienteExistente($idtipocliente, $cnpj_cpf);
+		            $num_rows = $banco->Linha($result);
+	        	}else{
+	        		$result = $banco->BuscaClienteExistentePorNome($nome);
+	        		$num_rows = $banco->Linha($result);
+	        	}	        	
 	            if($num_rows){
 	                echo utf8_encode("<script type='text/javascript'>alert('Cliente já cadastrado!')</script>");
 	            }else{
+	            	if($_POST['botao'] == 'precadastrar'){
+	            		$ativo = 9;
+	            	}else{
+	            		$ativo = 1;
+	            	}
 	                #Insert
-	                $banco->InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $_FILES, $inscricao_estadual);
+	                $banco->InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $_FILES, $inscricao_estadual, $ativo);
 	            }
 	        }
 	    }#Fim POST
@@ -213,6 +236,7 @@
 	    $Conteudo = str_replace("<%BOTAOEXCLUIR%>", $botao_excluir, $Conteudo);
 	    $Conteudo = str_replace("<%BOTAOATIVARINATIVAR%>", $botao_ativar_inativar, $Conteudo);
 	    $Conteudo = str_replace("<%BOTAOVOLTAR%>", $botao_voltar, $Conteudo);
+	    $Conteudo = str_replace("<%BOTAOPRECADASTRO%>", $botao_precadastro, $Conteudo);
 	    
 	    $Conteudo = str_replace("<%CONSULTA%>", $consultaHTML, $Conteudo);
     }

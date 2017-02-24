@@ -35,7 +35,10 @@
     				if($rs['ativo'] == 1){
     					$Linha = str_replace("<%ATIVOINATIVO%>", 'Ativo', $Linha);
     					$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
-    				}else{
+    				}elseif($rs['ativo'] == 9){
+                    	$Linha = str_replace("<%ATIVOINATIVO%>", 'Pré-Cadastro', $Linha);
+                    	$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
+                    }else{
     					$Linha = str_replace("<%ATIVOINATIVO%>", 'Inativo', $Linha);
     					$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="ativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Ativar</a>', $Linha);
     				}
@@ -124,7 +127,10 @@
 	    			if($rs['ativo'] == 1){
 	    				$Linha = str_replace("<%ATIVOINATIVO%>", 'Ativo', $Linha);
 	    				$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
-	    			}else{
+	    			}elseif($rs['ativo'] == 9){
+                    	$Linha = str_replace("<%ATIVOINATIVO%>", 'Pré-Cadastro', $Linha);
+                    	$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
+                    }else{
 	    				$Linha = str_replace("<%ATIVOINATIVO%>", 'Inativo', $Linha);
 	    				$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="ativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Ativar</a>', $Linha);
 	    			}
@@ -258,14 +264,15 @@
     	}
     	
         #Insere Cliente
-        function InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $file, $inscricao_estadual){
+        function InsereCliente($idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $file, $inscricao_estadual, $ativo){
             if($idtipocliente == 1){
                 $auxcnpjcpf = 'cpf';
             }elseif($idtipocliente == 2){
                 $auxcnpjcpf = 'cnpj';
             }
-            $Sql = "INSERT INTO t_clientes (nome, idtipocliente, endereco, numero, bairro, idtipoenderecoprincipal, cep, cidade, estado, complemento, ponto_referencia, telefone, celular, $auxcnpjcpf, idtipoprofissional, email, data_cadastro, nome_socio, cpf_socio, inscricao_estadual) 
-                    VALUES ('".ucwords($nome)."', '$idtipocliente', '".ucwords($endereco)."', '$numero', '".ucwords($bairro)."', '$idtipoendereco', '$cep', '".ucwords($cidade)."', '$estado', '".ucfirst($complemento)."', '".ucfirst($ponto_referencia)."', '$telefone', '$celular', '$cnpj_cpf', '$idtipoprofissional', '$email', '".date("Y-m-d H:i:s")."', '".ucwords($nome_socio)."', '$cpf_socio', '$inscricao_estadual')";
+            $Sql = "INSERT INTO t_clientes (nome, idtipocliente, endereco, numero, bairro, idtipoenderecoprincipal, cep, cidade, estado, complemento, ponto_referencia, telefone, celular, $auxcnpjcpf, idtipoprofissional, email, data_cadastro, nome_socio, cpf_socio, inscricao_estadual, ativo) 
+                    VALUES ('".ucwords($nome)."', '$idtipocliente', '".ucwords($endereco)."', '$numero', '".ucwords($bairro)."', '$idtipoendereco', '$cep', '".ucwords($cidade)."', '$estado', '".ucfirst($complemento)."', '".ucfirst($ponto_referencia)."', '$telefone', '$celular', '$cnpj_cpf', '$idtipoprofissional', '$email', '".date("Y-m-d H:i:s")."', '".ucwords($nome_socio)."', '$cpf_socio', '$inscricao_estadual', '$ativo')";
+            
             if(parent::Execute($Sql)){
                 $lastid = mysql_insert_id();
             }else{
@@ -493,14 +500,15 @@
         }
         
         #Atualiza Cliente
-        function AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $inscricao_estadual){
+        function AtualizaCliente($idcliente, $idtipocliente, $idtipoprofissional, $nome, $cnpj_cpf, $idtipoendereco, $cep, $cidade, $estado, $endereco, $numero, $bairro, $complemento, $ponto_referencia, $telefone, $celular, $email, $nome_socio, $cpf_socio, $arrTelefones, $arrTipoTelefones, $arrTelContatos, $arrEmails, $arrTipoEnd, $arrCeps, $arrEnderecos, $arrNumeros, $arrBairros, $arrCidades, $arrEstados, $arrComps, $arrRefs, $inscricao_estadual, $ativo){
             if($idtipocliente == 1){
                 $auxcnpjcpf = 'cpf';
             }elseif($idtipocliente == 2){
                 $auxcnpjcpf = 'cnpj';
             }
             $Sql = "UPDATE t_clientes SET nome = '$nome', idtipocliente = '$idtipocliente', endereco = '".ucwords($endereco)."', numero = '$numero', bairro = '".ucwords($bairro)."', idtipoenderecoprincipal = '$idtipoendereco', cep = '$cep', cidade = '".ucwords($cidade)."', estado = '$estado', complemento = '".ucfirst($complemento)."', ponto_referencia = '".ucfirst($ponto_referencia)."', 
-                    telefone = '$telefone', celular = '$celular', $auxcnpjcpf = '$cnpj_cpf', idtipoprofissional = '$idtipoprofissional', email = '$email', nome_socio = '".ucwords($nome_socio)."', cpf_socio = '$cpf_socio', inscricao_estadual = '$inscricao_estadual' WHERE idcliente = $idcliente";
+                    telefone = '$telefone', celular = '$celular', $auxcnpjcpf = '$cnpj_cpf', idtipoprofissional = '$idtipoprofissional', email = '$email', nome_socio = '".ucwords($nome_socio)."', cpf_socio = '$cpf_socio', inscricao_estadual = '$inscricao_estadual', ativo = $ativo WHERE idcliente = $idcliente";
+            
             if(parent::Execute($Sql)){
                 #Verifica adicionais
                 if($arrTipoTelefones[0] != ''){
@@ -571,6 +579,9 @@
                     }
                     if($rs['ativo'] == 1){
                     	$Linha = str_replace("<%ATIVOINATIVO%>", 'Ativo', $Linha);
+                    	$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
+                    }elseif($rs['ativo'] == 9){
+                    	$Linha = str_replace("<%ATIVOINATIVO%>", 'Pré-Cadastro', $Linha);
                     	$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
                     }else{
                     	$Linha = str_replace("<%ATIVOINATIVO%>", 'Inativo', $Linha);
@@ -684,6 +695,12 @@
             
             $Sql = "SELECT * FROM t_clientes $where";
             return parent::Execute($Sql);
+        }
+        
+        #Busca cliente existente por nome - pré cadastro
+        function BuscaClienteExistentePorNome($nome){
+        	$Sql = "SELECT * FROM t_clientes WHERE nome = '$nome'";
+        	return parent::Execute($Sql);
         }
         
         #Busca cliente por ID
