@@ -4,6 +4,7 @@
     <td><%ENDERECO%></td>
     <td><%TELEFONE%></td>
     <td><%CNPJCPF%></td>
+    <td><%CARTEIRA%></td>
     <td><%ULTIMAINTERACAO%></td>
     <td class="center"><%ATIVOINATIVO%></td>
     <td class="center">
@@ -17,6 +18,7 @@
                 <li>
                     <a href="<%URLPADRAO%>cliente/editar/<%ID%>">Editar</a>
                     <%CONSULTA%>
+                    <%LINKCARTEIRA%>
                     <a href="javascript:void(0)" onclick="abreHistorico(<%ID%>)">Histórico de Interações</a>
                     <a href="javascript:void(0)" onclick="abreHistoricoVendas(<%ID%>)">Histórico de Vendas</a>
                 </li>

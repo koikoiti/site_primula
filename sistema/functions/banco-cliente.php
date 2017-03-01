@@ -1,6 +1,82 @@
 <?php
     class bancocliente extends banco{
     	
+    	function MontaClientesCarteira(){
+    		$Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-itens');
+    		$Sql = "SELECT *, X.idusuario AS carteira FROM t_clientes C 
+    				INNER JOIN t_usuarios_carteira_clientes X ON X.idcliente = C.idcliente 
+    				WHERE X.idusuario = " . $_SESSION['idusuario'] 
+    				. " ORDER BY C.nome";
+    		$result = parent::Execute($Sql);
+    		$linha = parent::Linha($result);
+    		if($linha){
+    			while($rs = parent::ArrayData($result)){
+    				$Linha = $Auxilio;
+    				$Linha = str_replace('<%ID%>', $rs['idcliente'], $Linha);
+    				$Linha = str_replace('<%NOME%>', $rs['nome'], $Linha);
+    				$Linha = str_replace('<%TIPOPROFISSIONAL%>', $rs['tipoprofissional'], $Linha);
+    				$addr = $rs['endereco'] . ", Nº " . $rs['numero'] . " - " . $rs['bairro'] . " - " . $rs['cidade'] . "/" . $rs['estado'];
+    				$Linha = str_replace('<%ENDERECO%>', $addr, $Linha);
+    				if($rs['carteira'] == $_SESSION['idusuario']){
+    					#Remover da carteira
+    					$link_carteira = '<a href="javascript:void(0)" onclick="removerCarteira('.$rs['idcliente'].')">Remover da Carteira</a>';
+    				}else{
+    					#Link adicionar
+    					$link_carteira = '<a href="javascript:void(0)" onclick="adicionarCarteira('.$rs['idcliente'].')">Adicionar à Carteira</a>';
+    				}
+    				$Linha = str_replace('<%LINKCARTEIRA%>', $link_carteira, $Linha);
+    				$Linha = str_replace('<%CARTEIRA%>', parent::BuscaUsuarioPorId($rs['carteira']), $Linha);
+    				$Linha = str_replace('<%TELEFONE%>', $rs['telefone'], $Linha);
+    				if($rs['idtipocliente'] == 1){
+    					$cnpjcpf = 'CPF: ' . $rs['cpf'];
+    				}elseif($rs['idtipocliente'] == 2){
+    					$cnpjcpf = 'CNPJ: ' . $rs['cnpj'];
+    				}
+    				if($rs['ativo'] == 1){
+    					$Linha = str_replace("<%ATIVOINATIVO%>", 'Ativo', $Linha);
+    					$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
+    				}elseif($rs['ativo'] == 9){
+    					$Linha = str_replace("<%ATIVOINATIVO%>", 'Pré-Cadastro', $Linha);
+    					$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
+    				}else{
+    					$Linha = str_replace("<%ATIVOINATIVO%>", 'Inativo', $Linha);
+    					$Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="ativar('.$rs['idcliente'].', \''.$rs['nome'].'\')">Ativar</a>', $Linha);
+    				}
+    				$Linha = str_replace('<%CNPJCPF%>', $cnpjcpf, $Linha);
+    				#Verifica consulta, se tiver
+    				$SqlConsulta = "SELECT * FROM t_clientes_consulta WHERE idcliente = " . $rs['idcliente'];
+    				$resultConsulta = parent::Execute($SqlConsulta);
+    				$linhaConsulta = parent::Linha($resultConsulta);
+    				if($linhaConsulta){
+    					$rsConsulta = parent::ArrayData($resultConsulta);
+    					$consultaHTML = '<a target="_blank" href="'.UrlPadrao.$rsConsulta['caminho'].'">Consulta</a>';
+    				}else{
+    					$consultaHTML = "";
+    				}
+    				$Linha = str_replace('<%CONSULTA%>', $consultaHTML, $Linha);
+    				#Verifica última interação
+    				$SqlInteracao = "SELECT data, usuario FROM t_clientes_historico WHERE idcliente = " . $rs['idcliente'] . " ORDER BY data DESC LIMIT 0, 1";
+    				$resultInteracao = parent::Execute($SqlInteracao);
+    				$linhaInteracao = parent::Linha($resultInteracao);
+    				if($linhaInteracao){
+    					$rsInteracao = parent::ArrayData($resultInteracao);
+    					$dataInteracao = date("d/m/Y - H:i", strtotime($rsInteracao['data']));
+    					$interacaoHTML = "$dataInteracao <br/> {$rsInteracao['usuario']}";
+    				}else{
+    					$interacaoHTML = "";
+    				}
+    				$Linha = str_replace('<%ULTIMAINTERACAO%>', $interacaoHTML, $Linha);
+    				$Clientes .= $Linha;
+    			}
+    		}else{
+    			$Clientes = '<tr class="odd gradeX">
+                                <td colspan="9">Não foram encontrados clientes cadastrados.</td>
+                             <tr>';
+    		}
+    		
+    		return utf8_encode($Clientes);
+    	}
+    	
     	function MontaInteracoesUsuario($idusuario, $buscaDataIni, $buscaDataFim){
     		if($buscaDataIni == ''){
     			$buscaDataIni = '0000-00-00';
@@ -9,15 +85,16 @@
     			$buscaDataFim = '0000-00-00';
     		}
     		$Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-itens');
-    		$SqlHistorico = "SELECT idcliente FROM t_clientes_historico WHERE usuario = '".parent::BuscaUsuarioPorId($idusuario)."' AND data >= '$buscaDataIni' AND data <= '$buscaDataFim' GROUP BY idcliente ORDER BY data DESC";
+    		$SqlHistorico = "SELECT idcliente FROM t_clientes_historico WHERE usuario = '".parent::BuscaUsuarioPorId($idusuario)."' AND data >= '$buscaDataIni 00:00:00' AND data <= '$buscaDataFim 23:59:59' GROUP BY idcliente ORDER BY data DESC";
     		$resultHistorico = parent::Execute($SqlHistorico);
     		$linhaHistorico = parent::Linha($resultHistorico);
     		if($linhaHistorico){
     			while($rsHistorico = parent::ArrayData($resultHistorico)){
     				$Linha = $Auxilio;
-    				$Sql = "SELECT C.*, P.tipo AS tipoprofissional FROM t_clientes C
-		                    INNER JOIN fixo_tipo_profissional P ON C.idtipoprofissional = P.idtipoprofissional
-		                    WHERE 1 AND idcliente = " . $rsHistorico['idcliente'];
+    				$Sql = "SELECT C.*, P.tipo AS tipoprofissional, X.idusuario AS carteira FROM t_clientes C
+		                    INNER JOIN fixo_tipo_profissional P ON C.idtipoprofissional = P.idtipoprofissional 
+    						LEFT JOIN t_usuarios_carteira_clientes X ON X.idcliente = C.idcliente 
+		                    WHERE 1 AND C.idcliente = " . $rsHistorico['idcliente'];
     				$result = parent::Execute($Sql);
     				$rs = parent::ArrayData($result);
     		
@@ -27,6 +104,15 @@
     				$addr = $rs['endereco'] . ", Nº " . $rs['numero'] . " - " . $rs['bairro'] . " - " . $rs['cidade'] . "/" . $rs['estado'];
     				$Linha = str_replace('<%ENDERECO%>', $addr, $Linha);
     				$Linha = str_replace('<%TELEFONE%>', $rs['telefone'], $Linha);
+    				$Linha = str_replace('<%CARTEIRA%>', parent::BuscaUsuarioPorId($rs['carteira']), $Linha);
+    				if($rs['carteira'] == $_SESSION['idusuario']){
+    					#Remover da carteira
+    					$link_carteira = '<a href="javascript:void(0)" onclick="removerCarteira('.$rs['idcliente'].')">Remover da Carteira</a>';
+    				}else{
+    					#Link adicionar
+    					$link_carteira = '<a href="javascript:void(0)" onclick="adicionarCarteira('.$rs['idcliente'].')">Adicionar à Carteira</a>';
+    				}
+    				$Linha = str_replace('<%LINKCARTEIRA%>', $link_carteira, $Linha);
     				if($rs['idtipocliente'] == 1){
     					$cnpjcpf = 'CPF: ' . $rs['cpf'];
     				}elseif($rs['idtipocliente'] == 2){
@@ -70,7 +156,7 @@
     			}
     		}else{
     			$Clientes = '<tr class="odd gradeX">
-                                <td colspan="8">Não foram encontrados clientes cadastrados.</td>
+                                <td colspan="9">Não foram encontrados clientes cadastrados.</td>
                              <tr>';
     		}
     		
@@ -100,16 +186,17 @@
     			$buscaDataFim = '0000-00-00';
     		}
     		$Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-itens');
-    		$SqlHistorico = "SELECT idcliente FROM t_clientes_historico WHERE usuario = '".$_SESSION['nomeexibicao']."' AND data >= '$buscaDataIni' AND data <= '$buscaDataFim' GROUP BY idcliente ORDER BY data DESC";
+    		$SqlHistorico = "SELECT idcliente FROM t_clientes_historico WHERE usuario = '".$_SESSION['nomeexibicao']."' AND data >= '$buscaDataIni 00:00:00' AND data <= '$buscaDataFim 23:59:59' GROUP BY idcliente ORDER BY data DESC";
     		
     		$resultHistorico = parent::Execute($SqlHistorico);
     		$linhaHistorico = parent::Linha($resultHistorico);
     		if($linhaHistorico){
     			while($rsHistorico = parent::ArrayData($resultHistorico)){
 	    			$Linha = $Auxilio;
-	    			$Sql = "SELECT C.*, P.tipo AS tipoprofissional FROM t_clientes C
-		                    INNER JOIN fixo_tipo_profissional P ON C.idtipoprofissional = P.idtipoprofissional
-		                    WHERE 1 AND idcliente = " . $rsHistorico['idcliente'];
+	    			$Sql = "SELECT C.*, P.tipo AS tipoprofissional, X.idusuario AS carteira FROM t_clientes C
+		                    INNER JOIN fixo_tipo_profissional P ON C.idtipoprofissional = P.idtipoprofissional 
+	    					LEFT JOIN t_usuarios_carteira_clientes X ON X.idcliente = C.idcliente 
+		                    WHERE 1 AND C.idcliente = " . $rsHistorico['idcliente'];
 	    			$result = parent::Execute($Sql);
 	    			$rs = parent::ArrayData($result);
 	    			
@@ -119,6 +206,15 @@
 	    			$addr = $rs['endereco'] . ", Nº " . $rs['numero'] . " - " . $rs['bairro'] . " - " . $rs['cidade'] . "/" . $rs['estado'];
 	    			$Linha = str_replace('<%ENDERECO%>', $addr, $Linha);
 	    			$Linha = str_replace('<%TELEFONE%>', $rs['telefone'], $Linha);
+	    			$Linha = str_replace('<%CARTEIRA%>', parent::BuscaUsuarioPorId($rs['carteira']), $Linha);
+	    			if($rs['carteira'] == $_SESSION['idusuario']){
+	    				#Remover da carteira
+	    				$link_carteira = '<a href="javascript:void(0)" onclick="removerCarteira('.$rs['idcliente'].')">Remover da Carteira</a>';
+	    			}else{
+	    				#Link adicionar
+	    				$link_carteira = '<a href="javascript:void(0)" onclick="adicionarCarteira('.$rs['idcliente'].')">Adicionar à Carteira</a>';
+	    			}
+	    			$Linha = str_replace('<%LINKCARTEIRA%>', $link_carteira, $Linha);
 	    			if($rs['idtipocliente'] == 1){
 	    				$cnpjcpf = 'CPF: ' . $rs['cpf'];
 	    			}elseif($rs['idtipocliente'] == 2){
@@ -162,7 +258,7 @@
     			}
     		}else{
     			$Clientes = '<tr class="odd gradeX">
-                                <td colspan="8">Não foram encontrados clientes cadastrados.</td>
+                                <td colspan="9">Não foram encontrados clientes cadastrados.</td>
                              <tr>';
     		}
     		            
@@ -538,8 +634,9 @@
         	}
             $Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-itens');
             $inicio = ($pagina * Limite) - Limite;
-            $Sql = "SELECT C.*, P.tipo AS tipoprofissional FROM t_clientes C 
+            $Sql = "SELECT C.*, P.tipo AS tipoprofissional, X.idusuario AS carteira FROM t_clientes C 
                     INNER JOIN fixo_tipo_profissional P ON C.idtipoprofissional = P.idtipoprofissional 
+            		LEFT JOIN t_usuarios_carteira_clientes X ON X.idcliente = C.idcliente 
                     WHERE 1";
             if($busca_nome != ''){
                 $Sql .= " AND (C.nome LIKE '%$busca_nome%' OR C.nome_socio LIKE '%$busca_nome%')";
@@ -571,6 +668,15 @@
                     $Linha = str_replace('<%TIPOPROFISSIONAL%>', $rs['tipoprofissional'], $Linha);
                     $addr = $rs['endereco'] . ", Nº " . $rs['numero'] . " - " . $rs['bairro'] . " - " . $rs['cidade'] . "/" . $rs['estado'];
                     $Linha = str_replace('<%ENDERECO%>', $addr, $Linha);
+                    if($rs['carteira'] == $_SESSION['idusuario']){
+                    	#Remover da carteira
+                    	$link_carteira = '<a href="javascript:void(0)" onclick="removerCarteira('.$rs['idcliente'].')">Remover da Carteira</a>';
+                    }else{
+                    	#Link adicionar
+                    	$link_carteira = '<a href="javascript:void(0)" onclick="adicionarCarteira('.$rs['idcliente'].')">Adicionar à Carteira</a>';
+                    }
+                    $Linha = str_replace('<%LINKCARTEIRA%>', $link_carteira, $Linha);
+                    $Linha = str_replace('<%CARTEIRA%>', parent::BuscaUsuarioPorId($rs['carteira']), $Linha);
                     $Linha = str_replace('<%TELEFONE%>', $rs['telefone'], $Linha);
                     if($rs['idtipocliente'] == 1){
                         $cnpjcpf = 'CPF: ' . $rs['cpf'];
@@ -615,7 +721,7 @@
                 }
             }else{
                 $Clientes = '<tr class="odd gradeX">
-                                <td colspan="8">Não foram encontrados clientes cadastrados.</td>
+                                <td colspan="9">Não foram encontrados clientes cadastrados.</td>
                              <tr>';
             }
             
@@ -894,7 +1000,7 @@
         	$resultVerifica = parent::Execute($SqlVerifica);
         	$linha = parent::Linha($resultVerifica);
         	if($linha){
-        		echo utf8_encode("<script>alert('Esse cliente possui uma venda/orçamento.O sistema impede a exclusão para não alterar o fluxo.');location.href='".UrlPadrao."lista-cliente'</script>");
+        		echo utf8_encode("<script>alert('Esse cliente possui uma venda/orçamento. O sistema impede a exclusão para não alterar o fluxo.');location.href='".UrlPadrao."lista-cliente'</script>");
         	}else{
         		$SqlDelete = "DELETE FROM t_clientes WHERE idcliente = $idcliente";
         		$result = parent::Execute($SqlDelete);

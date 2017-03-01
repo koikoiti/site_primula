@@ -3,10 +3,13 @@
     <div class="block-flat">
         <div class="header" style="overflow: hidden;">
             <div class="col-sm-12 no-padding">
-            	<div class="col-sm-6" style="width: 50%;">
+            	<div class="col-sm-6" style="width: 40%;">
                 	<a href="<%URLPADRAO%>cliente">Criar Novo</a>
                 </div>
-                <div class="col-sm-2 text-right">
+                <div class="col-sm-1 text-right no-padding-left">
+                	<button type="button" onclick="minhaCarteira();" class="btn btn-warning">Carteira</button>
+                </div>
+                <div class="col-sm-2 text-right no-padding-right">
                 	<%BOTAOINTERACOES%>
                 </div>
                 <div class="col-sm-4 text-right">
@@ -39,6 +42,7 @@
                             <th>Endereço</th>
                             <th>Telefone</th>
                             <th>CNPJ / CPF</th>
+                            <th>Carteira</th>
                             <th>Última Interação</th>
                             <th>Situação</th>
                             <th>Opções</th>
@@ -60,6 +64,11 @@ $(function() {
     $("#busca_cnpj").mask("00.000.000/0000-00");
     $("#busca_cpf").mask("000.000.000-00");
 });
+
+function minhaCarteira(){
+	location.href = "<%URLPADRAO%>lista-cliente/?minha_carteira=true";
+}
+
 function pesquisar(minhas){
 	if(minhas != '' && typeof minhas != "undefined"){
 		minhas_interacoes = "&minhas_interacoes=true";
@@ -109,6 +118,36 @@ function abreHistorico(idcliente){
 
 function abreHistoricoVendas(idcliente){
 	window.open('<%URLPADRAO%>cliente/historico-vendas/' + idcliente, 'historico-vendas', 'toolbar=no, titlebar=no, status=no, resizable=0, menubar=no, location=no, left=200, top=50, height=800, width=1100');
+}
+
+function adicionarCarteira(idcliente){
+	$.post("<%URLPADRAO%>lib/ajax/adicionarCarteira.php",
+			{idcliente:idcliente},
+			function(retorno){
+			    if(retorno == 666){
+			    	//Já existe na carteira de alguém
+			    	alert("Esse cliente já está na carteira de outro usuário!");
+			    	location.reload();
+			    }else{
+			    	//Adicionado com sucesso
+			    	alert("Cliente adicionado à sua carteira!");
+			    	location.reload();
+			    }
+			}
+		);
+}
+
+function removerCarteira(idcliente){
+	$.post("<%URLPADRAO%>lib/ajax/removerCarteira.php",
+			{idcliente:idcliente},
+			function(retorno){
+			    if(retorno == 1){
+			    	//Já existe na carteira de alguém
+			    	alert("Cliente removido da sua carteira!");
+			    	location.reload();
+			    }
+			}
+		);
 }
 </script>
 <style>

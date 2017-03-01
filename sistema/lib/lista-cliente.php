@@ -38,6 +38,10 @@
     	$Clientes = $banco->MontaInteracoesUsuario($idusuario, $buscaDataIni, $buscaDataFim);
     	$paginacao = '';
     	$minhas_interacoes_title = utf8_encode(" - Interações de " . $banco->BuscaUsuarioPorId($idusuario));
+    }elseif($_GET['minha_carteira']){
+    	$Clientes = $banco->MontaClientesCarteira();
+    	$paginacao = '';
+    	$minhas_interacoes_title = utf8_encode(" - Minha Carteira");
     }else{
     	$Clientes = $banco->ListaClientes(utf8_decode($busca_nome), $busca_cnpj, $busca_cpf, utf8_decode($busca_bairro), $busca_telefone, $pagina, utf8_decode($busca_cidade),$buscaDataIni, $buscaDataFim);
     	$paginacao = $banco->MontaPaginacao($busca_nome, $busca_cnpj, $busca_cpf, utf8_decode($busca_bairro), $busca_telefone, $pagina, utf8_decode($busca_cidade));
