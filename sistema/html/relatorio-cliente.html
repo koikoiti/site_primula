@@ -2,7 +2,7 @@
 <div class="col-md-12">
     <div class="block-flat">
         <div class="header" style="overflow: hidden;">
-            <h3 style="width: 15%; float: left;">Relatório de Vendas</h3>
+            <h3 style="width: 15%; float: left;">Relatório por Cliente</h3>
             <div style="width: 85%; float: left;">
                	<div style="width: 100%; float: right;" class="">
                		<input style="float: left; width: 20%;" id="busca_dataIni" type="date" class="form-control" value="<%BUSCADATAINI%>" placeholder="Data Inicial"/>
@@ -24,8 +24,6 @@
                 <table class="table table-bordered" id="datatable">
                     <thead>
                         <tr>
-                            <th>Número</th>
-                            <th>Data</th>
                             <th>Cliente</th>
                             <th>Responsável</th>
                             <th class="text-right">Venda sem Frete</th>
@@ -48,6 +46,6 @@ function pesquisar(){
     var busca_responsavel = $("#busca_responsavel").val().trim();
     var busca_marca = $("#busca_marca").val().trim();
     
-    location.href = "<%URLPADRAO%>relatorios/?dataIni=" + dataIni + "&dataFim=" + dataFim + "&busca_responsavel=" + busca_responsavel + "&busca_marca=" + busca_marca;
+    location.href = "<%URLPADRAO%>relatorio-cliente/?dataIni=" + dataIni + "&dataFim=" + dataFim + "&busca_responsavel=" + busca_responsavel + "&busca_marca=" + busca_marca;
 }
 </script>
