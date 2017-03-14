@@ -14,7 +14,7 @@
 		$dataFim = $_GET['dataFim'];
 		$idresponsavel = $_GET['busca_responsavel'];
 		$marca = $_GET['busca_marca'];
-		$botao_limpar = '<a href="'.UrlPadrao.'relatorios" class="btn btn-danger"><i class="fa fa-times"></i></a>';
+		$botao_limpar = '<a href="'.UrlPadrao.'relatorio-cliente" class="btn btn-danger"><i class="fa fa-times"></i></a>';
 	}
 	
 	$Relatorio = $banco->MontaRelatorio($dataIni, $dataFim, $idresponsavel, $marca);

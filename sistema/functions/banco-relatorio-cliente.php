@@ -28,16 +28,16 @@ class bancorelatoriocliente extends banco{
 				}
 				$where = rtrim($where, " OR");
 				$where .= ")";
-				$Sql = "SELECT DISTINCT SUM(valor_venda) AS soma_venda, SUM(valor_frete) AS soma_frete, C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario
+				$Sql = "SELECT DISTINCT SUM(DISTINCT valor_venda) AS soma_venda, SUM(DISTINCT valor_frete) AS soma_frete, C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario
 						FROM t_vendas V
 						INNER JOIN t_clientes C ON V.idcliente = C.idcliente
 						INNER JOIN t_vendas_produtos X ON V.idvenda = X.idvenda
-						WHERE 1 $where GROUP BY nome ORDER BY nome ASC";
+						WHERE 1 $where AND V.orcamento = 0 GROUP BY (idvenda) ORDER BY nome ASC";
 			}
 		}else{
 			$Sql = "SELECT SUM(valor_venda) AS soma_venda, SUM(valor_frete) AS soma_frete, C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario FROM t_vendas V
 					INNER JOIN t_clientes C ON V.idcliente = C.idcliente
-					WHERE 1 $where GROUP BY nome ORDER BY nome ASC";
+					WHERE 1 $where AND V.orcamento = 0 GROUP BY nome ORDER BY nome ASC";
 		}
 		
 		$quantidade_vendas = 0;
@@ -50,6 +50,7 @@ class bancorelatoriocliente extends banco{
 			$Linha = $Auxilio;
 			$Linha = str_replace("<%CLIENTE%>", utf8_encode($rs['nome']), $Linha);
 			$venda_sem_frete = $rs['soma_venda'] - $rs['soma_frete'];
+			#echo $venda_sem_frete .  "<br>";
 			$Linha = str_replace("<%VENDASEMFRETE%>", "R$ " . number_format($venda_sem_frete, 2, ',', '.'), $Linha);
 			$Linha = str_replace("<%VALORFRETE%>", "R$ " . number_format($rs['soma_frete'], 2, ',', '.'), $Linha);
 			$Linha = str_replace("<%VALORTOTAL%>", "R$ " . number_format($rs['soma_venda'], 2, ',', '.'), $Linha);

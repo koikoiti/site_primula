@@ -304,7 +304,7 @@
     		$Sql = "SELECT nome FROM t_clientes WHERE idcliente = $idcliente";
     		$result = parent::Execute($Sql);
     		$rs = parent::ArrayData($result);
-    		return $rs['nome'];
+    		return utf8_encode($rs['nome']);
     	}
     	
     	function MontaConsulta($idcliente){
