@@ -17,7 +17,11 @@
 		$botao_limpar = '<a href="'.UrlPadrao.'relatorio-cliente" class="btn btn-danger"><i class="fa fa-times"></i></a>';
 	}
 	
-	$Relatorio = $banco->MontaRelatorio($dataIni, $dataFim, $idresponsavel, $marca);
+	if($marca){
+		$Relatorio = $banco->MontaRelatorioComMarca($dataIni, $dataFim, $idresponsavel, $marca);
+	}else{
+		$Relatorio = $banco->MontaRelatorio($dataIni, $dataFim, $idresponsavel);
+	}
 	$select_usuarios = $banco->MontaUsuarios($idresponsavel);
 	
 	#Imprime valores
