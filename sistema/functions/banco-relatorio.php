@@ -26,14 +26,15 @@
 					while($rsMarcaProduto = parent::ArrayData($resultMarcaProduto)){
 						$where .= " X.produto_kit = 'prod_" . $rsMarcaProduto['idproduto'] . "' OR";
 					}
-					$where = rtrim($where, " OR");
-					$where .= ")";
-					$Sql = "SELECT DISTINCT C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario 
-							FROM t_vendas V
-							INNER JOIN t_clientes C ON V.idcliente = C.idcliente 
-							INNER JOIN t_vendas_produtos X ON V.idvenda = X.idvenda 
-							WHERE 1 $where AND V.orcamento = 0";
 				}
+				
+				$where = rtrim($where, " OR");
+				$where .= ")";
+				$Sql = "SELECT DISTINCT C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario
+						FROM t_vendas V
+						INNER JOIN t_clientes C ON V.idcliente = C.idcliente
+						INNER JOIN t_vendas_produtos X ON V.idvenda = X.idvenda
+						WHERE 1 $where AND V.orcamento = 0";
 			}else{
 				$Sql = "SELECT C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario FROM t_vendas V 
 						INNER JOIN t_clientes C ON V.idcliente = C.idcliente 

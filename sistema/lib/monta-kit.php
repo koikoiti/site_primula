@@ -21,6 +21,7 @@
         $titulo = "Editar Kit";
         
         $nome = utf8_encode($rsKit['nome']);
+        $marca = utf8_encode($rsKit['marca']);
         $codigo = utf8_encode($rsKit['codigo']);
         $codigo_fornecedor = utf8_encode($rsKit['codigo_fornecedor']);
         $valor = $rsKit['valor_unitario'];
@@ -58,6 +59,7 @@
     
     if(isset($_POST["acao"]) && $_POST["acao"] != '' ){
         $nome = utf8_decode(strip_tags(trim(addslashes($_POST["nome"]))));
+        $marca = utf8_decode(strip_tags(trim(addslashes($_POST["marca"]))));
         $codigo = utf8_decode(strip_tags(trim(addslashes($_POST["codigo"]))));
         $codigo_fornecedor = utf8_decode(strip_tags(trim(addslashes($_POST["codigo_fornecedor"]))));
         $estoque = strip_tags(trim(addslashes($_POST["estoque"])));
@@ -117,7 +119,7 @@
     				}
     			}
     		}
-            $banco->AtualizaKit($idkit, $nome, $codigo, $codigo_fornecedor, $valor, $arrProdutos, $arrQuantidade, $auxImagens, $estoque, $valor_profissional, $valor_consumidor, $descricao, $informacoes);
+            $banco->AtualizaKit($idkit, $nome, $codigo, $codigo_fornecedor, $valor, $arrProdutos, $arrQuantidade, $auxImagens, $estoque, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $marca);
         }else{
             #Pega as imagens e arruma num array
     		if($_FILES['imagens']['name'][0] !== ""){
@@ -154,7 +156,7 @@
                 $msg = "Produto com esse código já cadastrado!";
             }else{
                 #Insert
-                $banco->InsereKit($nome, $codigo, $codigo_fornecedor, $valor, $arrProdutos, $arrQuantidade, $auxImagens, $estoque, $valor_profissional, $valor_consumidor, $descricao, $informacoes);
+                $banco->InsereKit($nome, $codigo, $codigo_fornecedor, $valor, $arrProdutos, $arrQuantidade, $auxImagens, $estoque, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $marca);
             }
         }        
     }#Fim POST
@@ -162,6 +164,7 @@
     $Conteudo = utf8_encode($banco->CarregaHtml('Produtos/monta-kit'));
     $Conteudo = str_replace("<%TITULO%>", $titulo, $Conteudo);
     $Conteudo = str_replace("<%NOME%>", $nome, $Conteudo);
+    $Conteudo = str_replace("<%MARCA%>", $marca, $Conteudo);
     $Conteudo = str_replace("<%CODIGO%>", $codigo, $Conteudo);
     $Conteudo = str_replace("<%CODIGOFORNECEDOR%>", $codigo_fornecedor, $Conteudo);
     $Conteudo = str_replace("<%VALOR%>", $valor, $Conteudo);

@@ -108,8 +108,9 @@
         }
         
         #Insere Kit
-        function InsereKit($nome, $codigo, $codigo_fornecedor, $valor, $arrProdutos, $arrQuantidade, $files, $estoque, $valor_profissional, $valor_consumidor, $descricao, $informacoes){
-            $Sql = "INSERT INTO t_kit (nome, codigo, codigo_fornecedor, valor_unitario, valor_profissional, valor_consumidor, estoque, descricao, informacoes) VALUES ('".ucwords($nome)."', '$codigo', '$codigo_fornecedor', '$valor', '$valor_profissional', '$valor_consumidor', '$estoque', '".ucfirst($descricao)."', '".ucfirst($informacoes)."')";
+        function InsereKit($nome, $codigo, $codigo_fornecedor, $valor, $arrProdutos, $arrQuantidade, $files, $estoque, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $marca){
+            $Sql = "INSERT INTO t_kit (nome, codigo, codigo_fornecedor, valor_unitario, valor_profissional, valor_consumidor, estoque, descricao, informacoes, marca) VALUES 
+            		('".ucwords($nome)."', '$codigo', '$codigo_fornecedor', '$valor', '$valor_profissional', '$valor_consumidor', '$estoque', '".ucfirst($descricao)."', '".ucfirst($informacoes)."', '".ucfirst($marca)."')";
             parent::Execute($Sql);
             $lastID = mysql_insert_id();
             if($files){
@@ -143,8 +144,8 @@
         }
         
         #Atualiza Kit
-        function AtualizaKit($idkit, $nome, $codigo, $codigo_fornecedor, $valor, $arrProdutos, $arrQuantidade, $files, $estoque, $valor_profissional, $valor_consumidor, $descricao, $informacoes){
-            $Sql = "UPDATE t_kit SET nome = '".ucwords($nome)."', codigo = '".$codigo."', codigo_fornecedor = '".$codigo_fornecedor."', valor_unitario = '$valor', valor_profissional = '$valor_profissional', valor_consumidor = '$valor_consumidor', descricao = '".ucfirst($descricao)."', informacoes = '".ucfirst($informacoes)."', estoque = '$estoque' WHERE idkit = $idkit";
+        function AtualizaKit($idkit, $nome, $codigo, $codigo_fornecedor, $valor, $arrProdutos, $arrQuantidade, $files, $estoque, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $marca){
+            $Sql = "UPDATE t_kit SET nome = '".ucwords($nome)."', codigo = '".$codigo."', codigo_fornecedor = '".$codigo_fornecedor."', valor_unitario = '$valor', valor_profissional = '$valor_profissional', valor_consumidor = '$valor_consumidor', descricao = '".ucfirst($descricao)."', informacoes = '".ucfirst($informacoes)."', estoque = '$estoque', marca = '$marca' WHERE idkit = $idkit";
             if(parent::Execute($Sql)){
                 #Deleta produtos
                 $SqlDeletaProdutos = "DELETE FROM t_kit_produtos WHERE idkit = $idkit";
@@ -212,6 +213,7 @@
                 while($rs = parent::ArrayData($result)){
                     $Linha = $Auxilio;
                     $Linha = str_replace('<%NOME%>', $rs['nome'], $Linha);
+                    $Linha = str_replace('<%MARCA%>', $rs['marca'], $Linha);
                     $Linha = str_replace('<%ID%>', $rs['idkit'], $Linha);
                     $Linha = str_replace('<%CODIGO%>', $rs['codigo'], $Linha);
                     $Linha = str_replace('<%VALOR%>', number_format($rs['valor_unitario'], 2, ',', '.'), $Linha);
