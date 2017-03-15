@@ -27,42 +27,85 @@
 						$where .= " X.produto_kit = 'prod_" . $rsMarcaProduto['idproduto'] . "' OR";
 					}
 				}
-				
+				$SqlMarcaKit = "SELECT idkit FROM t_kit WHERE marca LIKE '%$marca%'";
+				$resultMarcaKit = parent::Execute($SqlMarcaKit);
+				$linhaMarcaKit = parent::Linha($resultMarcaKit);
+				if($linhaMarcaKit){
+					while($rsMarcaKit = parent::ArrayData($resultMarcaKit)){
+						$where .= " X.produto_kit = 'kit_" . $rsMarcaKit['idkit'] . "' OR";
+					}
+				}
 				$where = rtrim($where, " OR");
 				$where .= ")";
-				$Sql = "SELECT DISTINCT C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario
+				$Sql = "SELECT C.nome, C.idtipoprofissional, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario
 						FROM t_vendas V
 						INNER JOIN t_clientes C ON V.idcliente = C.idcliente
 						INNER JOIN t_vendas_produtos X ON V.idvenda = X.idvenda
-						WHERE 1 $where AND V.orcamento = 0";
+						WHERE 1 $where AND V.orcamento = 0 GROUP BY idvenda";
 			}else{
 				$Sql = "SELECT C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario FROM t_vendas V 
 						INNER JOIN t_clientes C ON V.idcliente = C.idcliente 
 						WHERE 1 $where AND V.orcamento = 0";
 			}
-			
 			$quantidade_vendas = 0;
 			$total_vendas_sem_frete = 0;
 			$total_fretes = 0;
 			$total_vendas = 0;
-			
 			$result = parent::Execute($Sql);
 			while($rs = parent::ArrayData($result)){
 				$Linha = $Auxilio;
 				$Linha = str_replace("<%NUMERO%>", $rs['idvenda'], $Linha);
 				$Linha = str_replace("<%DATA%>", date("d/m/Y", strtotime($rs['data'])), $Linha);
 				$Linha = str_replace("<%CLIENTE%>", utf8_encode($rs['nome']), $Linha);
-				$venda_sem_frete = $rs['valor_venda'] - $rs['valor_frete'];
-				$Linha = str_replace("<%VENDASEMFRETE%>", "R$ " . number_format($venda_sem_frete, 2, ',', '.'), $Linha);
-				$Linha = str_replace("<%VALORFRETE%>", "R$ " . number_format($rs['valor_frete'], 2, ',', '.'), $Linha);
-				$Linha = str_replace("<%VALORTOTAL%>", "R$ " . number_format($rs['valor_venda'], 2, ',', '.'), $Linha);
+				if($marca){
+					#Tipo do valor (consumidor/profissional)
+					$SqlValor = "SELECT valor FROM t_valor_profissional WHERE idtipoprofissional = {$rs['idtipoprofissional']}";
+					$resultValor = parent::Execute($SqlValor);
+					$rsValor = parent::ArrayData($resultValor);
+					#Busca os valores dos produtos com a marca
+					$SqlProdutosdaVenda = "SELECT produto_kit, quantidade FROM t_vendas_produtos WHERE idvenda = {$rs['idvenda']}";
+					$resultProdutosdaVenda = parent::Execute($SqlProdutosdaVenda);
+					
+					$valor_venda_unit = 0;
+					while($rsProdutosdaVenda = parent::ArrayData($resultProdutosdaVenda)){
+						$auxPK = explode("_", $rsProdutosdaVenda['produto_kit']);
+						if($auxPK[0] == 'prod'){
+							$SqlValorProduto = "SELECT {$rsValor['valor']} FROM t_produtos WHERE idproduto = {$auxPK[1]} AND marca LIKE '%$marca%'";
+							$resultValorProduto = parent::Execute($SqlValorProduto);
+							$linhaValorProduto = parent::Linha($resultValorProduto);
+							if($linhaValorProduto){
+								$rsValorProduto = parent::ArrayData($resultValorProduto);
+								$valor_venda_unit += ($rsValorProduto[$rsValor['valor']] * $rsProdutosdaVenda['quantidade']);
+							}
+						}else{
+							$SqlValorKit = "SELECT {$rsValor['valor']} FROM t_kit WHERE idkit = {$auxPK[1]} AND marca LIKE '%$marca%'";
+							$resultValorKit = parent::Execute($SqlValorKit);
+							$linhaValorKit = parent::Linha($resultValorKit);
+							if($linhaValorKit){
+								$rsValorKit = parent::ArrayData($resultValorKit);
+								$valor_venda_unit += ($rsValorKit[$rsValor['valor']] * $rsProdutosdaVenda['quantidade']);
+							}
+						}
+					}
+					$valor_venda = $valor_venda_unit + $rs['valor_frete'];
+					
+					$venda_sem_frete = $valor_venda_unit;
+					$Linha = str_replace("<%VENDASEMFRETE%>", "R$ " . number_format($valor_venda_unit, 2, ',', '.'), $Linha);
+					$Linha = str_replace("<%VALORFRETE%>", "R$ " . number_format($rs['valor_frete'], 2, ',', '.'), $Linha);
+					$Linha = str_replace("<%VALORTOTAL%>", "R$ " . number_format($valor_venda, 2, ',', '.'), $Linha);
+				}else{
+					$venda_sem_frete = $rs['valor_venda'] - $rs['valor_frete'];
+					$Linha = str_replace("<%VENDASEMFRETE%>", "R$ " . number_format($venda_sem_frete, 2, ',', '.'), $Linha);
+					$Linha = str_replace("<%VALORFRETE%>", "R$ " . number_format($rs['valor_frete'], 2, ',', '.'), $Linha);
+					$Linha = str_replace("<%VALORTOTAL%>", "R$ " . number_format($rs['valor_venda'], 2, ',', '.'), $Linha);
+				}
 				$Linha = str_replace("<%RESPONSAVEL%>", parent::BuscaUsuarioPorId($rs['idusuario']), $Linha);
 				
 				#Soma totais
 				$quantidade_vendas++;
-				$total_vendas += $rs['valor_venda'];
+				$total_vendas += $valor_venda;
 				$total_fretes += $rs['valor_frete'];
-				$total_vendas_sem_frete += $rs['valor_venda'] - $rs['valor_frete'];
+				$total_vendas_sem_frete += $venda_sem_frete;
 				
 				$Relatorio .= $Linha;
 			}
