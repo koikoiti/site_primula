@@ -164,14 +164,19 @@
     	}
     	
     	function MontaSelectInteracoes($idusuario){
-    		$Sql = "SELECT * FROM t_usuarios WHERE ativo = 1 && login <> 'admin'";
+    		$Sql = "SELECT * FROM t_usuarios WHERE 1 AND login <> 'admin' ORDER BY ativo DESC, nome_exibicao ASC";
     		$result = parent::Execute($Sql);
     		$select = '<select id="interacoes_funcionario" class="form-control"><option value="">Selecione um funcionário</option>';
     		while($rs = parent::ArrayData($result)){
-    			if($rs['idusuario'] == $idusuario){
-    				$select .= "<option selected value='{$rs['idusuario']}'>{$rs['nome_exibicao']}</option>";
+    			if($rs['ativo'] == 0){
+    				$inativo = " (Inativo)";
     			}else{
-    				$select .= "<option value='{$rs['idusuario']}'>{$rs['nome_exibicao']}</option>";
+    				$inativo = '';
+    			}
+    			if($rs['idusuario'] == $idusuario){
+    				$select .= "<option selected value='{$rs['idusuario']}'>{$rs['nome_exibicao']} $inativo</option>";
+    			}else{
+    				$select .= "<option value='{$rs['idusuario']}'>{$rs['nome_exibicao']} $inativo</option>";
     			}
     		}
     		$select .= '</select>';

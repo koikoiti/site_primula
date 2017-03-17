@@ -173,16 +173,21 @@
 		
 		#Monta usuários select
 		function MontaUsuarios($idresponsavel){
-			$Sql = "SELECT * FROM t_usuarios WHERE ativo = 1 AND login <> 'admin' ORDER BY nome_exibicao";
+			$Sql = "SELECT * FROM t_usuarios WHERE 1 AND login <> 'admin' ORDER BY ativo DESC, nome_exibicao ASC";
 			$select_usuarios = "<select id='busca_responsavel' style='float: left; width: 25%;' class='form-control' name='busca_responsavel'>";
 			$select_usuarios .= "<option selected value=''>Responsável</option>";
 			$result = parent::Execute($Sql);
 			if($result){
 				while($rs = parent::ArrayData($result)){
-					if($rs['idusuario'] == $idresponsavel){
-						$select_usuarios .= "<option selected value='".$rs['idusuario']."'>".$rs['nome_exibicao']."</option>";
+					if($rs['ativo'] == 0){
+						$inativo = " (Inativo)";
 					}else{
-						$select_usuarios .= "<option value='".$rs['idusuario']."'>".$rs['nome_exibicao']."</option>";
+						$inativo = '';
+					}
+					if($rs['idusuario'] == $idresponsavel){
+						$select_usuarios .= "<option selected value='".$rs['idusuario']."'>".$rs['nome_exibicao']." $inativo</option>";
+					}else{
+						$select_usuarios .= "<option value='".$rs['idusuario']."'>".$rs['nome_exibicao']."$inativo</option>";
 					}
 				}
 				$select_usuarios .= "</select>";
