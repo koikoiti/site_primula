@@ -1,0 +1,22 @@
+<tr class="odd gradeX">
+    <td><%CLIENTE%></td>
+    <td><%RESPONSAVEL%></td>
+    <td><%DATAINTERACAO%></td>
+    <td><%VENDAS%></td>
+    <td><%ORCAMENTOS%></td>
+    <td class="center">
+        <div class="btn-group">
+            <button class="btn btn-default btn-xs" type="button">-----</button>
+            <button data-toggle="dropdown" class="btn btn-xs btn-primary dropdown-toggle" type="button">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul role="menu" class="dropdown-menu">
+                <li>
+                    <a href="javascript:void(0)" onclick="abreHistorico(<%IDCLIENTE%>)">Histórico de Interações</a>
+                    <a href="javascript:void(0)" onclick="abreHistoricoVendas(<%IDCLIENTE%>)">Histórico de Vendas</a>
+                </li>
+            </ul>
+        </div>
+    </td>
+</tr>

@@ -1,0 +1,57 @@
+<!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO --><!-- INSERIR CONTEUDO -->
+<div class="col-md-12">
+    <div class="block-flat">
+        <div class="header" style="overflow: hidden;">
+            <h3 style="width: 25%; float: left;">Relatório Interações x Vendas</h3>
+            <div style="width: 75%; float: left;">
+               	<div style="width: 100%; float: right;" class="">
+               		<input style="float: left; width: 30%;" id="busca_dataIni" type="date" class="form-control" value="<%BUSCADATAINI%>" placeholder="Data Inicial"/>
+               		<span style="float: left; width: 2%;" class="no-padding">&nbsp;a</span> 
+               		<input style="float: left; width: 30%;" id="busca_dataFim" type="date" class="form-control" value="<%BUSCADATAFIM%>" placeholder="Data Final"/>
+               		<span style="float: left; width: 2%;" class="no-padding">&nbsp;&nbsp;</span>
+               		<%SELECTUSUARIOS%>
+               		<div style="float: right;">
+                		<button type="button" onclick="pesquisar();" class="btn btn-success"><i class="fa fa-search"></i></button>
+                		<%BOTAOLIMPARFILTRO%>
+                	</div>
+               	</div>
+                </div>
+        </div>
+        <div class="content">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Responsável</th>
+                            <th>Data Interação</th>
+                            <th>Vendas</th>
+                            <th>Orçamentos</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%RELATORIO%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+function pesquisar(){
+    var dataIni = $("#busca_dataIni").val().trim();
+    var dataFim = $("#busca_dataFim").val().trim();
+    var busca_responsavel = $("#busca_responsavel").val().trim();
+    
+    location.href = "<%URLPADRAO%>relatorio-interacoes/?dataIni=" + dataIni + "&dataFim=" + dataFim + "&busca_responsavel=" + busca_responsavel;
+}
+
+function abreHistorico(idcliente){
+	window.open('<%URLPADRAO%>cliente/historico/' + idcliente, 'historico', 'toolbar=no, titlebar=no, status=no, resizable=0, menubar=no, location=no, left=200, top=50, height=500, width=1000');
+}
+
+function abreHistoricoVendas(idcliente){
+	window.open('<%URLPADRAO%>cliente/historico-vendas/' + idcliente, 'historico-vendas', 'toolbar=no, titlebar=no, status=no, resizable=0, menubar=no, location=no, left=200, top=50, height=800, width=1100');
+}
+</script>
