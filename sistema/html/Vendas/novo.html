@@ -131,7 +131,15 @@
 			</div>
 		    <div class="modal-body" style="overflow: hidden">
 		    	<div class="col-sm-12">
-		    		Tipo: <select id="tipo" class="form-control"><option value=''>Selecione</option><option value="2">Cheque</option><option value="4">Cartão de Crédito</option><option value="5">Boleto</option><option value="7">Crédito a Distância</option></select>
+		    		Tipo: 
+		    		<select id="tipo" class="form-control">
+	    				<option value=''>Selecione</option>
+	    				<option value="2">Cheque</option>
+	    				<option value="4">Cartão de Crédito</option>
+	    				<option value="5">Boleto</option>
+	    				<option value="7">Crédito a Distância</option>
+	    				<option value="9">Cartão de Crédito (Rede)</option>
+	    			</select>
 		    		Parcelas: <input id="parcelas" type="text" class="form-control" />
 		    	</div>
 		    </div>
@@ -154,6 +162,7 @@ function montaParcelas(){
 	var sel_credito = '';
 	var sel_boleto = '';
 	var sel_distancia = '';
+	sel_credito_rede = '';
 	switch(tipo){
 		case '2':
 			sel_cheque = 'selected';
@@ -166,6 +175,9 @@ function montaParcelas(){
 			break;
 		case '7':
 			sel_distancia = 'selected';
+			break;
+		case '9':
+			sel_credito_rede = 'selected';
 			break;
 	}
 	
@@ -184,7 +196,7 @@ function montaParcelas(){
 		    var mes = ("0" + parseInt(novaData.getMonth() + 1)).slice(-2);
 		    
 		    var dia = ("0" + novaData.getDate()).slice(-2);
-		    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><option value="1">Dinheiro</option><option value="2" '+sel_cheque+'>Cheque</option><option value="3">Cartão de Débito</option><option value="4" '+sel_credito+'>Cartão de Crédito</option><option value="5" '+sel_boleto+'>Boleto</option><option value="6">Depósito Bancário</option><option value="7" '+sel_distancia+'>Crédito a Distância</option></select></div><div class="col-sm-3"><input type="text" value="'+parcela+'" class="form-control money" onblur="calculaTroco();" name="pagamento[]" placeholder="0,00" /></div><div class="col-sm-3"><input type="date" class="form-control" value="'+ano+'-' + mes + '-' + dia + '" name="dataPagamento[]" /></div><button onclick="menosPagamento('+i+')" type="button" class="btn btn-danger">-</button>';
+		    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><option value="1">Dinheiro</option><option value="2" '+sel_cheque+'>Cheque</option><option value="3">Cartão de Débito</option><option value="4" '+sel_credito+'>Cartão de Crédito</option><option value="5" '+sel_boleto+'>Boleto</option><option value="6">Depósito Bancário</option><option value="7" '+sel_distancia+'>Crédito a Distância</option><option value="9" '+sel_credito_rede+'>Cartão de Crédito (Rede)</option></select></div><div class="col-sm-3"><input type="text" value="'+parcela+'" class="form-control money" onblur="calculaTroco();" name="pagamento[]" placeholder="0,00" /></div><div class="col-sm-3"><input type="date" class="form-control" value="'+ano+'-' + mes + '-' + dia + '" name="dataPagamento[]" /></div><button onclick="menosPagamento('+i+')" type="button" class="btn btn-danger">-</button>';
 		    var aqui = document.getElementById('pagamentos');
 		    aqui.appendChild(nova);
 		    $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
@@ -418,7 +430,7 @@ function maisPagamento(){
     nova.setAttribute('class', 'col-sm-12');
     nova.setAttribute('style', 'margin-top: 5px;');
     now = new Date;
-    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><option value="1">Dinheiro</option><option value="2">Cheque</option><option value="3">Cartão de Débito</option><option value="4">Cartão de Crédito</option><option value="5">Boleto</option><option value="6">Depósito Bancário</option><option value="7">Crédito a Distância</option></select></div><div class="col-sm-3"><input type="text" class="form-control money" onblur="calculaTroco();" name="pagamento[]" placeholder="0,00" /></div><div class="col-sm-3"><input type="date" class="form-control" value="'+now.getFullYear()+'-' + (("0" + (now.getMonth() + 1)).slice(-2)) + '-' + (("0" + now.getDate()).slice(-2)) + '" name="dataPagamento[]" /></div><button onclick="menosPagamento('+novoPagamento+')" type="button" class="btn btn-danger">-</button>';
+    nova.innerHTML = '<div class="col-sm-4"><select class="form-control" name="tipoPagamento[]"><option value="1">Dinheiro</option><option value="2">Cheque</option><option value="3">Cartão de Débito</option><option value="4">Cartão de Crédito</option><option value="5">Boleto</option><option value="6">Depósito Bancário</option><option value="7">Crédito a Distância</option><option value="8">Cartão de Débito (Rede)</option><option value="9">Cartão de Crédito (Rede)</option></select></div><div class="col-sm-3"><input type="text" class="form-control money" onblur="calculaTroco();" name="pagamento[]" placeholder="0,00" /></div><div class="col-sm-3"><input type="date" class="form-control" value="'+now.getFullYear()+'-' + (("0" + (now.getMonth() + 1)).slice(-2)) + '-' + (("0" + now.getDate()).slice(-2)) + '" name="dataPagamento[]" /></div><button onclick="menosPagamento('+novoPagamento+')" type="button" class="btn btn-danger">-</button>';
     var aqui = document.getElementById('pagamentos');
     aqui.appendChild(nova);
     $('.money').mask("#.##0,00", {reverse: true, maxlength: false});

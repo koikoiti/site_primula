@@ -448,6 +448,12 @@
 	        			case 7:
 	        				$selDistancia = 'selected';
 	        				break;
+	        			case 8:
+	        				$selDebRede = 'selected';
+	        				break;
+	        			case 9:
+	        				$selCredRede = 'selected';
+	        				break;
 	        		}
 	        		$retorno .= '<div id="novoPagamentoEdit'.$rs['idvendapagamento'].'" class="col-sm-12" style="margin-top: 5px;">
 	        					<div class="col-sm-4">
@@ -455,7 +461,10 @@
 	        				<option value="1" '.$selDinheiro.'>Dinheiro</option><option value="2" '.$selCheque.'>Cheque</option>
 	        				<option value="3" '.$selDebito.'>Cartão de Débito</option><option value="4" '.$selCredito.'>Cartão de Crédito</option>
 	        				<option value="5" '.$selBoleto.'>Boleto</option><option value="6" '.$selDeposito.'>Depósito Bancário</option>
-	        				<option value="7" '.$selDistancia.'>Crédito a Distância</option></select></div>
+	        				<option value="7" '.$selDistancia.'>Crédito a Distância</option>
+	        				<option value="8" '.$selDebRede.'>Cartão de Débito (Rede)</option>
+	        				<option value="9" '.$selCredRede.'>Cartão de Crédito (Rede)</option>
+        						</select></div>
 	        				<div class="col-sm-3">
 	        				<input type="text" class="form-control money" onblur="calculaTroco();" name="pagamento[]" autocomplete="off" value="'.$rs['valor'].'">
 	        				</div>

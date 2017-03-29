@@ -217,8 +217,8 @@
         #Monta Pagamentos TXT
         function MontaPagamentosTXT($idvenda){
         	$Sql = "SELECT P.*, F.* FROM t_vendas_pagamentos P
-        	INNER JOIN fixo_forma_pagamento F ON P.idformapagamento = F.idformapagamento
-        	WHERE idvenda = $idvenda";
+		        	INNER JOIN fixo_forma_pagamento F ON P.idformapagamento = F.idformapagamento
+		        	WHERE idvenda = $idvenda";
         	$result = parent::Execute($Sql);
         	while($rs = parent::ArrayData($result)){
         		$Linha = '';
