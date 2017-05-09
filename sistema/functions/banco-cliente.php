@@ -756,7 +756,7 @@
     
         #Monta Tipo Profissional
         function SelectTipoProfissional($idtipoprofissional){
-            $Sql = "SELECT * FROM fixo_tipo_profissional ORDER BY tipo";
+            $Sql = "SELECT * FROM fixo_tipo_profissional WHERE ativo = 1 ORDER BY tipo";
 			$select_tpro = "<select required class='form-control' name='tipoprofissional'>";
 			$select_tpro .= "<option selected value=''>Tipo do Profissional</option>";
 			$result = parent::Execute($Sql);
@@ -1068,6 +1068,38 @@
                              <tr>';
         	}
         	return utf8_encode($historico);
+        }
+        
+        function BuscaTipoProfissional(){
+        	$Auxilio = parent::CarregaHtml('itens/tipo-profissional-itens');
+        	$Sql = "SELECT * FROM fixo_tipo_profissional WHERE idtipoprofissional != 13 ORDER BY tipo ASC";
+        	$result = parent::Execute($Sql);
+        	while($rs = parent::ArrayData($result)){
+        		$SqlValor = "SELECT * from t_valor_profissional WHERE idtipoprofissional = {$rs['idtipoprofissional']}";
+        		$resultValor = parent::Execute($SqlValor);
+        		$rsValor = parent::ArrayData($resultValor);
+        		$select_valor = "<select onchange='alteraValor({$rs['idtipoprofissional']})' class='form-control' id='{$rs['idtipoprofissional']}'>";
+        		if($rsValor['valor'] == 'valor_consumidor'){
+        			$select_valor .= "<option value='valor_consumidor' selected>Valor Consumidor</option>";
+        			$select_valor .= "<option value='valor_profissional'>Valor Profissional</option>";
+        		}else{
+        			$select_valor .= "<option value='valor_consumidor'>Valor Consumidor</option>";
+        			$select_valor .= "<option value='valor_profissional' selected>Valor Profissional</option>";
+        		}
+        		if($rsValor['ativo'] == 1){
+        			$botao_AI = '<button type="button" style="background-color: #B6195B;" onclick="remover('.$rs['idtipoprofissional'].')" class="btn btn-success btn-flat">Inativar</button>';
+        		}else{
+        			$botao_AI = '<button type="button" style="background-color: #25A1B5;" onclick="remover('.$rs['idtipoprofissional'].')" class="btn btn-success btn-flat">Ativar</button>';
+        		}
+        		$select_valor .= "</select>";
+        		$Linha = $Auxilio;
+        		$Linha = str_replace('<%ATIVARINATIVAR%>', $botao_AI, $Linha);
+        		$Linha = str_replace('<%ID%>', $rs['idtipoprofissional'], $Linha);
+        		$Linha = str_replace('<%TIPOVALOR%>', $select_valor, $Linha);
+        		$Linha = str_replace('<%TIPO%>', $rs['tipo'], $Linha);
+        		$retorno .= $Linha;
+        	}
+        	return utf8_encode($retorno);
         }
     }
 ?>

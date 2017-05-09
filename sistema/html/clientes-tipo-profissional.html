@@ -1,0 +1,60 @@
+<div class="header">
+    <h3>Clientes - Tipo Profissional</h3>
+</div>
+<div class="content">
+    <div><button onclick="add()" type="button" class="btn btn-success btn-flat">Adicionar Tipo Profissional</button></div>
+    <div style="width: auto;" id="outer-tipos">
+        <%TIPOPROFISSIONAL%>
+    </div>    
+</div>
+<script type="text/javascript">
+function add(){
+	var existe = document.getElementById('newtipo');
+	
+	if(!existe){
+		var nova = document.createElement('div');
+	    nova.setAttribute('style', 'width: 20%; float: left; padding: 10px; background-color: aliceblue; margin: 10px; border-radius: 4px;');
+	    nova.innerHTML = '<div style="float: left; width: 100%; font-size: 15px;"><label>Tipo: <input type="text" class="form-control" id="newtipo" /></label><br /><select id="newvalor" class="form-control"><option value="">Selecione o tipo do valor</option><option value="valor_consumidor">Valor Consumidor</option><option value="valor_profissional">Valor Profissional</option></select><br /><button onclick="salvaNew()" type="button" class="btn btn-success">OK</button></div>';
+	    var aqui = document.getElementById('outer-tipos');
+	    aqui.appendChild(nova);
+	}
+}
+
+function salvaNew(){
+	var tipo = document.getElementById('newtipo').value;
+	var valor = document.getElementById('newvalor').value;
+	
+	if(tipo != '' && valor != ''){
+		$.post("<%URLPADRAO%>lib/ajax/salvaTipoProfissional.php",
+    			{tipo:tipo, valor:valor},
+    			function(retorno){
+    				if(retorno == 1){
+				        location.reload();
+				    }
+    			}
+    		);
+	}
+}
+
+function remover(idtipoprofissional){
+    $.post("<%URLPADRAO%>lib/ajax/inativaValorTipoProfissional.php",
+    			{idtipoprofissional:idtipoprofissional},
+    			function(retorno){
+				    if(retorno == 1){
+				        location.reload();
+				    }
+    			}
+    		);
+}
+
+function alteraValor(idtipoprofissional){
+	$.post("<%URLPADRAO%>lib/ajax/alteraValorTipoProfissional.php",
+			{idtipoprofissional:idtipoprofissional},
+			function(retorno){
+			    if(retorno == 1){
+			        location.reload();
+			    }
+			}
+		);
+}
+</script>
