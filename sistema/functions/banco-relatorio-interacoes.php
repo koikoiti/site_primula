@@ -20,7 +20,8 @@
 			$Sql = "SELECT * FROM t_clientes_historico H
 					INNER JOIN t_clientes C ON H.idcliente = C.idcliente 
 					WHERE 1 $where 
-					ORDER BY data ASC";
+					GROUP BY C.idcliente 
+					ORDER BY C.nome ASC";
 			$result = parent::Execute($Sql);
 			$num_rows = parent::Linha($result);
 			if($num_rows){
@@ -29,10 +30,12 @@
 					if($dataIni){
 						#$newdataIni = implode("-", array_reverse(explode("/", $dataIni)));
 						$whereVendas .= " AND data >= '$dataIni 00:00:00'";
+						$whereInteracoes .= " AND data >= '$dataIni 00:00:00'";
 					}
 					if($dataFim){
 						#$newdataFim = implode("-", array_reverse(explode("/", $dataFim)));
 						$whereVendas .= " AND data <= '$dataFim 23:59:59'";
+						$whereInteracoes .= " AND data <= '$dataFim 23:59:59'";
 					}
 					if($idresponsavel){
 						$whereVendas .= " AND idusuario = '$idresponsavel'";
@@ -47,7 +50,10 @@
 					$Linha = str_replace("<%IDCLIENTE%>", $rs['idcliente'], $Linha);
 					$Linha = str_replace("<%CLIENTE%>", utf8_encode($rs['nome']), $Linha);
 					$Linha = str_replace("<%RESPONSAVEL%>", utf8_encode($rs['usuario']), $Linha);
-					$Linha = str_replace("<%DATAINTERACAO%>", date("d/m/Y - H:i", strtotime($rs['data'])), $Linha);
+					$SqlInteracoes = "SELECT COUNT(*) AS total FROM t_clientes_historico WHERE idcliente = " . $rs['idcliente'] . $whereInteracoes;
+					$resultInteracoes = parent::Execute($SqlInteracoes);
+					$rsInteracoes = parent::ArrayData($resultInteracoes);
+					$Linha = str_replace("<%TOTALINTERACOES%>", $rsInteracoes['total'], $Linha);
 					$Linha = str_replace("<%VENDAS%>", $rsVendas['vendas'], $Linha);
 					$Linha = str_replace("<%ORCAMENTOS%>", $rsOrcamentos['orcamentos'], $Linha);
 					$retorno .= $Linha;
