@@ -76,12 +76,20 @@
         }
         
         #Listagem
-        function ListaAvisos(){
+        function ListaAvisos($view_finalizados){
             $Auxilio = parent::CarregaHtml('itens/lista-avisos-itens');
-            if($_SESSION['idsetor'] > 1){
-                $innerjoin = "INNER JOIN t_avisos_usuarios U ON U.idaviso = A.idaviso WHERE U.idusuario = '{$_SESSION['idusuario']}'";
+            if($view_finalizados == 0){
+	            if($_SESSION['idsetor'] > 1){
+	                $innerjoin = "INNER JOIN t_avisos_usuarios U ON U.idaviso = A.idaviso WHERE U.idusuario = '{$_SESSION['idusuario']}' AND idusuario_finalizar = 0";
+	            }else{
+	            	$innerjoin = "WHERE idusuario_finalizar = 0";
+	            }
+            }else{
+            	if($_SESSION['idsetor'] > 1){
+            		$innerjoin = "INNER JOIN t_avisos_usuarios U ON U.idaviso = A.idaviso WHERE U.idusuario = '{$_SESSION['idusuario']}'";
+            	}
             }
-            $Sql = "SELECT A.* FROM t_avisos A $innerjoin";
+            $Sql = "SELECT A.* FROM t_avisos A $innerjoin ORDER BY data DESC";
             $result = parent::Execute($Sql);
             $linha = parent::Linha($result);
             if($linha){

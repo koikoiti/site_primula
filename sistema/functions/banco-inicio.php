@@ -22,7 +22,8 @@
             $where .= " AND A.idusuario_finalizar = 0";
             $Sql = "SELECT DISTINCT A.* FROM t_avisos A 
                     INNER JOIN t_avisos_usuarios U ON A.idaviso = U.idaviso
-                    WHERE 1 $where";
+                    WHERE 1 $where 
+            		ORDER BY data DESC";
             
             $result = parent::Execute($Sql);
             while($rs = parent::ArrayData($result)){
