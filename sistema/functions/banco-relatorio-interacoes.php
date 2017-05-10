@@ -15,6 +15,7 @@
 			if($idresponsavel){
 				$responsavel = parent::BuscaUsuarioPorId($idresponsavel);
 				$where .= " AND usuario = '$responsavel'";
+				$whereNomeResp .= " AND usuario = '$responsavel'";
 			}
 			$Auxilio = utf8_encode(parent::CarregaHtml('itens/relatorio-interacoes-itens'));
 			$Sql = "SELECT * FROM t_clientes_historico H
@@ -24,6 +25,10 @@
 					ORDER BY C.nome ASC";
 			$result = parent::Execute($Sql);
 			$num_rows = parent::Linha($result);
+			$quantidade_clientes = 0;
+			$total_interacoes = 0;
+			$total_vendas = 0;
+			$total_orcamentos = 0;
 			if($num_rows){
 				while($rs = parent::ArrayData($result)){
 					$whereVendas = '';
@@ -39,25 +44,36 @@
 					}
 					if($idresponsavel){
 						$whereVendas .= " AND idusuario = '$idresponsavel'";
+						$whereResp .= " AND idusuario = '$idresponsavel'";
 					}
-					$SqlVendas = "SELECT COUNT(*) AS vendas FROM t_vendas WHERE idcliente = " . $rs['idcliente'] . $whereVendas . " AND orcamento = 0";
+					$SqlVendas = "SELECT COUNT(*) AS vendas FROM t_vendas WHERE idcliente = " . $rs['idcliente'] . $whereVendas . " AND orcamento = 0" . $whereResp;
 					$resultVendas = parent::Execute($SqlVendas);
 					$rsVendas = parent::ArrayData($resultVendas);
-					$SqlOrcamentos = "SELECT COUNT(*) AS orcamentos FROM t_vendas WHERE idcliente = " . $rs['idcliente'] . $whereVendas . " AND orcamento = 1";
+					$SqlOrcamentos = "SELECT COUNT(*) AS orcamentos FROM t_vendas WHERE idcliente = " . $rs['idcliente'] . $whereVendas . " AND orcamento = 1" . $whereResp;
 					$resultOrcamentos = parent::Execute($SqlOrcamentos);
 					$rsOrcamentos = parent::ArrayData($resultOrcamentos);
 					$Linha = $Auxilio;
 					$Linha = str_replace("<%IDCLIENTE%>", $rs['idcliente'], $Linha);
 					$Linha = str_replace("<%CLIENTE%>", utf8_encode($rs['nome']), $Linha);
 					$Linha = str_replace("<%RESPONSAVEL%>", utf8_encode($rs['usuario']), $Linha);
-					$SqlInteracoes = "SELECT COUNT(*) AS total FROM t_clientes_historico WHERE idcliente = " . $rs['idcliente'] . $whereInteracoes;
+					$SqlInteracoes = "SELECT COUNT(*) AS total FROM t_clientes_historico WHERE idcliente = " . $rs['idcliente'] . $whereInteracoes . $whereNomeResp;
 					$resultInteracoes = parent::Execute($SqlInteracoes);
 					$rsInteracoes = parent::ArrayData($resultInteracoes);
 					$Linha = str_replace("<%TOTALINTERACOES%>", $rsInteracoes['total'], $Linha);
 					$Linha = str_replace("<%VENDAS%>", $rsVendas['vendas'], $Linha);
 					$Linha = str_replace("<%ORCAMENTOS%>", $rsOrcamentos['orcamentos'], $Linha);
 					$retorno .= $Linha;
+					$quantidade_clientes++;
+					$total_interacoes += $rsInteracoes['total'];
+					$total_vendas += $rsVendas['vendas'];
+					$total_orcamentos += $rsOrcamentos['orcamentos'];
 				}
+				$LinhaTotal = parent::CarregaHtml('itens/relatorio-interacoes-ultima');
+				$LinhaTotal = str_replace("<%QUANTIDADECLIENTES%>", $quantidade_clientes, $LinhaTotal);
+				$LinhaTotal = str_replace("<%TOTALINTERACOES%>", $total_interacoes, $LinhaTotal);
+				$LinhaTotal = str_replace("<%TOTALVENDAS%>", $total_vendas, $LinhaTotal);
+				$LinhaTotal = str_replace("<%TOTALORCAMENTOS%>", $total_orcamentos, $LinhaTotal);
+				$retorno .= utf8_encode($LinhaTotal);
 			}else{
 				$retorno = '';
 			}
