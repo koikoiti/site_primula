@@ -6,11 +6,17 @@
     	<%MSG%>
     	<div class="col-md-6">
     		De:<br/>
-    		<%SELECTFUNCIONARIOS%>
+    		<%SELECTFUNCIONARIOSDE%>
+    		<div id="de">
+    			
+    		</div>
     	</div>
     	<div class="col-md-6">
     		Para:<br/>
-    		<%SELECTFUNCIONARIOS%>
+    		<%SELECTFUNCIONARIOSPARA%>
+    		<div id="para">
+    		
+    		</div>
     	</div>
     	<div class="col-md-12 text-center">
     		<br/><br/>
@@ -18,3 +24,46 @@
     	</div>
     </div>
 </div>
+<script type="text/javascript">
+function listaDe(){
+	var funcDe = document.getElementById("funcDe").value;
+	if(funcDe != ''){
+		var funcPara = document.getElementById("funcPara").value;
+		if(funcDe != funcPara){
+			//lista os clientes desse funcionário, com checkbox
+			$.post("<%URLPADRAO%>lib/ajax/listaDe.php",
+					{funcDe:funcDe},
+					function(retorno){
+					    $("#de").html(retorno);
+					}
+				);
+		}else{
+			document.getElementById("funcDe").value = '';
+			$("#de").html('');
+		}
+	}else{
+		$("#de").html('');
+	}
+}
+
+function listaPara(){
+	var funcPara = document.getElementById("funcPara").value;
+	if(funcPara != ''){
+		var funcDe = document.getElementById("funcDe").value;
+		if(funcDe != funcPara){
+			//lista os clientes desse funcionário
+			$.post("<%URLPADRAO%>lib/ajax/listaPara.php",
+					{funcPara:funcPara},
+					function(retorno){
+						$("#para").html(retorno);
+					}
+				);
+		}else{
+			document.getElementById("funcPara").value = '';
+			$("#para").html('');
+		}
+	}else{
+		$("#para").html('');
+	}
+}
+</script>
