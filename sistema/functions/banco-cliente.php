@@ -756,7 +756,10 @@
     
         #Monta Tipo Profissional
         function SelectTipoProfissional($idtipoprofissional){
-            $Sql = "SELECT * FROM fixo_tipo_profissional WHERE ativo = 1 ORDER BY tipo";
+            $Sql = "SELECT * FROM fixo_tipo_profissional F
+            		INNER JOIN t_valor_profissional V ON F.idtipoprofissional = V.idtipoprofissional 
+            		WHERE V.ativo = 1 
+            		ORDER BY tipo";
 			$select_tpro = "<select required class='form-control' name='tipoprofissional'>";
 			$select_tpro .= "<option selected value=''>Tipo do Profissional</option>";
 			$result = parent::Execute($Sql);
