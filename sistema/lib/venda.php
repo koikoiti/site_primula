@@ -93,6 +93,7 @@
     
     #Replaces
     $Conteudo = str_replace("<%IDCLIENTE%>", $AUX_cliente['idcliente'], $Conteudo);
+    $Conteudo = str_replace("<%INFO%>", $AUX_cliente['cpf'] . $AUX_cliente['cnpj'], $Conteudo);
     $Conteudo = str_replace("<%IDTIPOPROFISSIONAL%>", $AUX_cliente['idtipoprofissional'], $Conteudo);
     $Conteudo = str_replace("<%NOMECLIENTE%>", utf8_encode($AUX_cliente['nome']), $Conteudo);
     $Conteudo = str_replace("<%FRETE%>", $rsVenda['valor_frete'], $Conteudo);

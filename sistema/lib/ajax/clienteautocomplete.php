@@ -22,6 +22,7 @@
     	}
         $array[] = array('label' => utf8_encode($rs['nome'] . $info),
                          'value' => utf8_encode($rs['nome']),
+			        	 'info' => utf8_encode($info),
                          'idcliente' => $rs['idcliente'],
         				 'idtipoprofissional' => $rs['idtipoprofissional'],
                     );

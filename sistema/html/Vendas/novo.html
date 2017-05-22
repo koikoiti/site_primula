@@ -16,6 +16,7 @@
 	            <div class="col-sm-6 ui-widget">
 	                <input type="hidden" value="<%IDCLIENTE%>" id="hid_cliente" name="cliente" />
 	                <input type="hidden" value="<%IDTIPOPROFISSIONAL%>" id="hid_tipoprofissional" name="tipoprofissional" />
+	                <input type="hidden" value="<%INFO%>" id="hid_info" name="info" />
 	                <input id="cliente" autofocus required type="text" class="form-control" value="<%NOMECLIENTE%>" onblur="validaCliente(this.value)" autocomplete="off" placeholder="Nome Fantasia, Contato ou CPF/CNPJ"/>
 	            </div>
 	        </div>
@@ -108,7 +109,7 @@
     <div class="col-sm-12">
 		<div class="form-group">
 	    	<div class="col-sm-6 form-margin">
-	        	<button onclick="checkout();" style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
+	        	<button id="checkoutt" onclick="checkout();" style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
 	            	<i class="fa fa-check"></i> Checkout
 	            </button>
 	            <button style="box-shadow: none;background-color: rgb(156, 98, 218);border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
@@ -237,9 +238,21 @@ function validaCliente(val){
         $("#lista-produtos").html('');
     }
 }
+
+function verificaInfo(){
+	var info = $("#hid_info").val();
+	if(info == ''){
+		$("#checkoutt").attr("disabled", "disabled");
+	}else{
+		$("#checkoutt").removeAttr("disabled");
+	}
+}
+
 var novoPagamento = 0;
 var novo = <%CONTPRODUTOS%>;
 $(function() {
+	verificaInfo();
+	
     $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
     
     $("#cliente").autocomplete({
@@ -248,6 +261,8 @@ $(function() {
         select: function(event, ui){
             $('#hid_cliente').val(ui.item.idcliente);
             $('#hid_tipoprofissional').val(ui.item.idtipoprofissional);
+            $('#hid_info').val(ui.item.info);
+            verificaInfo();
         }
     });
     
@@ -421,7 +436,7 @@ function voltar(){
 
 function checkout(){
     //$('form').attr('action', 'pre-checkout');
-    $("#acao").val('finaliza');
+	$("#acao").val('finaliza');
 }
 
 function maisPagamento(){
