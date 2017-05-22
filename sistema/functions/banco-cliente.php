@@ -2,16 +2,24 @@
     class bancocliente extends banco{
     	
     	function MontaClientesCarteira(){
-    		$Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-itens');
+    		$Auxilio = parent::CarregaHtml('Clientes/itens/lista-cliente-carteira-itens');
     		$Sql = "SELECT *, X.idusuario AS carteira FROM t_clientes C 
     				INNER JOIN t_usuarios_carteira_clientes X ON X.idcliente = C.idcliente 
     				WHERE X.idusuario = " . $_SESSION['idusuario'] 
-    				. " ORDER BY C.nome";
+    				. " ORDER BY C.verificado <> 9, C.verificado ASC";
     		$result = parent::Execute($Sql);
     		$linha = parent::Linha($result);
     		if($linha){
     			while($rs = parent::ArrayData($result)){
     				$Linha = $Auxilio;
+    				if($rs['verificado'] == 1){
+    					$classe = "success";
+    				}elseif($rs['verificado'] == 9){
+    					$classe = "danger";
+    				}else{
+    					$classe = '';
+    				}
+    				$Linha = str_replace('<%CLASSE%>', $classe, $Linha);
     				$Linha = str_replace('<%ID%>', $rs['idcliente'], $Linha);
     				$Linha = str_replace('<%NOME%>', $rs['nome'], $Linha);
     				$Linha = str_replace('<%TIPOPROFISSIONAL%>', $rs['tipoprofissional'], $Linha);
@@ -66,6 +74,11 @@
     					$interacaoHTML = "";
     				}
     				$Linha = str_replace('<%ULTIMAINTERACAO%>', $interacaoHTML, $Linha);
+    				if($rs['data_verificar'] == "0000-00-00"){
+    					$Linha = str_replace('<%REVERDIA%>', '', $Linha);
+    				}else{
+    					$Linha = str_replace('<%REVERDIA%>', date("d/m/Y", strtotime($rs['data_verificar'])), $Linha);
+    				}
     				$Clientes .= $Linha;
     			}
     		}else{
@@ -152,6 +165,11 @@
     					$interacaoHTML = "";
     				}
     				$Linha = str_replace('<%ULTIMAINTERACAO%>', $interacaoHTML, $Linha);
+    				if($rs['data_verificar'] == "0000-00-00"){
+    					$Linha = str_replace('<%REVERDIA%>', '', $Linha);
+    				}else{
+    					$Linha = str_replace('<%REVERDIA%>', date("d/m/Y", strtotime($rs['data_verificar'])), $Linha);
+    				}
     				$Clientes .= $Linha;
     			}
     		}else{
@@ -259,6 +277,11 @@
 	    				$interacaoHTML = "";
 	    			}
 	    			$Linha = str_replace('<%ULTIMAINTERACAO%>', $interacaoHTML, $Linha);
+	    			if($rs['data_verificar'] == "0000-00-00"){
+	    				$Linha = str_replace('<%REVERDIA%>', '', $Linha);
+	    			}else{
+	    				$Linha = str_replace('<%REVERDIA%>', date("d/m/Y", strtotime($rs['data_verificar'])), $Linha);
+	    			}
 	    			$Clientes .= $Linha;
     			}
     		}else{
@@ -291,6 +314,14 @@
 	    			}else{
 	    				$opcoes = '';
 	    			}
+	    			$SqlRever = "SELECT data_verificar FROM t_clientes WHERE idcliente = $idcliente";
+	    			$resultRever = parent::Execute($SqlRever);
+	    			$rsRever = parent::ArrayData($resultRever);
+	    			if($rsRever['data_verificar'] == '0000-00-00'){
+	    				$Linha = str_replace('<%DATAREVER%>', '', $Linha);
+	    			}else{
+	    				$Linha = str_replace('<%DATAREVER%>', date("d/m/Y", strtotime($rsRever['data_verificar'])), $Linha);
+	    			}
 	    			$Linha = str_replace('<%DATA%>', date("d/m/Y H:i", strtotime($rs['data'])), $Linha);
 	    			$Linha = str_replace('<%FUNCIONARIO%>', $rs['usuario'], $Linha);
 	    			$Linha = str_replace('<%HISTORICO%>', nl2br($rs['historico']), $Linha);
@@ -303,6 +334,13 @@
                              <tr>';
     		}
     		return utf8_encode($historico);
+    	}
+    	
+    	function BuscaDataRever($idcliente){
+    		$Sql = "SELECT data_verificar FROM t_clientes WHERE idcliente = $idcliente";
+    		$result = parent::Execute($Sql);
+    		$rs = parent::ArrayData($result);
+    		return $rs['data_verificar'];
     	}
     	
     	function BuscaNomeCliente($idcliente){
@@ -722,6 +760,11 @@
                     	$interacaoHTML = "";
                     }
                     $Linha = str_replace('<%ULTIMAINTERACAO%>', $interacaoHTML, $Linha);
+                    if($rs['data_verificar'] == "0000-00-00"){
+                    	$Linha = str_replace('<%REVERDIA%>', '', $Linha);
+                    }else{
+                    	$Linha = str_replace('<%REVERDIA%>', date("d/m/Y", strtotime($rs['data_verificar'])), $Linha);
+                    }
                     $Clientes .= $Linha;
                 }
             }else{

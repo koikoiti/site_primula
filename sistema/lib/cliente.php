@@ -73,11 +73,19 @@
     if($this->PaginaAux[0] == 'historico'){
     	$idcliente = $this->PaginaAux[1];
     	$nome_cliente = $banco->BuscaNomeCliente($idcliente);
+    	$data_rever = $banco->BuscaDataRever($idcliente);
     	$historico_cliente = $banco->MontaHistoricoCliente($idcliente);
     	$Conteudo = utf8_encode($banco->CarregaHtml('Clientes/historico-cliente'));
     	$Conteudo = str_replace("<%IDCLIENTE%>", $idcliente, $Conteudo);
     	$Conteudo = str_replace("<%CLIENTE%>", $nome_cliente, $Conteudo);
     	$Conteudo = str_replace("<%HISTORICO%>", $historico_cliente, $Conteudo);
+    	if($data_rever == '0000-00-00'){
+    		$data_rever = '';
+    		$Conteudo = str_replace("<%REVER%>", $data_rever, $Conteudo);
+    	}else{
+    		$data_rever = date("d/m/Y", strtotime($data_rever));
+    		$Conteudo = str_replace("<%REVER%>", " - Rever Dia: " . $data_rever, $Conteudo);
+    	}
     }elseif($this->PaginaAux[0] == 'historico-vendas'){
     	$idcliente = $this->PaginaAux[1];
     	$nome_cliente = $banco->BuscaNomeCliente($idcliente);
