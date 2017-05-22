@@ -108,6 +108,9 @@
 	</div>
     <div class="col-sm-12">
 		<div class="form-group">
+			<div class="col-sm-6 form-margin">
+				<span id="msgCheckout"></span>
+			</div>
 	    	<div class="col-sm-6 form-margin">
 	        	<button id="checkoutt" onclick="checkout();" style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
 	            	<i class="fa fa-check"></i> Checkout
@@ -243,8 +246,10 @@ function verificaInfo(){
 	var info = $("#hid_info").val();
 	if(info == ''){
 		$("#checkoutt").attr("disabled", "disabled");
+		$('#msgCheckout').html("*Cliente sem CNPJ/CPF. Possível somente salvar orçamento. Edite as informações do cliente para terminar a venda");		
 	}else{
 		$("#checkoutt").removeAttr("disabled");
+		$('#msgCheckout').html("");
 	}
 }
 
