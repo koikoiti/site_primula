@@ -19,7 +19,10 @@
 				}else{
 					$inativo = '';
 				}
-				$select .= "<option value='{$rs['idusuario']}'>{$rs['nome_exibicao']} $inativo</option>";
+				$SqlTotal = "SELECT COUNT(*) AS total FROM t_usuarios_carteira_clientes WHERE idusuario = " . $rs['idusuario'];
+				$resultTotal = parent::Execute($SqlTotal);
+				$rsTotal = parent::ArrayData($resultTotal);
+				$select .= "<option value='{$rs['idusuario']}'>{$rs['nome_exibicao']} (Total: {$rsTotal['total']}) $inativo</option>";
 			}
 			$select .= "</select>";
 			return utf8_encode($select);
@@ -35,7 +38,10 @@
 				}else{
 					$inativo = '';
 				}
-				$select .= "<option value='{$rs['idusuario']}'>{$rs['nome_exibicao']} $inativo</option>";
+				$SqlTotal = "SELECT COUNT(*) AS total FROM t_usuarios_carteira_clientes WHERE idusuario = " . $rs['idusuario'];
+				$resultTotal = parent::Execute($SqlTotal);
+				$rsTotal = parent::ArrayData($resultTotal);
+				$select .= "<option value='{$rs['idusuario']}'>{$rs['nome_exibicao']} (Total: {$rsTotal['total']}) $inativo</option>";
 			}
 			$select .= "</select>";
 			return utf8_encode($select);
