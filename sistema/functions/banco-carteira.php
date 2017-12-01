@@ -2,9 +2,16 @@
 	class bancocarteira extends banco{
 		
 		function TransfereClientes($funcDe, $funcPara, $arrClientes){
-			foreach($arrClientes as $idcliente){
-				$Sql = "UPDATE t_usuarios_carteira_clientes SET idusuario = $funcPara WHERE idusuario = $funcDe AND idcliente = $idcliente";
-				parent::Execute($Sql);
+			if($funcDe == 'nao'){
+				foreach($arrClientes as $idcliente){
+					$Sql = "INSERT INTO t_usuarios_carteira_clientes (idusuario, idcliente) VALUES ($funcPara, $idcliente)";
+					parent::Execute($Sql);
+				}
+			}else{
+				foreach($arrClientes as $idcliente){
+					$Sql = "UPDATE t_usuarios_carteira_clientes SET idusuario = $funcPara WHERE idusuario = $funcDe AND idcliente = $idcliente";
+					parent::Execute($Sql);
+				}
 			}
 			return true;
 		}
@@ -13,6 +20,14 @@
 			$Sql = "SELECT * FROM t_usuarios";
 			$result = parent::Execute($Sql);
 			$select = '<select onchange="listaDe();" id="funcDe" name="funcDe" class="form-control"><option value="">Selecione um funcionário</option>';
+			#Sem carteira
+			$SqlTotalSem = "SELECT COUNT(*) AS totalSem FROM t_usuarios_carteira_clientes X
+						RIGHT JOIN t_clientes C ON X.idcliente = C.idcliente
+						WHERE X.idcliente IS NULL";
+			$resultTotalSem = parent::Execute($SqlTotalSem);
+			$rsTotalSem = parent::ArrayData($resultTotalSem);
+			$select .= "<option value='nao'>Não Incluídos (Total: {$rsTotalSem['totalSem']})</option>";
+			#Carteira com usuário
 			while($rs = parent::ArrayData($result)){
 				if($rs['ativo'] == 0){
 					$inativo = " (Inativo)";
