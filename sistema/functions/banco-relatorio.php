@@ -10,7 +10,7 @@
 					ORDER BY C.cidade ASC";
 			$result = parent::Execute($Sql);
 			if($result){
-				$select_cidade = "<select id='busca_cidade' style='float: left; width: 10%;' class='form-control' name='busca_cidade'>";
+				$select_cidade = "<select id='busca_cidade' style='float: left; width: auto;' class='form-control' name='busca_cidade'>";
 				$select_cidade .= "<option selected value=''>Cidade / UF</option>";
 				while($rs = parent::ArrayData($result)){
 					if(utf8_encode($rs['cidade'] . "*_*" . $rs['estado']) == $cidadeUF){
