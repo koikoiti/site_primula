@@ -1,6 +1,31 @@
 <?php
 	class bancorelatorio extends banco{
 		
+		#Select cidades clientes
+		function MontaCidadesClientes($cidadeUF){
+			$Sql = "SELECT DISTINCT UPPER(C.cidade) AS cidade , UPPER(C.estado) AS estado 
+					FROM t_clientes C 
+					INNER JOIN t_vendas V ON V.idcliente = C.idcliente 
+					WHERE V.orcamento = 0 
+					ORDER BY C.cidade ASC";
+			$result = parent::Execute($Sql);
+			if($result){
+				$select_cidade = "<select id='busca_cidade' style='float: left; width: 10%;' class='form-control' name='busca_cidade'>";
+				$select_cidade .= "<option selected value=''>Cidade / UF</option>";
+				while($rs = parent::ArrayData($result)){
+					if(utf8_encode($rs['cidade'] . "*_*" . $rs['estado']) == $cidadeUF){
+						$select_cidade .= "<option selected value='".$rs['cidade']."*_*".$rs['estado']."'>".$rs['cidade']." / ".$rs['estado']."</option>";
+					}else{
+						$select_cidade .= "<option value='".$rs['cidade']."*_*".$rs['estado']."'>".$rs['cidade']." / ".$rs['estado']."</option>";
+					}
+				}
+				$select_cidade .= "</select>";
+			}else{
+				return false;
+			}
+			return utf8_encode($select_cidade);
+		}			
+		
 		#Select tipo pagamento
 		function MontaSelectTipoPagamento($idtipopagamento){
 			$select_pgto = "<select id='busca_pgto' style='float: left; width: 10%;' class='form-control' name='busca_pgto'>";
@@ -19,7 +44,7 @@
 		}
 		
 		#Monta o relatório
-		function MontaRelatorio($dataIni, $dataFim, $idresponsavel, $marca, $idtipopagamento){
+		function MontaRelatorio($dataIni, $dataFim, $idresponsavel, $marca, $idtipopagamento, $cidade){
 			$Auxilio = parent::CarregaHtml('itens/relatorio-itens');
 			$where = '';
 			if($dataIni){
@@ -36,6 +61,13 @@
 			
 			if($idtipopagamento){
 				$where .= " AND Y.idformapagamento = $idtipopagamento";
+			}
+			
+			if($cidade){
+				$auxCidade = explode("*_*", $cidade);
+				$bd_cidade = utf8_decode($auxCidade[0]);
+				$bd_estado = utf8_decode($auxCidade[1]);
+				$where .= " AND C.cidade LIKE '%$bd_cidade%' AND C.estado LIKE '%$bd_estado%'";
 			}
 			
 			if($marca){

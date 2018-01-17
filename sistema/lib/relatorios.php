@@ -15,18 +15,21 @@
     	$idresponsavel = $_GET['busca_responsavel'];
     	$marca = $_GET['busca_marca'];
     	$idtipopagamento = $_GET['busca_pgto'];
+    	$cidade = $_GET['busca_cidade'];
     	$botao_limpar = '<a href="'.UrlPadrao.'relatorios" class="btn btn-danger"><i class="fa fa-times"></i></a>';
     }
     
-    $Relatorio = $banco->MontaRelatorio($dataIni, $dataFim, $idresponsavel, $marca, $idtipopagamento);
+    $Relatorio = $banco->MontaRelatorio($dataIni, $dataFim, $idresponsavel, $marca, $idtipopagamento, $cidade);
     $select_usuarios = $banco->MontaUsuarios($idresponsavel);
     $select_tipoPagamento = $banco->MontaSelectTipoPagamento($idtipopagamento);
+    $select_cidades = $banco->MontaCidadesClientes($cidade);
     
     #Imprime valores
 	$Conteudo = utf8_encode($banco->CarregaHtml('relatorios'));
     $Conteudo = str_replace("<%RELATORIO%>", $Relatorio, $Conteudo);
     $Conteudo = str_replace("<%SELECTUSUARIOS%>", $select_usuarios, $Conteudo);
     $Conteudo = str_replace("<%SELECTTIPOPAGAMENTO%>", $select_tipoPagamento, $Conteudo);
+    $Conteudo = str_replace("<%SELECTCIDADESCLIENTES%>", $select_cidades, $Conteudo);
     $Conteudo = str_replace("<%BUSCADATAINI%>", $dataIni, $Conteudo);
     $Conteudo = str_replace("<%BUSCADATAFIM%>", $dataFim, $Conteudo);
     $Conteudo = str_replace("<%BUSCAMARCA%>", $marca, $Conteudo);
