@@ -83,7 +83,7 @@
                         $editar = '<a target="_blank" href="<%URLPADRAO%>finalizar/'.$rs['idvenda'].'">Reimprimir</a>
                         			';
                         if($_SESSION['idsetor'] == 1){
-                        	$editar .= '<a href="<%URLPADRAO%>venda/cancelar/'.$rs['idvenda'].'">Cancelar</a>';
+                        	$editar .= '<a href="<%URLPADRAO%>venda/cancelar/'.$rs['idvenda'].'">Cancelar Venda</a>';
                         }
                     }
                     $Linha = str_replace('<%VENDAORCAMENTO%>', $auxVO, $Linha);
@@ -369,7 +369,7 @@
         			}
         		}
         	}
-        	$Sql = "DELETE FROM t_vendas WHERE idvenda = $idvenda";
+        	$Sql = "UPDATE t_vendas SET orcamento = 1 WHERE idvenda = $idvenda";
         	parent::Execute($Sql);
         	parent::RedirecionaPara('lista-venda');
         }
