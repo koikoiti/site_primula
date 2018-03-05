@@ -94,14 +94,15 @@
 						FROM t_vendas V
 						INNER JOIN t_clientes C ON V.idcliente = C.idcliente
 						INNER JOIN t_vendas_produtos X ON V.idvenda = X.idvenda
-						INNER JOIN t_vendas_pagamentos Y ON Y.idvenda = V.idvenda
+						LEFT JOIN t_vendas_pagamentos Y ON Y.idvenda = V.idvenda
 						WHERE 1 $where AND V.orcamento = 0 GROUP BY idvenda";
 			}else{
 				$Sql = "SELECT DISTINCT C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario FROM t_vendas V 
 						INNER JOIN t_clientes C ON V.idcliente = C.idcliente
-						INNER JOIN t_vendas_pagamentos Y ON Y.idvenda = V.idvenda
+						LEFT JOIN t_vendas_pagamentos Y ON Y.idvenda = V.idvenda
 						WHERE 1 $where AND V.orcamento = 0";
 			}
+			
 			$quantidade_vendas = 0;
 			$total_vendas_sem_frete = 0;
 			$total_fretes = 0;
