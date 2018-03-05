@@ -47,12 +47,13 @@
 			$total_fretes = 0;
 			$total_vendas = 0;
 			$result = parent::Execute($Sql);
+			
 			while($rs = parent::ArrayData($result)){
 				$Linha = $Auxilio;
 				$Linha = str_replace("<%NUMERO%>", $rs['idvenda'], $Linha);
 				$Linha = str_replace("<%DATA%>", date("d/m/Y", strtotime($rs['data'])), $Linha);
 				$Linha = str_replace("<%CLIENTE%>", utf8_encode($rs['nome']), $Linha);
-				$venda_sem_frete = $this->BuscaVendaSemFrete($marca, $rs['idcliente'], $dataIni, $dataFim);
+				$venda_sem_frete = $this->BuscaVendaSemFrete($marca, $rs['idcliente'], $dataIni, $dataFim, $idresponsavel);
 				$valor_venda = $venda_sem_frete + $rs['valor_frete'];
 				$Linha = str_replace("<%VENDASEMFRETE%>", "R$ " . number_format($venda_sem_frete, 2, ',', '.'), $Linha);
 				$Linha = str_replace("<%VALORFRETE%>", "R$ " . number_format($rs['valor_frete'], 2, ',', '.'), $Linha);
@@ -76,14 +77,37 @@
 			return $Relatorio;
 		}
 		
-		function BuscaVendaSemFrete($marca, $idcliente, $dataIni, $dataFim){
+		function BuscaVendaSemFrete($marca, $idcliente, $dataIni, $dataFim, $idresponsavel){
+			$where = '';
+			$SqlMarcaProduto = "SELECT idproduto FROM t_produtos WHERE marca LIKE '%$marca%'";
+			$resultMarcaProduto = parent::Execute($SqlMarcaProduto);
+			$linhaMarcaProduto = parent::Linha($resultMarcaProduto);
+			if($linhaMarcaProduto){
+				$where .= " AND (";
+				while($rsMarcaProduto = parent::ArrayData($resultMarcaProduto)){
+					$where .= " X.produto_kit = 'prod_" . $rsMarcaProduto['idproduto'] . "' OR";
+				}
+			}
+			$SqlMarcaKit = "SELECT idkit FROM t_kit WHERE marca LIKE '%$marca%'";
+			$resultMarcaKit = parent::Execute($SqlMarcaKit);
+			$linhaMarcaKit = parent::Linha($resultMarcaKit);
+			if($linhaMarcaKit){
+				while($rsMarcaKit = parent::ArrayData($resultMarcaKit)){
+					$where .= " X.produto_kit = 'kit_" . $rsMarcaKit['idkit'] . "' OR";
+				}
+			}
+			$where = rtrim($where, " OR");
+			$where .= ")";
+			
+			$where .= " AND V.idusuario = $idresponsavel";
+			
 			$dataIni = $dataIni . " 00:00:00";
 			$dataFim = $dataFim . " 23:59:59";
-			$Sql = "SELECT V.idvenda, C.idtipoprofissional FROM t_vendas V 
+			$Sql = "SELECT DISTINCT V.idvenda, C.idtipoprofissional FROM t_vendas V 
 					INNER JOIN t_clientes C ON C.idcliente = V.idcliente 
-					WHERE V.idcliente = $idcliente AND V.data >= '$dataIni' AND V.data <= '$dataFim'";
+					INNER JOIN t_vendas_produtos X ON V.idvenda = X.idvenda 
+					WHERE 1 $where AND V.idcliente = $idcliente AND V.data >= '$dataIni' AND V.data <= '$dataFim'";
 			$result = parent::Execute($Sql);
-			
 			while($rs = parent::ArrayData($result)){
 				#Tipo do valor (consumidor/profissional)
 				$SqlValor = "SELECT valor FROM t_valor_profissional WHERE idtipoprofissional = {$rs['idtipoprofissional']}";
