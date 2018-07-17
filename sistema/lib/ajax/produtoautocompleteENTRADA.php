@@ -7,7 +7,7 @@
     
     $term = $_GET[ "term" ];
     
-    $Sql = 'SELECT * FROM t_produtos WHERE (nome LIKE "%'.$term.'%" OR cod_barras LIKE "%'.$term.'%" OR marca LIKE "%'.$term.'%") ORDER BY nome';
+    $Sql = 'SELECT * FROM t_produtos WHERE (nome LIKE "%'.$term.'%" OR cod_barras LIKE "%'.$term.'%" OR marca LIKE "%'.$term.'%") AND ativo = 1 ORDER BY nome';
     $result = $banco->Execute($Sql);
     
     while($rs = $banco->ArrayData($result)){
@@ -21,7 +21,7 @@
                     );
     }
     
-    $SqlKit = 'SELECT * FROM t_kit WHERE (nome LIKE "%'.$term.'%" OR codigo LIKE "%'.$term.'%") ORDER BY nome';
+    $SqlKit = 'SELECT * FROM t_kit WHERE (nome LIKE "%'.$term.'%" OR codigo LIKE "%'.$term.'%") AND ativo = 1 ORDER BY nome';
     $resultKit = $banco->Execute($SqlKit);
     
     while($rsKit = $banco->ArrayData($resultKit)){

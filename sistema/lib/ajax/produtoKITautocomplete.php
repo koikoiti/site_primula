@@ -18,7 +18,7 @@
         $tipo = 'valor_profissional';
     }
     
-    $Sql = 'SELECT * FROM t_produtos WHERE (nome LIKE "%'.$term.'%" OR cod_barras LIKE "%'.$term.'%" OR marca LIKE "%'.$term.'%")';
+    $Sql = 'SELECT * FROM t_produtos WHERE (nome LIKE "%'.$term.'%" OR cod_barras LIKE "%'.$term.'%" OR marca LIKE "%'.$term.'%") AND ativo = 1';
     $result = $banco->Execute($Sql);
     
     while($rs = $banco->ArrayData($result)){
