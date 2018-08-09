@@ -93,9 +93,9 @@
 				$Sql = "SELECT DISTINCT C.nome, C.idtipoprofissional, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario
 						FROM t_vendas V
 						INNER JOIN t_clientes C ON V.idcliente = C.idcliente
-						INNER JOIN t_vendas_produtos X ON V.idvenda = X.idvenda
+						LEFT JOIN t_vendas_produtos X ON V.idvenda = X.idvenda
 						LEFT JOIN t_vendas_pagamentos Y ON Y.idvenda = V.idvenda
-						WHERE 1 $where AND V.orcamento = 0 GROUP BY idvenda";
+						WHERE 1 $where AND V.orcamento = 0 AND X.brinde = 0 AND V.valor_venda <> 0 GROUP BY idvenda";
 			}else{
 				$Sql = "SELECT DISTINCT C.nome, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario FROM t_vendas V 
 						INNER JOIN t_clientes C ON V.idcliente = C.idcliente
@@ -119,7 +119,7 @@
 					$resultValor = parent::Execute($SqlValor);
 					$rsValor = parent::ArrayData($resultValor);
 					#Busca os valores dos produtos com a marca
-					$SqlProdutosdaVenda = "SELECT produto_kit, quantidade FROM t_vendas_produtos WHERE idvenda = {$rs['idvenda']}";
+					$SqlProdutosdaVenda = "SELECT produto_kit, quantidade, desconto_valor FROM t_vendas_produtos WHERE idvenda = {$rs['idvenda']}";
 					$resultProdutosdaVenda = parent::Execute($SqlProdutosdaVenda);
 					
 					$valor_venda_unit = 0;
@@ -131,7 +131,7 @@
 							$linhaValorProduto = parent::Linha($resultValorProduto);
 							if($linhaValorProduto){
 								$rsValorProduto = parent::ArrayData($resultValorProduto);
-								$valor_venda_unit += ($rsValorProduto[$rsValor['valor']] * $rsProdutosdaVenda['quantidade']);
+								$valor_venda_unit += (($rsValorProduto[$rsValor['valor']] - $rsProdutosdaVenda['desconto_valor']) * $rsProdutosdaVenda['quantidade']);
 							}
 						}else{
 							$SqlValorKit = "SELECT {$rsValor['valor']} FROM t_kit WHERE idkit = {$auxPK[1]} AND marca LIKE '%$marca%'";
@@ -139,7 +139,7 @@
 							$linhaValorKit = parent::Linha($resultValorKit);
 							if($linhaValorKit){
 								$rsValorKit = parent::ArrayData($resultValorKit);
-								$valor_venda_unit += ($rsValorKit[$rsValor['valor']] * $rsProdutosdaVenda['quantidade']);
+								$valor_venda_unit += (($rsValorKit[$rsValor['valor']] - $rsProdutosdaVenda['desconto_valor']) * $rsProdutosdaVenda['quantidade']);
 							}
 						}
 					}
