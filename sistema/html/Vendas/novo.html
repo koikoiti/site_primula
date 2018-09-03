@@ -441,7 +441,12 @@ function voltar(){
 
 function checkout(){
     //$('form').attr('action', 'pre-checkout');
-	$("#acao").val('finaliza');
+    if(!$.trim($('#pagamentos').html()).length){
+    	alert("Para realizar o checkout, por favor, informe o pagamento.");
+    	return true;
+    }else{
+		$("#acao").val('finaliza');
+    }
 }
 
 function maisPagamento(){
