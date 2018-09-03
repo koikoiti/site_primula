@@ -40,6 +40,8 @@
         
         #Lista Vendas
         function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim){
+            $quantidade_vendas = 0;
+            $total_vendas = 0;
             $Auxilio = parent::CarregaHtml('Vendas/itens/lista-venda-itens');
             $Sql = "SELECT V.*, C.* FROM t_vendas V 
                     INNER JOIN t_clientes C ON V.idcliente = C.idcliente 
@@ -79,6 +81,8 @@
                         $editar = '<a href="<%URLPADRAO%>venda/editar/'.$rs['idvenda'].'">Editar</a>
                         			<a href="<%URLPADRAO%>venda/excluir/'.$rs['idvenda'].'">Excluir</a>';
                     }else{
+                        $quantidade_vendas++;
+                        $total_vendas += $rs['valor_venda'];
                         $auxVO = 'Venda';
                         $editar = '<a target="_blank" href="<%URLPADRAO%>finalizar/'.$rs['idvenda'].'">Reimprimir</a>
                         			';
@@ -95,6 +99,10 @@
                                 <td colspan="8">Não foi encontrada nenhuma venda.</td>
                              <tr>';
             }
+            $LinhaTotal = parent::CarregaHtml('Vendas/itens/lista-venda-ultima');
+            $LinhaTotal = str_replace("<%QUANTIDADEVENDAS%>", $quantidade_vendas, $LinhaTotal);
+            $LinhaTotal = str_replace("<%TOTALVENDAS%>", "R$ ".number_format($total_vendas, 2, ',', '.'), $LinhaTotal);
+            $Vendas .= $LinhaTotal;
             return utf8_encode($Vendas);
         }
         
