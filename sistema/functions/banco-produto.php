@@ -32,6 +32,9 @@
                     $Linha = str_replace("<%MODELO%>", $rs['modelo'], $Linha);
                     $Linha = str_replace("<%CATEGORIA%>", $rs['categoria'], $Linha);
                     $Linha = str_replace("<%ESTOQUE%>", $rs['estoque'], $Linha);
+                    $Linha = str_replace("<%VALORCONSUMIDOR%>", "R$ " . number_format($rs['valor_consumidor'], 2, ',', '.'), $Linha);
+                    $Linha = str_replace("<%VP%>", "VP" . str_replace(".", "-", $rs['valor_profissional']), $Linha);
+                    $Linha = str_replace("<%VA%>", "VA" . str_replace(".", "-", $rs['valor_app']), $Linha);
                     if($rs['ativo'] == 1){
                         $Linha = str_replace("<%ATIVOINATIVO%>", 'Ativo', $Linha);
                         $Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idproduto'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
@@ -49,9 +52,9 @@
             return utf8_encode($Produtos);
         }
         
-        function InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $files, $ncm){
-            $Sql = "INSERT INTO t_produtos (cod_barras, cod_fornecedor, nome, marca, idcategoria, valor_unitario, valor_profissional, valor_consumidor, descricao, informacoes, estoque, data_cadastro, ncm) 
-                    VALUES ('$cod_barras', '$cod_fornecedor', '".ucwords($nome)."', '".ucwords($marca)."',  '$idcategoria', '$valor_unitario', '$valor_profissional', '$valor_consumidor', '".ucfirst($descricao)."', '".ucfirst($informacoes)."', '$estoque', '".date("Y-m-d")."', '$ncm')";
+        function InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $files, $ncm){
+            $Sql = "INSERT INTO t_produtos (cod_barras, cod_fornecedor, nome, marca, idcategoria, valor_unitario, valor_profissional, valor_consumidor, valor_app, descricao, informacoes, estoque, data_cadastro, ncm) 
+                    VALUES ('$cod_barras', '$cod_fornecedor', '".ucwords($nome)."', '".ucwords($marca)."',  '$idcategoria', '$valor_unitario', '$valor_profissional', '$valor_consumidor', '$valor_app','".ucfirst($descricao)."', '".ucfirst($informacoes)."', '$estoque', '".date("Y-m-d")."', '$ncm')";
             if(parent::Execute($Sql)){
                 if($files){
                     $lastID = mysql_insert_id();
@@ -81,8 +84,8 @@
             }
         }
        
-       function AtualizaProduto($idproduto, $cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $files, $ncm){
-            $Sql = "UPDATE t_produtos SET cod_barras = '$cod_barras', cod_fornecedor = '$cod_fornecedor', nome = '".ucwords($nome)."', marca = '".ucwords($marca)."', idcategoria = '$idcategoria', valor_unitario = '$valor_unitario', valor_profissional = '$valor_profissional', valor_consumidor = '$valor_consumidor', descricao = '".ucfirst($descricao)."', informacoes = '".ucfirst($informacoes)."', estoque = '$estoque', ncm = '$ncm' WHERE idproduto = $idproduto";
+       function AtualizaProduto($idproduto, $cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $files, $ncm){
+            $Sql = "UPDATE t_produtos SET cod_barras = '$cod_barras', cod_fornecedor = '$cod_fornecedor', nome = '".ucwords($nome)."', marca = '".ucwords($marca)."', idcategoria = '$idcategoria', valor_unitario = '$valor_unitario', valor_profissional = '$valor_profissional', valor_consumidor = '$valor_consumidor', valor_app = '$valor_app', descricao = '".ucfirst($descricao)."', informacoes = '".ucfirst($informacoes)."', estoque = '$estoque', ncm = '$ncm' WHERE idproduto = $idproduto";
             if(parent::Execute($Sql)){
                 if($files){
                     $this->InsereFotosUpdate($idproduto, $files);

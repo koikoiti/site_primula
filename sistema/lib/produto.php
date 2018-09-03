@@ -28,6 +28,7 @@
         $valor_unitario = $rsProduto['valor_unitario'];
         $valor_profissional = $rsProduto['valor_profissional'];
         $valor_consumidor = $rsProduto['valor_consumidor'];
+        $valor_app = $rsProduto['valor_app'];
         $descricao = utf8_encode($rsProduto['descricao']);
         $informacoes = utf8_encode($rsProduto['informacoes']);
         $estoque = $rsProduto['estoque'];
@@ -89,6 +90,10 @@
         $valor_consumidor = strip_tags(trim(addslashes($_POST["valor_consumidor"])));
         $valor_consumidor = str_replace('.', '', $valor_consumidor);
         $valor_consumidor = str_replace(',', '.', $valor_consumidor);
+        #Valor App
+        $valor_app = strip_tags(trim(addslashes($_POST["valor_app"])));
+        $valor_app = str_replace('.', '', $valor_app);
+        $valor_app = str_replace(',', '.', $valor_app);
         $descricao = utf8_decode(strip_tags(trim(addslashes($_POST["descricao"]))));
         $informacoes = utf8_decode(strip_tags(trim(addslashes($_POST["informacoes"]))));
         
@@ -131,7 +136,7 @@
     				}
     			}
     		}
-            $banco->AtualizaProduto($idproduto, $cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $auxImagens, $ncm);
+            $banco->AtualizaProduto($idproduto, $cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $auxImagens, $ncm);
             $banco->RedirecionaPara('lista-produto');
         }else{
             #Pega as imagens e arruma num array
@@ -169,7 +174,7 @@
                 $msg = "Produto com esse código já cadastrado!";
             }else{
                 #Insert
-                $banco->InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $descricao, $informacoes, $auxImagens, $ncm);
+                $banco->InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $auxImagens, $ncm);
                 $banco->RedirecionaPara('lista-produto');
             }
         }
@@ -199,6 +204,7 @@
     $Conteudo = str_replace("<%ESTOQUE%>", $estoque, $Conteudo);
     $Conteudo = str_replace("<%VALORPROFISSIONAL%>", $valor_profissional, $Conteudo);
     $Conteudo = str_replace("<%VALORCONSUMIDOR%>", $valor_consumidor, $Conteudo);
+    $Conteudo = str_replace("<%VALORAPP%>", $valor_app, $Conteudo);
     $Conteudo = str_replace("<%DESCRICAO%>", $descricao, $Conteudo);
     $Conteudo = str_replace("<%INFORMACOES%>", $informacoes, $Conteudo);
     $Conteudo = str_replace("<%CAMPOCUSTO%>", $campo_custo, $Conteudo);
