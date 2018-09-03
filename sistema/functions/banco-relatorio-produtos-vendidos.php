@@ -1,7 +1,7 @@
 <?php
     class bancorelatorioprodutosvendidos extends banco{
         
-        function MontaRelatorio($dataIni, $dataFim){
+        function MontaRelatorio($dataIni, $dataFim, $produtoMarca){
             $Auxilio = parent::CarregaHtml('itens/relatorio-produtos-vendidos-itens');
             $where = '';
             if($dataIni){
@@ -22,19 +22,25 @@
             while($rs = parent::ArrayData($result)){
                 $Linha = $Auxilio;
                 $auxPK = explode('_', $rs['produto_kit']);
+                if($produtoMarca){
+                    $wherePM = " AND (nome LIKE '%$produtoMarca%' OR marca LIKE '%$produtoMarca%')";
+                }
+                
                 if($auxPK[0] == 'prod'){
                     $prod_kit = "Produto: ";
-                    $Sql_nome = "SELECT nome, marca FROM t_produtos WHERE idproduto = " . $auxPK[1];
+                    $Sql_nome = "SELECT nome, marca FROM t_produtos WHERE idproduto = " . $auxPK[1] . $wherePM;
                 }elseif($auxPK[0] == 'kit'){
                     $prod_kit = "Kit: ";
-                    $Sql_nome = "SELECT nome, marca FROM t_kit WHERE idkit = " . $auxPK[1];
+                    $Sql_nome = "SELECT nome, marca FROM t_kit WHERE idkit = " . $auxPK[1] . $wherePM;
                 }
                 $result_nome = parent::Execute($Sql_nome);
                 $rs_nome = parent::ArrayData($result_nome);
-                $prod_kit .= $rs_nome['nome'] . " - " . $rs_nome['marca'];
-                $Linha = str_replace("<%PRODUTO%>", $prod_kit, $Linha);
-                $Linha = str_replace("<%QUANTIDADE%>", $rs['qtd_total'], $Linha);
-                $Relatorio .= $Linha;
+                if($rs_nome){
+                    $prod_kit .= $rs_nome['nome'] . " - " . $rs_nome['marca'];
+                    $Linha = str_replace("<%PRODUTO%>", $prod_kit, $Linha);
+                    $Linha = str_replace("<%QUANTIDADE%>", $rs['qtd_total'], $Linha);
+                    $Relatorio .= $Linha;
+                }
             }
             
             return utf8_encode($Relatorio);

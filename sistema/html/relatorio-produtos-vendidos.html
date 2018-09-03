@@ -8,6 +8,7 @@
                		<input style="float: left; width: 20%;" id="busca_dataIni" type="date" class="form-control" value="<%BUSCADATAINI%>" placeholder="Data Inicial"/>
                		<span style="float: left; width: 2%;" class="no-padding">&nbsp;a</span> 
                		<input style="float: left; width: 20%;" id="busca_dataFim" type="date" class="form-control" value="<%BUSCADATAFIM%>" placeholder="Data Final"/>
+               		<input style="margin-left: 5px; margin-right: 5px; float: left; width: 20%;" id="busca_produto_marca" type="text" class="form-control" value="<%BUSCAPRODUTOMARCA%>" placeholder="Busca por Produto ou Marca"/>
                		<div style="float: left;">
                 		<button type="button" onclick="pesquisar();" class="btn btn-success"><i class="fa fa-search"></i></button>
                 		<%BOTAOLIMPARFILTRO%>
@@ -36,7 +37,8 @@
 function pesquisar(){
     var dataIni = $("#busca_dataIni").val().trim();
     var dataFim = $("#busca_dataFim").val().trim();
+    var produtoMarca = $("#busca_produto_marca").val().trim();
     
-    location.href = "<%URLPADRAO%>relatorio-produtos-vendidos/?dataIni=" + dataIni + "&dataFim=" + dataFim;
+    location.href = "<%URLPADRAO%>relatorio-produtos-vendidos/?dataIni=" + dataIni + "&dataFim=" + dataFim + "&produtoMarca=" + produtoMarca;
 }
 </script>
