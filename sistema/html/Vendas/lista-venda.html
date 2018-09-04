@@ -22,7 +22,11 @@
                 <input style="float: left; width: 10%;" id="busca_cpf" type="text" class="form-control" value="<%BUSCACPF%>" placeholder="CPF"/>
                 <button style="float: left;" onclick="pesquisar()" type="button" class="btn btn-success btn-flat">Pesquisar</button>
                 <button style="float: left;" onclick="javascript:location.href='<%URLPADRAO%>lista-venda'" type="button" class="btn btn-danger btn-flat">Limpar</button>
+                <div style="float: left; width: 100%;">
+	            	<%SELECTUSUARIOS%>
+	            </div>
             </div>
+            
         </div>
         <div class="content">
             <div class="table-responsive">
@@ -58,8 +62,9 @@ function pesquisar(){
     var busca_venda = $("#busca_venda").val().trim();
     var busca_dataIni = $("#busca_dataIni").val().trim();
     var busca_dataFim = $("#busca_dataFim").val().trim();
+    var busca_responsavel = $("#busca_responsavel").val();
     
-    location.href = "<%URLPADRAO%>lista-venda/?busca_nome=" + busca_nome + "&busca_cnpj=" + busca_cnpj + "&busca_cpf=" + busca_cpf + "&busca_venda=" + busca_venda + "&busca_dataIni=" + busca_dataIni + "&busca_dataFim=" + busca_dataFim;
+    location.href = "<%URLPADRAO%>lista-venda/?busca_nome=" + busca_nome + "&busca_cnpj=" + busca_cnpj + "&busca_cpf=" + busca_cpf + "&busca_venda=" + busca_venda + "&busca_dataIni=" + busca_dataIni + "&busca_dataFim=" + busca_dataFim + "&busca_responsavel=" + busca_responsavel;
 }
 
 function abreHistoricoVendas(idcliente){

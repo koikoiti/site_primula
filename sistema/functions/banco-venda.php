@@ -39,7 +39,7 @@
         }
         
         #Lista Vendas
-        function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim){
+        function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim, $busca_responsavel){
             $quantidade_vendas = 0;
             $total_vendas = 0;
             $Auxilio = parent::CarregaHtml('Vendas/itens/lista-venda-itens');
@@ -61,6 +61,9 @@
             }
             if($busca_dataFim != '' || $busca_dataIni != ''){
             	$Sql .= " AND data BETWEEN '$busca_dataIni 00:00:00' AND '$busca_dataFim 23:59:59'";
+            }
+            if($busca_responsavel){
+                $Sql .= " AND V.idusuario = " . $busca_responsavel;
             }
             $result = parent::Execute($Sql);
             $linha = parent::Linha($result);
@@ -485,6 +488,32 @@
         		$retorno = '';
         	}
         	return utf8_encode($retorno);
+        }
+        
+        #Monta usuários select
+        function MontaUsuarios($idresponsavel){
+            $Sql = "SELECT * FROM t_usuarios WHERE 1 AND login <> 'admin' ORDER BY ativo DESC, nome_exibicao ASC";
+            $select_usuarios = "<select id='busca_responsavel' style='float: left; width: 20%;' class='form-control' name='busca_responsavel'>";
+            $select_usuarios .= "<option selected value=''>Responsável</option>";
+            $result = parent::Execute($Sql);
+            if($result){
+                while($rs = parent::ArrayData($result)){
+                    if($rs['ativo'] == 0){
+                        $inativo = " (Inativo)";
+                    }else{
+                        $inativo = '';
+                    }
+                    if($rs['idusuario'] == $idresponsavel){
+                        $select_usuarios .= "<option selected value='".$rs['idusuario']."'>".$rs['nome_exibicao']." $inativo</option>";
+                    }else{
+                        $select_usuarios .= "<option value='".$rs['idusuario']."'>".$rs['nome_exibicao']."$inativo</option>";
+                    }
+                }
+                $select_usuarios .= "</select>";
+                return utf8_encode($select_usuarios);
+            }else{
+                return false;
+            }
         }
     }
 ?>
