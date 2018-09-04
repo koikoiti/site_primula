@@ -119,7 +119,7 @@
 					$resultValor = parent::Execute($SqlValor);
 					$rsValor = parent::ArrayData($resultValor);
 					#Busca os valores dos produtos com a marca
-					$SqlProdutosdaVenda = "SELECT produto_kit, quantidade, desconto_valor FROM t_vendas_produtos WHERE idvenda = {$rs['idvenda']}";
+					$SqlProdutosdaVenda = "SELECT produto_kit, quantidade, desconto_valor FROM t_vendas_produtos WHERE idvenda = {$rs['idvenda']} AND brinde = 0";
 					$resultProdutosdaVenda = parent::Execute($SqlProdutosdaVenda);
 					
 					$valor_venda_unit = 0;
@@ -143,7 +143,9 @@
 							}
 						}
 					}
-					$valor_venda_unit = $valor_venda_unit - $rs['desconto_subtotal'];
+					if(strtolower($marca) == "bioage"){
+					   $valor_venda_unit = $valor_venda_unit - $rs['desconto_subtotal'];
+					}
 					$valor_venda = $valor_venda_unit + $rs['valor_frete'];
 					
 					$venda_sem_frete = $valor_venda_unit;
