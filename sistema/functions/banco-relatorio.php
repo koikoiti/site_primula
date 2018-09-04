@@ -90,7 +90,7 @@
 				}
 				$where = rtrim($where, " OR");
 				$where .= ")";
-				$Sql = "SELECT DISTINCT C.nome, C.idtipoprofissional, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario
+				$Sql = "SELECT DISTINCT C.nome, C.idtipoprofissional, V.idvenda, V.data, V.valor_frete, V.valor_venda, V.idusuario, V.desconto_subtotal 
 						FROM t_vendas V
 						INNER JOIN t_clientes C ON V.idcliente = C.idcliente
 						LEFT JOIN t_vendas_produtos X ON V.idvenda = X.idvenda
@@ -143,6 +143,7 @@
 							}
 						}
 					}
+					$valor_venda_unit = $valor_venda_unit - $rs['desconto_subtotal'];
 					$valor_venda = $valor_venda_unit + $rs['valor_frete'];
 					
 					$venda_sem_frete = $valor_venda_unit;
