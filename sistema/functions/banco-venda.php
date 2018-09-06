@@ -102,10 +102,12 @@
                                 <td colspan="8">Não foi encontrada nenhuma venda.</td>
                              <tr>';
             }
-            $LinhaTotal = parent::CarregaHtml('Vendas/itens/lista-venda-ultima');
-            $LinhaTotal = str_replace("<%QUANTIDADEVENDAS%>", $quantidade_vendas, $LinhaTotal);
-            $LinhaTotal = str_replace("<%TOTALVENDAS%>", "R$ ".number_format($total_vendas, 2, ',', '.'), $LinhaTotal);
-            $Vendas .= $LinhaTotal;
+            if($_SESSION['idsetor'] == 1){
+                $LinhaTotal = parent::CarregaHtml('Vendas/itens/lista-venda-ultima');
+                $LinhaTotal = str_replace("<%QUANTIDADEVENDAS%>", $quantidade_vendas, $LinhaTotal);
+                $LinhaTotal = str_replace("<%TOTALVENDAS%>", "R$ ".number_format($total_vendas, 2, ',', '.'), $LinhaTotal);
+                $Vendas .= $LinhaTotal;
+            }
             return utf8_encode($Vendas);
         }
         
@@ -492,27 +494,38 @@
         
         #Monta usuários select
         function MontaUsuarios($idresponsavel){
-            $Sql = "SELECT * FROM t_usuarios WHERE 1 AND login <> 'admin' ORDER BY ativo DESC, nome_exibicao ASC";
-            $select_usuarios = "<select id='busca_responsavel' style='float: left; width: 20%;' class='form-control' name='busca_responsavel'>";
-            $select_usuarios .= "<option selected value=''>Responsável</option>";
-            $result = parent::Execute($Sql);
-            if($result){
-                while($rs = parent::ArrayData($result)){
-                    if($rs['ativo'] == 0){
-                        $inativo = " (Inativo)";
-                    }else{
-                        $inativo = '';
+            if($_SESSION['idsetor'] == 1){
+                $Sql = "SELECT * FROM t_usuarios WHERE 1 AND login <> 'admin' ORDER BY ativo DESC, nome_exibicao ASC";
+                $select_usuarios = "<select id='busca_responsavel' style='float: left; width: 20%;' class='form-control' name='busca_responsavel'>";
+                $select_usuarios .= "<option selected value=''>Responsável</option>";
+                $result = parent::Execute($Sql);
+                if($result){
+                    while($rs = parent::ArrayData($result)){
+                        if($rs['ativo'] == 0){
+                            $inativo = " (Inativo)";
+                        }else{
+                            $inativo = '';
+                        }
+                        if($rs['idusuario'] == $idresponsavel){
+                            $select_usuarios .= "<option selected value='".$rs['idusuario']."'>".$rs['nome_exibicao']." $inativo</option>";
+                        }else{
+                            $select_usuarios .= "<option value='".$rs['idusuario']."'>".$rs['nome_exibicao']."$inativo</option>";
+                        }
                     }
-                    if($rs['idusuario'] == $idresponsavel){
-                        $select_usuarios .= "<option selected value='".$rs['idusuario']."'>".$rs['nome_exibicao']." $inativo</option>";
-                    }else{
-                        $select_usuarios .= "<option value='".$rs['idusuario']."'>".$rs['nome_exibicao']."$inativo</option>";
-                    }
+                    $select_usuarios .= "</select>";
+                    return utf8_encode($select_usuarios);
+                }else{
+                    return false;
                 }
+            }else{
+                if($idresponsavel){
+                    $selected = "selected";
+                }
+                $select_usuarios = "<select id='busca_responsavel' style='float: left; width: 20%;' class='form-control' name='busca_responsavel'>";
+                $select_usuarios .= "<option value=''>Responsável</option>";
+                $select_usuarios .= "<option $selected value='{$_SESSION['idusuario']}'>{$_SESSION['nomeexibicao']}</option>";
                 $select_usuarios .= "</select>";
                 return utf8_encode($select_usuarios);
-            }else{
-                return false;
             }
         }
     }
