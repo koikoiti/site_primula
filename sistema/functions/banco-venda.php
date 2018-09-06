@@ -39,12 +39,13 @@
         }
         
         #Lista Vendas
-        function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim, $busca_responsavel){
+        function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim, $busca_responsavel, $busca_pagamento){
             $quantidade_vendas = 0;
             $total_vendas = 0;
             $Auxilio = parent::CarregaHtml('Vendas/itens/lista-venda-itens');
-            $Sql = "SELECT V.*, C.* FROM t_vendas V 
+            $Sql = "SELECT DISTINCT V.*, C.* FROM t_vendas V 
                     INNER JOIN t_clientes C ON V.idcliente = C.idcliente 
+                    LEFT JOIN t_vendas_pagamentos P ON P.idvenda = V.idvenda 
             		WHERE 1 
                     ";
             if($busca_nome != ''){
@@ -60,10 +61,13 @@
             	$Sql .= " AND V.idvenda LIKE '%$busca_venda%'";
             }
             if($busca_dataFim != '' || $busca_dataIni != ''){
-            	$Sql .= " AND data BETWEEN '$busca_dataIni 00:00:00' AND '$busca_dataFim 23:59:59'";
+            	$Sql .= " AND V.data BETWEEN '$busca_dataIni 00:00:00' AND '$busca_dataFim 23:59:59'";
             }
             if($busca_responsavel){
                 $Sql .= " AND V.idusuario = " . $busca_responsavel;
+            }
+            if($busca_pagamento){
+                $Sql .= " AND P.idformapagamento = $busca_pagamento";
             }
             $result = parent::Execute($Sql);
             $linha = parent::Linha($result);
@@ -538,6 +542,28 @@
                 $select_usuarios .= "<option $selected value='{$_SESSION['idusuario']}'>{$_SESSION['nomeexibicao']}</option>";
                 $select_usuarios .= "</select>";
                 return utf8_encode($select_usuarios);
+            }
+        }
+        
+        #Monta pagamentos select
+        function MontaPagamentos($idformapagamento){
+            $Sql = "SELECT * FROM fixo_forma_pagamento ORDER BY forma_pagamento ASC";
+            $result = parent::Execute($Sql);
+            $select_pagamentos = "<select id='busca_pagamento' style='float: left; width: 20%;' class='form-control' name='busca_pagamento'>";
+            $select_pagamentos .= "<option selected value=''>Pagamento</option>";
+            $result = parent::Execute($Sql);
+            if($result){
+                while($rs = parent::ArrayData($result)){
+                    if($rs['idformapagamento'] == $idformapagamento){
+                        $select_pagamentos .= "<option selected value='".$rs['idformapagamento']."'>".$rs['forma_pagamento']."</option>";
+                    }else{
+                        $select_pagamentos .= "<option value='".$rs['idformapagamento']."'>".$rs['forma_pagamento']."</option>";
+                    }
+                }
+                $select_pagamentos .= "</select>";
+                return utf8_encode($select_pagamentos);
+            }else{
+                return false;
             }
         }
     }

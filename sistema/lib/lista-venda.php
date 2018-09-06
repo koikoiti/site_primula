@@ -18,6 +18,7 @@
     	$busca_dataFim = $_GET['busca_dataFim'];
     	$busca_venda = ltrim($_GET['busca_venda'], 0);
     	$busca_responsavel = $_GET['busca_responsavel'];
+    	$busca_pagamento = $_GET['busca_pagamento'];
     	if($_GET['page']){
     		$pagina = $_GET['page'];
     	}else{
@@ -25,8 +26,9 @@
     	}
     }
     
-    $Vendas = $banco->ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim, $busca_responsavel);
+    $Vendas = $banco->ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim, $busca_responsavel, $busca_pagamento);
     $select_usuarios = $banco->MontaUsuarios($busca_responsavel);
+    $select_pagamentos = $banco->MontaPagamentos($busca_pagamento);
     
     #Imprime valores
 	$Conteudo = utf8_encode($banco->CarregaHtml('Vendas/lista-venda'));
@@ -38,4 +40,5 @@
     $Conteudo = str_replace("<%BUSCADATAINI%>", $busca_dataIni, $Conteudo);
     $Conteudo = str_replace("<%BUSCADATAFIM%>", $busca_dataFim, $Conteudo);
     $Conteudo = str_replace("<%SELECTUSUARIOS%>", $select_usuarios, $Conteudo);
+    $Conteudo = str_replace("<%SELECTPAGAMENTOS%>", $select_pagamentos, $Conteudo);
 ?>
