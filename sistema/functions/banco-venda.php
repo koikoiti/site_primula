@@ -93,6 +93,18 @@
                         	$editar .= '<a href="<%URLPADRAO%>venda/cancelar/'.$rs['idvenda'].'">Cancelar Venda</a>';
                         }
                     }
+                    $Pagamentos = "";
+                    $SqlPagamentos = "SELECT * FROM t_vendas_pagamentos P 
+                                      INNER JOIN fixo_forma_pagamento X ON P.idformapagamento = X.idformapagamento 
+                                      WHERE P.idvenda = " . $rs['idvenda'];
+                    $resultPagamentos = parent::Execute($SqlPagamentos);
+                    $linhaPagamentos = parent::Linha($resultPagamentos);
+                    if($linhaPagamentos){
+                        while($rsPagamentos = parent::ArrayData($resultPagamentos)){
+                            $Pagamentos .= "<small>" . date("d/m/Y", strtotime($rsPagamentos['data'])) . " - {$rsPagamentos['forma_pagamento']} - R$ " . number_format($rsPagamentos['valor'], 2, ",", ".") . "</small><br>";
+                        }
+                    }
+                    $Linha = str_replace('<%PAGAMENTOS%>', $Pagamentos, $Linha);
                     $Linha = str_replace('<%VENDAORCAMENTO%>', $auxVO, $Linha);
                     $Linha = str_replace('<%EDITAR%>', $editar, $Linha);
                     $Vendas .= $Linha;
