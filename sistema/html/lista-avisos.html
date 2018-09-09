@@ -7,6 +7,15 @@
             </p>
             <h3 style="width: 25%; float: left;">Lista de Avisos</h3>
             <div style="width: 75%; float: left; padding-right: 20px;" class="text-right">
+            	<div style="width: 70%; float: left;">
+                	<div style="width: 80%; float: left;">
+                		<input style="float: left; width: 48%;" id="busca_dataIni" type="date" class="form-control" value="<%BUSCADATAINI%>" placeholder="Data Inicial"/>
+                		<span style="float: left; width: 2%;" class="no-padding">&nbsp; à &nbsp;</span> 
+                		<input style="float: left; width: 48%; margin-left: 2px" id="busca_dataFim" type="date" class="form-control" value="<%BUSCADATAFIM%>" placeholder="Data Final"/>
+                	</div>
+                	<button style="float: left;" onclick="pesquisar()" type="button" class="btn btn-success btn-flat"><i class="fa fa-search"></i></button>
+                	<%BOTAOLIMPAR%>
+                </div>
             	<label><input <%FINALIZADOSCB%> onchange="finalizados();" type="checkbox" id="view_finalizados" class="" /> Mostrar Finalizados</label>
             </div>
         </div>
@@ -41,10 +50,23 @@ function excluir(idaviso){
 
 function finalizados(){
 	var check = $("#view_finalizados").is(":checked");
+	var busca_dataIni = $("#busca_dataIni").val();
+	var busca_dataFim = $("#busca_dataFim").val();
 	if(check == true){
-		location.href = "<%URLPADRAO%>lista-avisos/?view_finalizados=1";
+		location.href = "<%URLPADRAO%>lista-avisos/?view_finalizados=1" + "&busca_dataIni=" + busca_dataIni + "&busca_dataFim=" + busca_dataFim;
 	}else{
-		location.href = "<%URLPADRAO%>lista-avisos/?view_finalizados=0";
+		location.href = "<%URLPADRAO%>lista-avisos/?view_finalizados=0" + "&busca_dataIni=" + busca_dataIni + "&busca_dataFim=" + busca_dataFim;
+	}
+}
+
+function pesquisar(){
+	var busca_dataIni = $("#busca_dataIni").val();
+	var busca_dataFim = $("#busca_dataFim").val();
+	var check = $("#view_finalizados").is(":checked");
+	if(check == true){
+		location.href = "<%URLPADRAO%>lista-avisos/?view_finalizados=1" + "&busca_dataIni=" + busca_dataIni + "&busca_dataFim=" + busca_dataFim;
+	}else{
+		location.href = "<%URLPADRAO%>lista-avisos/?view_finalizados=0" + "&busca_dataIni=" + busca_dataIni + "&busca_dataFim=" + busca_dataFim;
 	}
 }
 </script>
