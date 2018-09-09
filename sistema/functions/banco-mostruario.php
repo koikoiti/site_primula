@@ -6,6 +6,7 @@
 			$result = parent::Execute($Sql);
 			$Auxilio = parent::CarregaHtml('itens/lista-mostruario-itens');
 			while($rs = parent::ArrayData($result)){
+			    $cliente = '';
 				$Linha = $Auxilio;
 				$auxPK = explode("_", $rs['produto_kit']);
 				if($auxPK[0] == 'prod'){
@@ -15,12 +16,23 @@
 					$idkit = $auxPK[1];
 					$SqlPK = "SELECT nome FROM t_kit WHERE idkit = $idkit";
 				}
+				if($rs['doacao'] == 1){
+				    $mostruario_doacao = "Doação";
+				    $SqlCliente = "SELECT nome FROM t_clientes WHERE idcliente = " . $rs['idcliente'];
+				    $resultCliente = parent::Execute($SqlCliente);
+				    $rsCliente = parent::ArrayData($resultCliente);
+				    $cliente = '<i style="font-size: smaller; color: red; width: auto;">Cliente: ' . $rsCliente['nome'] . '</i>';
+				}else{
+				    $mostruario_doacao = "Mostruário";
+				}
 				$resultPK = parent::Execute($SqlPK);
 				$rsPK = parent::ArrayData($resultPK);
 				$Linha = str_replace('<%PRODUTO%>', $rsPK['nome'], $Linha);
 				$Linha = str_replace('<%QUANTIDADE%>', $rs['quantidade'], $Linha);
 				$Linha = str_replace('<%USUARIO%>', $rs['usuario'], $Linha);
 				$Linha = str_replace('<%DATA%>', date("d/m/Y H:i", strtotime($rs['data'])), $Linha);
+				$Linha = str_replace('<%MOSTRUARIODOACAO%>', $mostruario_doacao, $Linha);
+				$Linha = str_replace('<%CLIENTE%>', $cliente, $Linha);
 				$Linha = str_replace('<%ID%>', $rs['idmostruario'], $Linha);
 				$retorno .= $Linha;
 			}

@@ -8,9 +8,11 @@
     
     $idproduto_kit = $_POST['idproduto'];
     $quantidade = $_POST['quantidade'];
+    $doacao = $_POST['doacao'];
+    $idcliente = $_POST['idcliente'];
     
     #Insere no BD
-    $SqlInsert = "INSERT INTO t_mostruario (produto_kit, quantidade, usuario, data) VALUES ('$idproduto_kit', '$quantidade', '".$banco->BuscaNomeExibicao()."', '".date("Y-m-d -H:i:s")."')";
+    $SqlInsert = "INSERT INTO t_mostruario (produto_kit, quantidade, usuario, data, doacao, idcliente) VALUES ('$idproduto_kit', '$quantidade', '".$banco->BuscaNomeExibicao()."', '".date("Y-m-d -H:i:s")."', $doacao, $idcliente)";
     $banco->Execute($SqlInsert);
     
     $auxProd = explode("_", $idproduto_kit);

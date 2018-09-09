@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/jquery.icheck/skins/flat/green.css">
 <link rel="stylesheet" type="text/css" href="<%URLPADRAO%>html/js/bootstrap.daterangepicker/daterangepicker-bs3.css" />
 <div class="header">
-    <h3>Retirar Mostruário</h3>
+    <h3>Retirar Mostruário / Doação</h3>
 </div>
 <div class="content">
     <div class="col-md-12">
@@ -20,6 +20,18 @@
     	</div>
     	<div class='col-md-3'>
     		*Quantidade: <input required type='number' id="quantidade" class='form-control' name='quantidade' value='1' />
+    	</div>
+    </div>
+    <div class="col-md-12">
+    	<div class='col-md-1' style="margin-top: 1%">
+    		<label><input onchange="doacao2();" type="checkbox" id="doacao" class="" /> Doação</label>
+    	</div>
+    	<div class='col-md-6' id="div_cliente">
+    		Cliente: <input disabled id='cliente' type='text' class='form-control' />
+    		<input type="hidden" id="hid_cliente" />    		
+    	</div>
+    	<div class='col-md-3'>
+    		
     	</div>
     </div>
     <div class="col-md-12 text-center">
@@ -40,14 +52,30 @@ $(document).ready(function(){
             	$("#hid_produto").val(ui.item.idproduto);            
         }
     });
+	
+	$("#cliente").autocomplete({
+        source: "<%URLPADRAO%>lib/ajax/clienteautocomplete.php",
+        minLength: 2,
+        select: function(event, ui){
+            $('#hid_cliente').val(ui.item.idcliente);
+        }
+    });
 });
 
 function retiraMostruario(){
 	var quantidade = $("#quantidade").val();
 	var idproduto = $("#hid_produto").val();
-	
+	var doacaoCB = $("#doacao").is(":checked");
+	if(doacaoCB == true){
+		var idcliente = $("#hid_cliente").val();
+		var doacao = 1;
+	}else{
+		var idcliente = 0;
+		var doacao = 0;
+	}
+		
 	$.post("<%URLPADRAO%>lib/ajax/retiraMostruario.php",
-			{idproduto:idproduto, quantidade:quantidade},
+			{idproduto:idproduto, quantidade:quantidade, doacao:doacao, idcliente:idcliente},
 			function(retorno){
 			    if(retorno == 1){
 			        //console.log(retorno);
@@ -58,6 +86,15 @@ function retiraMostruario(){
 				}
 			}
 		);
+}
+
+function doacao2(){
+	var doacaoCB = $("#doacao").is(":checked");
+	if(doacaoCB == true){
+		$("#cliente").removeAttr("disabled");
+	}else{
+		$("#cliente").attr("disabled", "disabled");
+	}
 }
 </script>
     <script type="text/javascript" src="<%URLPADRAO%>html/js/jasny.bootstrap/extend/js/jasny-bootstrap.min.js"></script>
