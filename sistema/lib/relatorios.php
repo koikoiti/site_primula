@@ -5,10 +5,23 @@
 	$dataIni = date("Y-m-01");
 	$dataFim = date("Y-m-d");
 	$botao_limpar = '';
+	$botao_imprimir = '';
 	
 	#Instancia o objeto
 	$banco = new bancorelatorio();
     
+	if($this->PaginaAux[0] == 'imprimir'){
+	    if($_GET){
+	        $dataIni = $_GET['dataIni'];
+	        $dataFim = $_GET['dataFim'];
+	        $idresponsavel = $_GET['idresponsavel'];
+	        $marca = $_GET['marca'];
+	        $idtipopagamento = $_GET['idtipopagamento'];
+	        $cidade = $_GET['cidade'];
+	        $banco->MontaImpressao($dataIni, $dataFim, $idresponsavel, $marca, $idtipopagamento, $cidade);
+	    }
+	}
+	
     if($_GET){
     	$dataIni = $_GET['dataIni'];
     	$dataFim = $_GET['dataFim'];
@@ -17,6 +30,10 @@
     	$idtipopagamento = $_GET['busca_pgto'];
     	$cidade = $_GET['busca_cidade'];
     	$botao_limpar = '<a href="'.UrlPadrao.'relatorios" class="btn btn-danger"><i class="fa fa-times"></i></a>';
+    	if($idresponsavel){
+    	    $urlImprimir = "dataIni=$dataIni&dataFim=$dataFim&idresponsavel=$idresponsavel&marca=$marca&idtipopagamento=$idtipopagamento&cidade=$cidade";
+    	    $botao_imprimir = '<a target="_blank" href="' . UrlPadrao . 'relatorios/imprimir/?' . $urlImprimir . '" class="btn btn-info"><i class="fa fa-print"></i> Imprimir</a>';
+    	}
     }
     
     $Relatorio = $banco->MontaRelatorio($dataIni, $dataFim, $idresponsavel, $marca, $idtipopagamento, $cidade);
@@ -34,4 +51,5 @@
     $Conteudo = str_replace("<%BUSCADATAFIM%>", $dataFim, $Conteudo);
     $Conteudo = str_replace("<%BUSCAMARCA%>", $marca, $Conteudo);
     $Conteudo = str_replace("<%BOTAOLIMPARFILTRO%>", $botao_limpar, $Conteudo);
+    $Conteudo = str_replace("<%BOTAOIMPRIMIR%>", $botao_imprimir, $Conteudo);
 ?>
