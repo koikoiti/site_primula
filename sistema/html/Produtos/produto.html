@@ -43,7 +43,7 @@
         <div class="form-group" style="width: 33.33%; float: left">
             <label class="col-sm-3 control-label form-margin">*Status</label>
             <div class="col-sm-6">
-                <select id="campo_status" onchange="calculaValorApp()" required class="form-control" name="campo_status">
+                <select id="campo_status" onchange="calculaValorApp()" class="form-control" name="campo_status">
                 	<option value=''>Selecione um Status</option>
                 	<option <%SELECTEDHC%> value="Home Care">Home Care</option>
                 	<option <%SELECTEDP%> value="Profissional">Profissional</option>
@@ -54,7 +54,7 @@
         <div class="form-group" style="width: 33.33%; float: left">
             <label class="col-sm-3 control-label form-margin">*Marca</label>
             <div class="col-sm-6">
-                <input id="marca" onblur="calculaValorApp();" required type="text" class="form-control" name="marca" value="<%MARCA%>">
+                <input id="marca" onblur="verificaMarca()" required type="text" class="form-control" name="marca" value="<%MARCA%>">
             </div>
         </div>
         
@@ -253,6 +253,18 @@ $(function(){
 		}
 	});
 });
+
+function verificaMarca(){
+	var marca = $("#marca").val().trim();
+	
+	if(marca.toLowerCase() == "bioage"){
+		$("#campo_status").attr("required", "required");
+	}else{
+		$("#campo_status").removeAttr("required");
+	}
+	
+	calculaValorApp();
+}
 
 function calculaValorApp(){
 	var marca = $("#marca").val().trim();
