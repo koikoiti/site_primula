@@ -2,6 +2,8 @@
     $titulo = "Novo Produto";
     $require_foto = 'required';
     $hidden = "";
+    $selected_hc = '';
+    $selected_p = '';
     
 	#include das funcoes da tela inico
 	include('functions/banco-produto.php');
@@ -32,6 +34,14 @@
         $descricao = utf8_encode($rsProduto['descricao']);
         $informacoes = utf8_encode($rsProduto['informacoes']);
         $estoque = $rsProduto['estoque'];
+        switch($rsProduto['campo_status']){
+            case "Home Care":
+                $selected_hc = "selected";
+                break;
+            case "Profissional":
+                $selected_p = "selected";
+                break;
+        }
         
         #Imagens
         $imagens = $banco->MontaImagens($idproduto);
@@ -78,6 +88,7 @@
         $marca = utf8_decode(strip_tags(trim(addslashes($_POST["marca"]))));
         $idcategoria = strip_tags(trim(addslashes($_POST["categoria"])));
         $estoque = strip_tags(trim(addslashes($_POST["estoque"])));
+        $campo_status = strip_tags(trim(addslashes($_POST["campo_status"])));
         #Valor Unitário
         $valor_unitario = strip_tags(trim(addslashes($_POST["valor_unitario"])));
         $valor_unitario = str_replace('.', '', $valor_unitario);
@@ -136,7 +147,7 @@
     				}
     			}
     		}
-            $banco->AtualizaProduto($idproduto, $cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $auxImagens, $ncm);
+            $banco->AtualizaProduto($idproduto, $cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $auxImagens, $ncm, $campo_status);
             $banco->RedirecionaPara('lista-produto');
         }else{
             #Pega as imagens e arruma num array
@@ -174,7 +185,7 @@
                 $msg = "Produto com esse código já cadastrado!";
             }else{
                 #Insert
-                $banco->InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $auxImagens, $ncm);
+                $banco->InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $auxImagens, $ncm, $campo_status);
                 $banco->RedirecionaPara('lista-produto');
             }
         }
@@ -184,14 +195,14 @@
     $select_categorias = utf8_encode($banco->SelectCategorias($idcategoria));
     
     if($_SESSION['idsetor'] == 1){
-        $campo_custo = '<div class="form-group">
+        $campo_custo = '<div class="form-group" style="width: 100%">
             <label class="col-sm-3 control-label form-margin">Custo</label>
             <div class="col-sm-6">
                 <input required type="text" class="form-control money" name="valor_unitario" value="'.$valor_unitario.'">
             </div>
         </div>';
     }
-    
+        
     #Imprime valores
 	$Conteudo = utf8_encode($banco->CarregaHtml('Produtos/produto'));
     $Conteudo = str_replace("<%TITULO%>", $titulo, $Conteudo);
@@ -208,6 +219,8 @@
     $Conteudo = str_replace("<%DESCRICAO%>", $descricao, $Conteudo);
     $Conteudo = str_replace("<%INFORMACOES%>", $informacoes, $Conteudo);
     $Conteudo = str_replace("<%CAMPOCUSTO%>", $campo_custo, $Conteudo);
+    $Conteudo = str_replace("<%SELECTEDHC%>", $selected_hc, $Conteudo);
+    $Conteudo = str_replace("<%SELECTEDP%>", $selected_p, $Conteudo);
     #Imagens
     $Conteudo = str_replace("<%IMAGENS%>", $imagens, $Conteudo);
     $Conteudo = str_replace("<%REQUIREFOTO%>", $require_foto, $Conteudo);

@@ -26,14 +26,14 @@
             </div>
         </div>
                 
-        <div class="form-group" style="width: 50%; float: left">
+        <div class="form-group" style="width: 33.33%; float: left">
             <label class="col-sm-3 control-label form-margin">*Nome do Produto</label>
             <div class="col-sm-6">
                 <input required type="text" class="form-control" name="nome" value="<%NOME%>">
             </div>
         </div>
         
-        <div class="form-group" style="width: 50%; float: left">
+        <div class="form-group" style="width: 33.33%; float: left">
             <label class="col-sm-3 control-label form-margin">NCM</label>
             <div class="col-sm-6">
                 <input required type="text" class="form-control" name="ncm" value="<%NCM%>">
@@ -41,9 +41,20 @@
         </div>
         
         <div class="form-group" style="width: 33.33%; float: left">
+            <label class="col-sm-3 control-label form-margin">*Status</label>
+            <div class="col-sm-6">
+                <select id="campo_status" onchange="calculaValorApp()" required class="form-control" name="campo_status">
+                	<option value=''>Selecione um Status</option>
+                	<option <%SELECTEDHC%> value="Home Care">Home Care</option>
+                	<option <%SELECTEDP%> value="Profissional">Profissional</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group" style="width: 33.33%; float: left">
             <label class="col-sm-3 control-label form-margin">*Marca</label>
             <div class="col-sm-6">
-                <input required type="text" class="form-control" name="marca" value="<%MARCA%>">
+                <input id="marca" onblur="calculaValorApp();" required type="text" class="form-control" name="marca" value="<%MARCA%>">
             </div>
         </div>
         
@@ -66,21 +77,21 @@
         <div class="form-group" style="width: 33.33%; float: left">
             <label class="col-sm-3 control-label form-margin">Valor Profissional</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control money" name="valor_profissional" value="<%VALORPROFISSIONAL%>">
+                <input id="valor_profissional" onblur="calculaValorApp();" type="text" class="form-control money" name="valor_profissional" value="<%VALORPROFISSIONAL%>">
             </div>
         </div>
         
         <div class="form-group" style="width: 33.33%; float: left">
             <label class="col-sm-3 control-label form-margin">Valor Consumidor</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control money" name="valor_consumidor" value="<%VALORCONSUMIDOR%>">
+                <input id="valor_consumidor" onblur="calculaValorApp();" type="text" class="form-control money" name="valor_consumidor" value="<%VALORCONSUMIDOR%>">
             </div>
         </div>
         
         <div class="form-group" style="width: 33.33%; float: left">
             <label class="col-sm-3 control-label form-margin">Valor App</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control money" name="valor_app" value="<%VALORAPP%>">
+                <input id="valor_app" readonly="readonly" type="text" class="form-control money" name="valor_app" value="<%VALORAPP%>">
             </div>
         </div>
 
@@ -242,6 +253,80 @@ $(function(){
 		}
 	});
 });
+
+function calculaValorApp(){
+	var marca = $("#marca").val().trim();
+	var status = $("#campo_status").val();
+	
+	if(marca.toLowerCase() == "bioage"){
+		switch(status){
+			case "Home Care":
+				var valorConsumidor = $("#valor_consumidor").val();
+				valorConsumidor = valorConsumidor.replace(".","");
+				valorConsumidor = valorConsumidor.replace(",",".");
+				var valorApp = parseFloat(valorConsumidor) + parseFloat(valorConsumidor) * 0.05;
+				if(isNaN(valorApp)){
+					$("#valor_app").val("0,00");
+				}else{
+					valorApp = converteFloatMoeda(valorApp.toFixed(2));
+					$("#valor_app").val(valorApp);
+				}
+				break;
+			case "Profissional":
+				$("#valor_app").val($("#valor_profissional").val());
+				break;
+		}
+	}else{
+		$("#valor_app").val("0,00");
+	}
+}
+
+/*   @brief Converte um valor em formato float para uma string em formato moeda
+@param valor(float) - o valor float
+@return valor(string) - o valor em moeda
+*/
+function converteFloatMoeda(valor){
+	var inteiro = null, decimal = null, c = null, j = null;
+	var aux = new Array();
+	valor = "" + valor;
+	c = valor.indexOf(".", 0);
+	//encontrou o ponto na string
+	if(c > 0){
+	   //separa as partes em inteiro e decimal
+	   inteiro = valor.substring(0, c);
+	   decimal = valor.substring(c + 1,valor.length);
+	}else{
+	   inteiro = valor;
+	}
+	
+	//pega a parte inteiro de 3 em 3 partes
+	for (j = inteiro.length, c = 0; j > 0; j-=3, c++){
+	   aux[c] = inteiro.substring(j-3, j);
+	}
+	
+	//percorre a string acrescentando os pontos
+	inteiro = "";
+	for(c = aux.length-1; c >= 0; c--){
+	   inteiro += aux[c] + '.';
+	}
+	//retirando o ultimo ponto e finalizando a parte inteiro
+	
+	inteiro = inteiro.substring(0, inteiro.length - 1);
+	
+	decimal = parseInt(decimal);
+	if(isNaN(decimal)){
+	   decimal = "00";
+	}else{
+	   decimal = "" + decimal;
+	   if(decimal.length === 1){
+	      decimal = decimal + "0";
+	   }
+	}
+	
+	valor = inteiro + "," + decimal;
+	return valor;
+
+}
 </script>
     <script type="text/javascript" src="<%URLPADRAO%>html/js/jasny.bootstrap/extend/js/jasny-bootstrap.min.js"></script>
     <script type="text/javascript" src="<%URLPADRAO%>html/js/bootstrap.daterangepicker/moment.min.js"></script>

@@ -52,9 +52,9 @@
             return utf8_encode($Produtos);
         }
         
-        function InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $files, $ncm){
-            $Sql = "INSERT INTO t_produtos (cod_barras, cod_fornecedor, nome, marca, idcategoria, valor_unitario, valor_profissional, valor_consumidor, valor_app, descricao, informacoes, estoque, data_cadastro, ncm) 
-                    VALUES ('$cod_barras', '$cod_fornecedor', '".ucwords($nome)."', '".ucwords($marca)."',  '$idcategoria', '$valor_unitario', '$valor_profissional', '$valor_consumidor', '$valor_app','".ucfirst($descricao)."', '".ucfirst($informacoes)."', '$estoque', '".date("Y-m-d")."', '$ncm')";
+        function InsereProduto($cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $files, $ncm, $campo_status){
+            $Sql = "INSERT INTO t_produtos (cod_barras, cod_fornecedor, nome, marca, idcategoria, valor_unitario, valor_profissional, valor_consumidor, valor_app, descricao, informacoes, estoque, data_cadastro, ncm, campo_status) 
+                    VALUES ('$cod_barras', '$cod_fornecedor', '".ucwords($nome)."', '".ucwords($marca)."',  '$idcategoria', '$valor_unitario', '$valor_profissional', '$valor_consumidor', '$valor_app','".ucfirst($descricao)."', '".ucfirst($informacoes)."', '$estoque', '".date("Y-m-d")."', '$ncm', '$campo_status')";
             if(parent::Execute($Sql)){
                 if($files){
                     $lastID = mysql_insert_id();
@@ -84,8 +84,8 @@
             }
         }
        
-       function AtualizaProduto($idproduto, $cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $files, $ncm){
-            $Sql = "UPDATE t_produtos SET cod_barras = '$cod_barras', cod_fornecedor = '$cod_fornecedor', nome = '".ucwords($nome)."', marca = '".ucwords($marca)."', idcategoria = '$idcategoria', valor_unitario = '$valor_unitario', valor_profissional = '$valor_profissional', valor_consumidor = '$valor_consumidor', valor_app = '$valor_app', descricao = '".ucfirst($descricao)."', informacoes = '".ucfirst($informacoes)."', estoque = '$estoque', ncm = '$ncm' WHERE idproduto = $idproduto";
+       function AtualizaProduto($idproduto, $cod_barras, $cod_fornecedor, $nome, $marca, $idcategoria, $estoque, $valor_unitario, $valor_profissional, $valor_consumidor, $valor_app, $descricao, $informacoes, $files, $ncm, $campo_status){
+            $Sql = "UPDATE t_produtos SET cod_barras = '$cod_barras', cod_fornecedor = '$cod_fornecedor', nome = '".ucwords($nome)."', marca = '".ucwords($marca)."', idcategoria = '$idcategoria', valor_unitario = '$valor_unitario', valor_profissional = '$valor_profissional', valor_consumidor = '$valor_consumidor', valor_app = '$valor_app', descricao = '".ucfirst($descricao)."', informacoes = '".ucfirst($informacoes)."', estoque = '$estoque', ncm = '$ncm', campo_status = '$campo_status' WHERE idproduto = $idproduto";
             if(parent::Execute($Sql)){
                 if($files){
                     $this->InsereFotosUpdate($idproduto, $files);
