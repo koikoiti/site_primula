@@ -1,15 +1,20 @@
 <div class="col-md-12">
     <div class="block-flat">
         <div class="header" style="overflow: hidden;">
-            <p>
-                <a href="<%URLPADRAO%>produto">Inserir Novo</a>
-            </p>
+            <div style="width: 100%; float: left;">
+                <div style="width: 30%; float: left;">
+                	<a href="<%URLPADRAO%>venda">Inserir Novo</a>
+                </div>
+                <div style="width: 70%; float: left;">
+                	<input style="float: left; width: 30%;" id="produto" name="produto" type="text" class="form-control" value="<%PRODUTO%>" placeholder="Produto"/>
+	                <input style="float: left; width: 15%;" id="marca" name="marca" type="text" class="form-control" value="<%MARCA%>" placeholder="Marca"/>
+	                <button style="float: left;" onclick="pesquisar()" type="button" class="btn btn-success btn-flat"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
             <h3 style="width: 30%; float: left;">Lista de Produtos</h3>
             <div style="float: right; width: 70%;">
-                <input style="float: left; width: 30%;" id="produto" name="produto" type="text" class="form-control" value="<%PRODUTO%>" placeholder="Produto"/>
-                <input style="float: left; width: 15%;" id="marca" name="marca" type="text" class="form-control" value="<%MARCA%>" placeholder="Marca"/>
                 <%BUSCACATEGORIA%>
-                <button style="float: left;" onclick="pesquisar()" type="button" class="btn btn-success btn-flat">Pesquisar</button>
+                <%BUSCASTATUS%>
             </div>
         </div>
         <div class="content">
@@ -56,9 +61,9 @@ function inativar(idproduto, nome){
         var produto = $("#produto").val();
         var categoria = $("#categoria").val();
         var marca = $("#marca").val();
-        var modelo = $("#modelo").val();
+        var status = $("#status").val();
         
-        location.href = "<%URLPADRAO%>lista-produto/?produto=" + produto + "&categoria=" + categoria + "&marca=" + marca + "&modelo=" + modelo;
+        location.href = "<%URLPADRAO%>lista-produto/?produto=" + produto + "&categoria=" + categoria + "&marca=" + marca + "&status=" + status;
     }
 </script>
 <style>

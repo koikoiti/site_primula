@@ -1,7 +1,7 @@
 <?php
     class bancoproduto extends banco{
         
-        function ListaProdutos($produto, $idcategoria, $marca, $modelo, $pagina){
+        function ListaProdutos($produto, $idcategoria, $marca, $modelo, $pagina, $status){
             $Auxilio = parent::CarregaHtml("Produtos/itens/lista-produto-itens");
             $inicio = ($pagina * Limite) - Limite;
             $Sql = "SELECT P.*, C.nome AS categoria FROM t_produtos P 
@@ -19,6 +19,9 @@
             }
             if($modelo != ''){
                 $Sql .= " AND P.modelo LIKE '%".utf8_decode(modelo)."%'";
+            }
+            if($status){
+                $Sql .= " AND P.campo_status = '$status'";
             }
             $Sql .= "  ORDER BY P.nome ASC LIMIT $inicio, ".Limite;
             $result = parent::Execute($Sql);
@@ -46,7 +49,7 @@
                 }
             }else{
                 $Produtos = '<tr class="odd gradeX">
-                               <td colspan="6">Não foram encontrados produtos cadastrados.</td>
+                               <td colspan="9">Não foram encontrados produtos cadastrados.</td>
                            <tr>';
             }
             return utf8_encode($Produtos);
@@ -156,11 +159,11 @@
        }
        
         #Monta paginacao
-        function MontaPaginacao($produto, $idcategoria, $marca, $modelo, $pagina){
-            $totalPaginas = $this->TotalPaginas($produto, $idcategoria, $marca, $modelo, $pagina);
+        function MontaPaginacao($produto, $idcategoria, $marca, $modelo, $pagina, $status){
+            $totalPaginas = $this->TotalPaginas($produto, $idcategoria, $marca, $modelo, $pagina, $status);
             $pag = '';
-            if($produto || $idcategoria || $marca || $modelo){
-                $url = "idcategoria=$idcategoria&produto=$produto&marca=$marca&modelo=$modelo";
+            if($produto || $idcategoria || $marca || $modelo || $status){
+                $url = "idcategoria=$idcategoria&produto=$produto&marca=$marca&status=$status";
             }
             $url .= "&page=";
             if($totalPaginas > 1){
@@ -231,7 +234,7 @@
         }
         
         #Total de paginas
-        function TotalPaginas($produto, $idcategoria, $marca, $modelo, $pagina){
+        function TotalPaginas($produto, $idcategoria, $marca, $modelo, $pagina, $status){
             $Sql = "SELECT P.*, C.nome AS categoria FROM t_produtos P
                     INNER JOIN fixo_categorias_produto C ON C.idcategoria = P.idcategoria 
                     WHERE 1
@@ -247,6 +250,9 @@
             }
             if($modelo != ''){
                 $Sql .= " AND P.modelo LIKE '%".utf8_decode(modelo)."%'";
+            }
+            if($status){
+                $Sql .= " AND P.campo_status = '$status'";
             }
             $result = parent::Execute($Sql);
 			$num_rows = parent::Linha($result);
@@ -376,6 +382,25 @@
             $mpdf->SetFooter(' ');
             $mpdf->Output();
             exit;
+        }
+        
+        #Monta Status
+        function MontaSelectStatus($status){
+            $select_status = "<select id='status' style='float: left; width: 15%;' class='form-control' name='status'>";
+            $select_status .= "<option selected value=''>Selecione um Status!</option>";
+            if($status == 'Home Care'){
+                $select_status .= "<option selected value='Home Care'>Home Care</option>";
+            }else{
+                $select_status .= "<option value='Home Care'>Home Care</option>";
+            }
+            
+            if($status == 'Profissional'){
+                $select_status .= "<option selected value='Profissional'>Profissional</option>";
+            }else{
+                $select_status .= "<option value='Profissional'>Profissional</option>";
+            }
+            $select_status .= "</select>";
+            return utf8_encode($select_status);
         }
     }
 ?>
