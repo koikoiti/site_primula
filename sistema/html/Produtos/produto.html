@@ -280,7 +280,7 @@ function calculaValorApp(){
 				if(isNaN(valorApp)){
 					$("#valor_app").val("0,00");
 				}else{
-					valorApp = converteFloatMoeda(valorApp.toFixed(2));
+					valorApp = converteFloatMoeda(valorApp.toFixed(1)+0);
 					$("#valor_app").val(valorApp);
 				}
 				break;
