@@ -35,9 +35,8 @@
                     $Linha = str_replace("<%MODELO%>", $rs['modelo'], $Linha);
                     $Linha = str_replace("<%CATEGORIA%>", $rs['categoria'], $Linha);
                     $Linha = str_replace("<%ESTOQUE%>", $rs['estoque'], $Linha);
-                    $Linha = str_replace("<%VALORCONSUMIDOR%>", "R$ " . number_format($rs['valor_consumidor'], 2, ',', '.'), $Linha);
-                    $Linha = str_replace("<%VP%>", "VP" . str_replace(".", "-", $rs['valor_profissional']), $Linha);
-                    $Linha = str_replace("<%VA%>", "VA" . str_replace(".", "-", $rs['valor_app']), $Linha);
+                    $Linha = str_replace("<%VALORCONSUMIDOR%>", number_format($rs['valor_consumidor'], 2, ',', '.'), $Linha);
+                    $Linha = str_replace("<%VP%>", str_replace(".", "-", $rs['valor_profissional']), $Linha);
                     if($rs['ativo'] == 1){
                         $Linha = str_replace("<%ATIVOINATIVO%>", 'Ativo', $Linha);
                         $Linha = str_replace("<%BOTAOAI%>", '<a href="javascript:void(0)" onclick="inativar('.$rs['idproduto'].', \''.$rs['nome'].'\')">Inativar</a>', $Linha);
