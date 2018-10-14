@@ -206,7 +206,7 @@
         #Lista Kits
         function ListaKits(){
             $Auxilio = parent::CarregaHtml('Produtos/itens/lista-kit-itens');
-            $Sql = "SELECT * FROM t_kit";
+            $Sql = "SELECT * FROM t_kit ORDER BY nome";
             $result = parent::Execute($Sql);
             $linha = parent::Linha($result);
             if($linha){
@@ -216,7 +216,8 @@
                     $Linha = str_replace('<%MARCA%>', $rs['marca'], $Linha);
                     $Linha = str_replace('<%ID%>', $rs['idkit'], $Linha);
                     $Linha = str_replace('<%CODIGO%>', $rs['codigo'], $Linha);
-                    $Linha = str_replace('<%VALOR%>', number_format($rs['valor_unitario'], 2, ',', '.'), $Linha);
+                    $Linha = str_replace('<%VP%>', number_format($rs['valor_profissional'], 2, ',', '.'), $Linha);
+                    $Linha = str_replace('<%VALORCONSUMIDOR%>', number_format($rs['valor_consumidor'], 2, ',', '.'), $Linha);
                     $produtos = '';
                     $SqlProdutos = "SELECT P.*, K.* FROM t_kit_produtos K 
                                     INNER JOIN t_produtos P ON P.idproduto = K.idproduto 
