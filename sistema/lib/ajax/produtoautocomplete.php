@@ -7,11 +7,28 @@
     
     $term = $_GET[ "term" ];
     $idtipoprofissional = $_GET['idtipoprofissional'];
+    $tipovenda = $_GET['tipovenda'];
     
-    $SqlTipo = "SELECT valor FROM t_valor_profissional WHERE idtipoprofissional = $idtipoprofissional";
-    $resultTipo = $banco->Execute($SqlTipo);
-    $rsValor = $banco->ArrayData($resultTipo);
-    
+    #1-Loja, 2-Franquia(site), 3-Derma(App)
+    switch($tipovenda){
+        case 1:
+            $SqlTipo = "SELECT valor FROM t_valor_profissional WHERE idtipoprofissional = $idtipoprofissional";
+            $resultTipo = $banco->Execute($SqlTipo);
+            $rsValor = $banco->ArrayData($resultTipo);
+            $valor = $rsValor['valor'];
+            break;
+        case 2:
+            if($idtipoprofissional == 1){
+                $valor = "valor_app";
+            }else{
+                $valor = "valor_profissional";
+            }
+            break;
+        case 3:
+            $valor = "valor_app";
+            break;
+    }
+   
     $Sql = 'SELECT * FROM t_produtos WHERE (nome LIKE "%'.$term.'%" OR cod_barras LIKE "%'.$term.'%" OR marca LIKE "%'.$term.'%") AND ativo = 1 ORDER BY nome';
     $result = $banco->Execute($Sql);
     
@@ -23,10 +40,15 @@
                          'value' => 'Produto: '.utf8_encode($rs['nome']),
                          'idproduto' => 'prod_'.$rs['idproduto'],
                          'caminho' => UrlFoto.$rsImagem['caminho'],
-                         'valor' => number_format(floatval($rs[$rsValor['valor']]), 2, ',', '.'),
-        				 'valor_real' => floatval($rs[$rsValor['valor']]),
+                         'valor' => number_format(floatval($rs[$valor]), 2, ',', '.'),
+        				 'valor_real' => floatval($rs[$valor]),
                     );
     }
+    
+    $SqlTipo = "SELECT valor FROM t_valor_profissional WHERE idtipoprofissional = $idtipoprofissional";
+    $resultTipo = $banco->Execute($SqlTipo);
+    $rsValor = $banco->ArrayData($resultTipo);
+    $valor = $rsValor['valor'];
     
     $SqlKit = 'SELECT * FROM t_kit WHERE (nome LIKE "%'.$term.'%" OR codigo LIKE "%'.$term.'%") AND ativo = 1 ORDER BY nome';
     $resultKit = $banco->Execute($SqlKit);
@@ -39,8 +61,8 @@
                          'value' => 'Kit: '.utf8_encode($rsKit['nome']),
                          'idproduto' => 'kit_'.$rsKit['idkit'],
                          'caminho' => UrlFoto.$rsImagemKit['caminho'],
-                         'valor' => number_format(floatval($rsKit[$rsValor['valor']]), 2, ',', '.'),
-        				 'valor_real' => floatval($rsKit[$rsValor['valor']]),
+                         'valor' => number_format(floatval($rsKit[$valor]), 2, ',', '.'),
+        				 'valor_real' => floatval($rsKit[$valor]),
                     );
     }
     

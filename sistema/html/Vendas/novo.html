@@ -283,6 +283,7 @@ $(function() {
 });
 
 function mais(){
+	var tipovenda = $('#tipovenda').val();
     var idcliente = $('#hid_cliente').val();
     var idtipoprofissional = $('#hid_tipoprofissional').val();
     var idpreco;
@@ -304,7 +305,7 @@ function mais(){
             
             $("#produtonovo"+novo).autocomplete({
                 source: function(request, response) {
-                            $.getJSON("<%URLPADRAO%>lib/ajax/produtoautocomplete.php", {term: request.term, idtipoprofissional: idtipoprofissional}, 
+                            $.getJSON("<%URLPADRAO%>lib/ajax/produtoautocomplete.php", {term: request.term, idtipoprofissional: idtipoprofissional, tipovenda: tipovenda}, 
                         response);
                         },
                 minLength: 2,

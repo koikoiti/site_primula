@@ -10,11 +10,12 @@
 	#Instancia o objeto
 	$banco = new bancovenda();
 	if($this->PaginaAux[0] == 'editar'){
+	    $flagEditar = "readonly='readonly' style='pointer-events: none; touch-action: none;' tabindex='-1'";
 		$idvenda = $this->PaginaAux[1];
 		$rsVenda = $banco->BuscaVendaPorId($idvenda);
 		$AUX_cliente = $banco->BuscaCliente($rsVenda['idcliente']);
 		$desconto_subtotal = $rsVenda['desconto_subtotal'];
-		$AUXProdutos = $banco->MontaProdutosEditar($idvenda, $AUX_cliente['idtipoprofissional']);
+		$AUXProdutos = $banco->MontaProdutosEditar($idvenda, $AUX_cliente['idtipoprofissional'], $rsVenda['idtipovenda']);
 		$Produtos = $AUXProdutos["HTML"];
 		
 		$contProdutos = $AUXProdutos['cont'];
@@ -81,7 +82,7 @@
     }
     
     $select_tipo_frete = $banco->SelectTipoFrete($rsVenda['idtipofrete']);
-    $select_tipo_venda = $banco->SelectTipoVenda($rsVenda['idtipovenda']);
+    $select_tipo_venda = $banco->SelectTipoVenda($rsVenda['idtipovenda'], $flagEditar);
     
     #Imprime valores
 	$Conteudo = utf8_encode($banco->CarregaHtml('Vendas/novo'));
