@@ -37,5 +37,22 @@
 			}
 			#echo $cont;
 		}
+		
+		function ArrumaValorApp(){
+		    $cont = 0;
+		    $Sql = "SELECT valor_app FROM t_produtos WHERE marca = 'Bioage'";
+		    $result = parent::Execute($Sql);
+		    while($rs = parent::ArrayData($result)){
+		        if($rs['valor_app'] != '0.00'){
+                    echo "<br/>OLD = " . $rs['valor_app'] . "  //  NEW = ";
+                    $newValorApp = number_format(round($rs['valor_app'], 1),1);
+                    $newValorApp = $newValorApp . "0";
+                    echo $newValorApp;
+                    $cont++;
+		        }		            
+		    }
+		    
+		    echo "<br><br>$cont";
+		}
 	}
 ?>
