@@ -60,7 +60,7 @@
         }
         
         #Lista Vendas
-        function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim, $busca_responsavel, $busca_pagamento){
+        function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim, $busca_responsavel, $busca_pagamento, $busca_procedencia){
             $quantidade_vendas = 0;
             $total_vendas = 0;
             $Auxilio = parent::CarregaHtml('Vendas/itens/lista-venda-itens');
@@ -89,6 +89,9 @@
             }
             if($busca_pagamento){
                 $Sql .= " AND P.idformapagamento = $busca_pagamento";
+            }
+            if($busca_procedencia){
+                $Sql .= " AND V.idtipovenda = $busca_procedencia";
             }
             $result = parent::Execute($Sql);
             $linha = parent::Linha($result);
@@ -129,6 +132,10 @@
                             $Pagamentos .= "<small>" . date("d/m/Y", strtotime($rsPagamentos['data'])) . " - {$rsPagamentos['forma_pagamento']} - R$ " . number_format($rsPagamentos['valor'], 2, ",", ".") . "</small><br>";
                         }
                     }
+                    $SqlTipoVenda = "SELECT tipo FROM fixo_tipo_venda WHERE idtipovenda = " . $rs['idtipovenda'];
+                    $resultTipoVenda = parent::Execute($SqlTipoVenda);
+                    $rsTipoVenda = parent::ArrayData($resultTipoVenda);
+                    $Linha = str_replace('<%TIPO%>', $rsTipoVenda['tipo'], $Linha);
                     $Linha = str_replace('<%PAGAMENTOS%>', $Pagamentos, $Linha);
                     $Linha = str_replace('<%VENDAORCAMENTO%>', $auxVO, $Linha);
                     $Linha = str_replace('<%EDITAR%>', $editar, $Linha);
@@ -604,6 +611,28 @@
                 }
                 $select_pagamentos .= "</select>";
                 return utf8_encode($select_pagamentos);
+            }else{
+                return false;
+            }
+        }
+        
+        #Monta procedencia select
+        function MontaProcedencia($idtipovenda){
+            $Sql = "SELECT * FROM fixo_tipo_venda ORDER BY tipo ASC";
+            $result = parent::Execute($Sql);
+            $select_procedencia = "<select id='busca_procedencia' style='float: left; width: 20%;' class='form-control' name='busca_procedencia'>";
+            $select_procedencia .= "<option selected value=''>Procedência</option>";
+            $result = parent::Execute($Sql);
+            if($result){
+                while($rs = parent::ArrayData($result)){
+                    if($rs['idtipovenda'] == $idtipovenda){
+                        $select_procedencia .= "<option selected value='".$rs['idtipovenda']."'>".$rs['tipo']."</option>";
+                    }else{
+                        $select_procedencia .= "<option value='".$rs['idtipovenda']."'>".$rs['tipo']."</option>";
+                    }
+                }
+                $select_procedencia .= "</select>";
+                return utf8_encode($select_procedencia);
             }else{
                 return false;
             }
