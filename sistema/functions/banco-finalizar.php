@@ -24,10 +24,28 @@
             $resultCliente = parent::Execute($SqlCliente);
             $rsCliente = parent::ArrayData($resultCliente);
             $endereco = $rsCliente['endereco'] . ', ' . $rsCliente['numero'] . ' - ' . $rsCliente['bairro'] . ' - ' . $rsCliente['cidade'] . '/' . $rsCliente['estado'];
-            if($rsCliente['idtipoprofissional'] == 1){
-            	$valor_produto_cliente = 'valor_consumidor';
-            }else{
-            	$valor_produto_cliente = 'valor_profissional';
+            
+            $tipovenda = $rs['idtipovenda'];
+            $idtipoprofissional = $rsCliente['idtipoprofissional'];
+            #1-Loja, 2-Franquia(site), 3-Derma(App)
+            switch($tipovenda){
+                case 1:
+                    if($idtipoprofissional == 1){
+                        $valor_produto_cliente = 'valor_consumidor';
+                    }else{
+                        $valor_produto_cliente = 'valor_profissional';
+                    }
+                    break;
+                case 2:
+                    if($idtipoprofissional == 1){
+                        $valor_produto_cliente = "valor_app";
+                    }else{
+                        $valor_produto_cliente = "valor_profissional";
+                    }
+                    break;
+                case 3:
+                    $valor_produto_cliente = "valor_app";
+                    break;
             }
             
             #Produtos
@@ -258,10 +276,28 @@
         	$resultCliente = parent::Execute($SqlCliente);
         	$rsCliente = parent::ArrayData($resultCliente);
         	$endereco = $rsCliente['endereco'] . ', ' . $rsCliente['numero'] . "\n" . $rsCliente['bairro'] . "\n" . $rsCliente['cidade'] . '/' . $rsCliente['estado'];
-        	if($rsCliente['idtipoprofissional'] == 1){
-        		$valor_produto_cliente = 'valor_consumidor';
-        	}else{
-        		$valor_produto_cliente = 'valor_profissional';
+        	
+        	$tipovenda = $rs['idtipovenda'];
+        	$idtipoprofissional = $rsCliente['idtipoprofissional'];
+        	#1-Loja, 2-Franquia(site), 3-Derma(App)
+        	switch($tipovenda){
+        	    case 1:
+        	        if($idtipoprofissional == 1){
+        	            $valor_produto_cliente = 'valor_consumidor';
+        	        }else{
+        	            $valor_produto_cliente = 'valor_profissional';
+        	        }
+        	        break;
+        	    case 2:
+        	        if($idtipoprofissional == 1){
+        	            $valor_produto_cliente = "valor_app";
+        	        }else{
+        	            $valor_produto_cliente = "valor_profissional";
+        	        }
+        	        break;
+        	    case 3:
+        	        $valor_produto_cliente = "valor_app";
+        	        break;
         	}
         	
         	#Produtos
