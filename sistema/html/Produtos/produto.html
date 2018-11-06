@@ -326,6 +326,11 @@ function converteFloatMoeda(valor){
 	inteiro = inteiro.substring(0, inteiro.length - 1);
 	
 	decimal = parseInt(decimal);
+	if(decimal > 1){
+		inteiro++;
+	}
+	
+	/*
 	if(isNaN(decimal)){
 	   decimal = "00";
 	}else{
@@ -334,8 +339,9 @@ function converteFloatMoeda(valor){
 	      decimal = decimal + "0";
 	   }
 	}
+	*/
 	
-	valor = inteiro + "," + decimal;
+	valor = inteiro + ",00";
 	return valor;
 
 }
