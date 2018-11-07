@@ -29,7 +29,7 @@
         $valor_consumidor = $rsKit['valor_consumidor'];
         $descricao = utf8_encode($rsKit['descricao']);
         $informacoes = utf8_encode($rsKit['informacoes']);
-        $estoque = $rsKit['estoque'];
+        $estoque = $banco->CalculaEstoqueKit($idkit);
         
         #Imagens
         $imagens = $banco->MontaImagens($idkit);

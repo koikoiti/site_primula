@@ -25,7 +25,7 @@
             $Auxilio = str_replace('<%NOME%>', utf8_encode($rs['nome']), $Auxilio);
             $Auxilio = str_replace('<%VALORPROFISSIONAL%>', 'R$ ' . number_format($rs['valor_profissional'], 2, ',', '.'), $Auxilio);
             $Auxilio = str_replace('<%VALORCONSUMIDOR%>', 'R$ ' . number_format($rs['valor_consumidor'], 2, ',', '.'), $Auxilio);
-            $Auxilio = str_replace('<%ESTOQUE%>', $rs['estoque'] . ' UN', $Auxilio);
+            $Auxilio = str_replace('<%ESTOQUE%>', $this->CalculaEstoqueKit($idkit) . ' UN', $Auxilio);
             $Auxilio = str_replace('<%DESCRICAO%>', utf8_encode($rs['descricao']), $Auxilio);
             $Auxilio = str_replace('<%INFORMACOES%>', utf8_encode($rs['informacoes']), $Auxilio);
             
@@ -264,5 +264,42 @@
             }*/
             parent::RedirecionaPara('monta-kit/editar/'.$idkit);
         }
+        
+        #Calcula Estoque Kit
+        function CalculaEstoqueKit($idkit){
+            $cont = 1;
+            $estoqueKit = 0;
+            $goOn = true;
+            $Sql = "SELECT * FROM t_kit_produtos WHERE idkit = $idkit";
+            $result = parent::Execute($Sql);
+            $linha = parent::Linha($result);
+            while($rs = parent::ArrayData($result)){
+                $ArrProd[$cont]['idproduto'] = $rs['idproduto'];
+                $ArrProd[$cont]['quantidade'] = $rs['quantidade'];
+                $cont++;
+            }
+            
+            for($i = 1; $i < $cont; $i++){
+                $SqlProduto = "SELECT estoque FROM t_produtos WHERE idproduto = " . $ArrProd[$i]['idproduto'];
+                $resultProduto = parent::Execute($SqlProduto);
+                $rsProduto = parent::ArrayData($resultProduto);
+                $ArrEstoque[$i]['estoque'] = $rsProduto['estoque'];
+            }
+            
+            do{
+                for($i = 1; $i < $cont; $i++){
+                    if($ArrEstoque[$i]['estoque'] >= $ArrProd[$i]['quantidade']){
+                        $ArrEstoque[$i]['estoque'] = $ArrEstoque[$i]['estoque'] - 1;
+                    }else{
+                        $goOn = false;
+                        break 2;
+                    }
+                }
+                $estoqueKit++;
+            }while($goOn == true);
+            
+            return $estoqueKit;
+        }
+        
     }
 ?>

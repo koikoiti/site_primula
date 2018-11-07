@@ -1,7 +1,10 @@
 <?php
 	include('../../functions/banco.php');
+	include('../../functions/banco-kit.php');
 	include('../../conf/tags.php');
 	$banco = new banco;
+	$bancoKit = new bancokit();
+	
 	$banco->Conecta();
 	session_start('login');
     
@@ -57,7 +60,7 @@
         $SqlImagemKit = "SELECT caminho FROM t_imagens_kit WHERE ordem = 1 AND idkit = {$rsKit['idkit']}";
         $resultImagemKit = $banco->Execute($SqlImagemKit);
         $rsImagemKit = $banco->ArrayData($resultImagemKit);
-        $array[] = array('label' => 'Kit: '.utf8_encode($rsKit['nome'] . ' - Estoque: ' . $rsKit['estoque'] . ' UN'),
+        $array[] = array('label' => 'Kit: '.utf8_encode($rsKit['nome'] . ' - Estoque: ' . $bancoKit->CalculaEstoqueKit($rsKit['idkit']) . ' UN'),
                          'value' => 'Kit: '.utf8_encode($rsKit['nome']),
                          'idproduto' => 'kit_'.$rsKit['idkit'],
                          'caminho' => UrlFoto.$rsImagemKit['caminho'],
