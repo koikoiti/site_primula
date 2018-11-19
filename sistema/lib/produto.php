@@ -12,6 +12,12 @@
 
 	#Instancia o objeto
 	$banco = new bancoproduto();
+	
+	if($this->PaginaAux[0] == 'visualizar'){
+	    $idproduto = $this->PaginaAux[1];
+	    $banco->VisualizaFichaProduto($idproduto);
+	}
+	
     if($_SESSION['idsetor'] == 1 || $_SESSION['idusuario'] == 33){
         if($this->PaginaAux[0] == 'editar'){
             $require_foto = '';
@@ -63,9 +69,6 @@
             	$botao_ocultar = '<button onclick="ocultarNoSite(\''.$idproduto.'\', 0)" style="box-shadow: none;background-color: #784d9e;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="button" class="btn btn-success btn-flat">Mostrar no Site</button>';
             }
             
-        }elseif($this->PaginaAux[0] == 'visualizar'){
-            $idproduto = $this->PaginaAux[1];
-            $banco->VisualizaFichaProduto($idproduto);
         }elseif($this->PaginaAux[0] == 'ativar'){
             $idproduto = $this->PaginaAux[1];
             $banco->Ativar($idproduto);
