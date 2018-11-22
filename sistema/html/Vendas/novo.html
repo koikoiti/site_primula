@@ -120,7 +120,7 @@
 				<span id="msgCheckout"></span>
 			</div>
 	    	<div class="col-sm-6 form-margin">
-	        	<button id="checkoutt" onclick="checkout();" style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
+	        	<button id="checkoutt" onclick="return checkout();" style="box-shadow: none;background-color: #19b698;border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
 	            	<i class="fa fa-check"></i> Checkout
 	            </button>
 	            <button style="box-shadow: none;background-color: rgb(156, 98, 218);border-color: transparent;border-color: #CCCCCC;border-radius: 0;-webkit-border-radius: 0;outline: none;margin-bottom: 5px;margin-left: 3px;font-size: 13px;padding: 7px 11px;" type="submit" class="btn btn-success btn-flat">
@@ -452,7 +452,7 @@ function checkout(){
     //$('form').attr('action', 'pre-checkout');
     if(!$.trim($('#pagamentos').html()).length){
     	alert("Para realizar o checkout, por favor, informe o pagamento.");
-    	return true;
+    	return false;
     }else{
 		$("#acao").val('finaliza');
     }
