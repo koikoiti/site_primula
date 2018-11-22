@@ -705,6 +705,7 @@
             $linha = parent::Linha($result);
             if($linha){
                 while($rs = parent::ArrayData($result)){
+                    $cnpjcpf = "";
                     $Linha = $Auxilio;
                     $Linha = str_replace('<%ID%>', $rs['idcliente'], $Linha);
                     $Linha = str_replace('<%NOME%>', $rs['nome'], $Linha);
