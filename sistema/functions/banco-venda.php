@@ -63,6 +63,8 @@
         function ListaVendas($busca_nome, $busca_cnpj, $busca_cpf, $busca_venda, $busca_dataIni, $busca_dataFim, $busca_responsavel, $busca_pagamento, $busca_procedencia){
             $quantidade_vendas = 0;
             $total_vendas = 0;
+            $quantidade_orcamentos = 0;
+            $total_orcamentos = 0;
             $Auxilio = parent::CarregaHtml('Vendas/itens/lista-venda-itens');
             $Sql = "SELECT DISTINCT V.*, C.* FROM t_vendas V 
                     INNER JOIN t_clientes C ON V.idcliente = C.idcliente 
@@ -108,6 +110,8 @@
                     $Linha = str_replace('<%VALOR%>', 'R$ '.number_format($rs['valor_venda'], 2, ',', '.'), $Linha);
                     $Linha = str_replace('<%VENDIDOPOR%>', parent::BuscaUsuarioPorId($rs['idusuario']), $Linha);
                     if($rs['orcamento'] == 1){
+                        $quantidade_orcamentos++;
+                        $total_orcamentos += $rs['valor_venda'];
                         $auxVO = 'Orçamento';
                         $editar = '<a href="<%URLPADRAO%>venda/editar/'.$rs['idvenda'].'">Editar</a>
                         			<a href="<%URLPADRAO%>venda/excluir/'.$rs['idvenda'].'">Excluir</a>';
@@ -150,6 +154,8 @@
                 $LinhaTotal = parent::CarregaHtml('Vendas/itens/lista-venda-ultima');
                 $LinhaTotal = str_replace("<%QUANTIDADEVENDAS%>", $quantidade_vendas, $LinhaTotal);
                 $LinhaTotal = str_replace("<%TOTALVENDAS%>", "R$ ".number_format($total_vendas, 2, ',', '.'), $LinhaTotal);
+                $LinhaTotal = str_replace("<%QUANTIDADEORCAMENTOS%>", $quantidade_orcamentos, $LinhaTotal);
+                $LinhaTotal = str_replace("<%TOTALORCAMENTOS%>", "R$ ".number_format($total_orcamentos, 2, ',', '.'), $LinhaTotal);
                 $Vendas .= $LinhaTotal;
             }
             return utf8_encode($Vendas);
