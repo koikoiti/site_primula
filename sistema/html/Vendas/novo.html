@@ -287,7 +287,9 @@ function mais(){
     var idcliente = $('#hid_cliente').val();
     var idtipoprofissional = $('#hid_tipoprofissional').val();
     var idpreco;
-    if(idcliente == ''){
+    if(tipovenda == ''){
+    	alert("Selecione a procedência da venda!");
+    }else if(idcliente == ''){
         alert("Selecione um cliente!");
     }else{
         var verifica = document.getElementById('produtonovo'+(novo-1));
