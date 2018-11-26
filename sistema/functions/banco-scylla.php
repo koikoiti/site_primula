@@ -39,23 +39,19 @@
 		}
 		
 		function ArrumaValorApp(){
-		    $cont = 0;
-		    $Sql = "SELECT idproduto, valor_app FROM t_produtos WHERE marca = 'Bioage'";
+		    $Sql = "SELECT idproduto, valor_app, campo_status, valor_profissional, valor_consumidor FROM t_produtos WHERE marca = 'Bioage'";
 		    $result = parent::Execute($Sql);
 		    while($rs = parent::ArrayData($result)){
-		        if($rs['valor_app'] != '0.00'){
-		            echo "<br/>{$rs['idproduto']} OLD = " . $rs['valor_app'] . "  //  NEW = ";
-                    $newValorApp = number_format(round($rs['valor_app'], 1),1);
-                    $newValorApp = $newValorApp . "0";
-                    echo $newValorApp;
-                    $cont++;
-                    
-                    $SqlUpdate = "UPDATE t_produtos SET valor_app = '$newValorApp' WHERE idproduto = {$rs['idproduto']}";
-                    $resultUpdate = parent::Execute($SqlUpdate);
-		        }		            
+		        if($rs['campo_status'] == "Profissional"){
+		            $newValorApp = $rs['valor_profissional'];
+		        }elseif($rs['campo_status'] == "Home Care"){
+		            $newValorApp = ceil($rs['valor_consumidor'] + $rs['valor_consumidor'] * 0.05);
+		        }
+		        
+		        $SqlUpdate = "UPDATE t_produtos SET valor_app = '$newValorApp' WHERE idproduto = {$rs['idproduto']}";
+		        $resultUpdate = parent::Execute($SqlUpdate);
 		    }
-		    
-		    echo "<br><br>$cont";
+		    echo "Done;";
 		}
 	}
 ?>

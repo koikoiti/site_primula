@@ -12,7 +12,7 @@
 		case 'arrumaProdutosVendaKit':
 			#$banco->ArrumaVendasKit();
 		case 'arrumaValorApp':
-		    #$banco->ArrumaValorApp();
+		    $banco->ArrumaValorApp();
 		    break;
 		default:
 			#$banco->RedirecionaPara('inicio');
