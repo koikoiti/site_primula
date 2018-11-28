@@ -18,7 +18,7 @@
 				$whereNomeResp .= " AND usuario = '$responsavel'";
 			}
 			$Auxilio = utf8_encode(parent::CarregaHtml('itens/relatorio-interacoes-itens'));
-			$Sql = "SELECT * FROM t_clientes_historico H
+			$Sql = "SELECT *, MAX(data) AS max_data FROM t_clientes_historico H
 					INNER JOIN t_clientes C ON H.idcliente = C.idcliente 
 					WHERE 1 $where 
 					GROUP BY C.idcliente 
@@ -53,6 +53,7 @@
 					$resultOrcamentos = parent::Execute($SqlOrcamentos);
 					$rsOrcamentos = parent::ArrayData($resultOrcamentos);
 					$Linha = $Auxilio;
+					$Linha = str_replace("<%DATAULTIMAINTERACAO%>", date("d/m/Y H:i", strtotime($rs['max_data'])), $Linha);
 					$Linha = str_replace("<%IDCLIENTE%>", $rs['idcliente'], $Linha);
 					$Linha = str_replace("<%CLIENTE%>", utf8_encode($rs['nome']), $Linha);
 					$Linha = str_replace("<%RESPONSAVEL%>", utf8_encode($rs['usuario']), $Linha);
