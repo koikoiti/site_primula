@@ -204,7 +204,7 @@
         		
         		#Insere produtos
         		foreach($arrProdutos as $key => $value){
-        			if($arrBrinde[$key]){
+        			if($arrBrinde[$key] == 'on'){
         				$brinde = 1;
         			}else{
         				$brinde = 0;
@@ -249,7 +249,7 @@
         		
         		#Insere produtos
         		foreach($arrProdutos as $key => $value){
-        			if($arrBrinde[$key]){
+        			if($arrBrinde[$key] == 'on'){
         				$brinde = 1;
         			}else{
         				$brinde = 0;
