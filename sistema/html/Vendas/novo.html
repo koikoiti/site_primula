@@ -299,7 +299,7 @@ function mais(){
             novadiv = document.createElement('div');
             novadiv.setAttribute('id', 'novo'+novo);
             novadiv.setAttribute('class', 'novo-produto');
-            novadiv.innerHTML = "<div class='col-sm-10 no-padding'><div class='col-sm-11 no-padding'><div class='col-md-12' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control produto' /></div><div class='col-md-2'><br/><label>Preço: R$ <span id='preco"+novo+"'></span></label><input type='hidden' name='hid_valor_real[]' id='hid_valor_real"+novo+"'/></div><div class='col-md-2'>Quantidade: <input onblur='calculaSubtotal();' type='text' class='form-control quantidade' value='1' name='quantidade[]' /></div><div class='col-md-2'>Desconto R$ (Unitário): <input name='desconto_valor[]' type='text' class='form-control money desconto-valor' onblur='calculaSubtotal();' value='0'/></div><!--div class='col-md-2'>Desconto % (Unitário): <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' onblur='calculaSubtotal();' value='0'/></div--><div class='col-md-2'><br/><label><input onchange='calculaSubtotal();' name='brinde["+novo+"]' type='checkbox'/> Brinde</label></div></div><div class='col-sm-1 no-padding'><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div></div></div>";
+            novadiv.innerHTML = "<div class='col-sm-10 no-padding'><div class='col-sm-11 no-padding'><div class='col-md-12' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control produto' /></div><div class='col-md-2'><br/><label>Preço: R$ <span id='preco"+novo+"'></span></label><input type='hidden' name='hid_valor_real[]' id='hid_valor_real"+novo+"'/></div><div class='col-md-2'>Quantidade: <input onblur='calculaSubtotal();' type='text' class='form-control quantidade' value='1' name='quantidade[]' /></div><div class='col-md-2'>Desconto R$ (Unitário): <input name='desconto_valor[]' type='text' class='form-control money desconto-valor' onblur='calculaSubtotal();' value='0'/></div><!--div class='col-md-2'>Desconto % (Unitário): <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' onblur='calculaSubtotal();' value='0'/></div--><div class='col-md-2'><br/><label><input onchange='cbBrinde(this, "+novo+");' name='cbBrinde[]' type='checkbox'/> Brinde</label><input id='brinde"+novo+"' type='hidden' name='brinde[]' value='V' /></div></div><div class='col-sm-1 no-padding'><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div></div></div>";
             //novadiv.innerHTML = "<div class='col-md-3' id='div_produto"+novo+"'>Produto: <input id='produtonovo"+novo+"' type='text' class='form-control' /></div><div class='col-md-1'>Quantidade: <input type='text' class='form-control' value='1' name='quantidade[]' /></div><div class='col-md-1'>Desconto Valor: <input name='desconto_valor[]' type='text' class='form-control money' value='0'/></div><div class='col-md-1'>Desconto Porcentagem: <input name='desconto_porcentagem[]' type='text' class='form-control porcentagem' value='0'/></div><div class='col-md-2'><br/><label><input name='brinde[]' type='checkbox'/> Brinde</label></div><div class='col-sm-1'><br/><button onclick='menos("+novo+")' type='button' class='btn btn-danger'>-</button></div>";
             document.getElementById('lista-produtos').appendChild(novadiv);
             $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
@@ -376,12 +376,21 @@ function converteMoedaFloat(v){
     return v;
  }
 
+function cbBrinde(cb, id){
+	if(cb.checked){
+		document.getElementById("brinde"+id).value = "B"
+	}else{
+		document.getElementById("brinde"+id).value = "V"
+	}
+	calculaSubtotal();
+}
+
 function calculaSubtotal(){
 	var subtotal = 0;
 	$('input[name^="hid_valor_real"]').each(function(i){
 	    var valor = parseFloat($(this).val());
-	    var brinde = $('input[name^="brinde"]')[i].checked;
-	    if(brinde == false){
+	    var brinde = $('input[name^="brinde"]')[i].value;
+	    if(brinde == "V"){
 		    var quantidade = parseInt($('input[name^="quantidade"]')[i].value);
 		    var desconto = converteMoedaFloat($('input[name^="desconto_valor"]')[i].value);
 		    if(desconto != 0){
@@ -443,7 +452,6 @@ function colocaPreco(id, valor, valor_real){
 
 function menos(idnovo){
     document.getElementById('novo'+idnovo).remove();
-    novo--;
     calculaSubtotal();
 }
 
