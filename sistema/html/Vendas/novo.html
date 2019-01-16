@@ -13,6 +13,15 @@
 	<div class="col-md-12">    
         <div class="form-group form-margin" style="width: 33.33%; float: left">
             <div class="col-sm-6">
+            	Data Venda: <br/>
+                <input name="dataVenda" style="width: 50%; display: inline" class="form-control" readonly="readonly" id="dataVenda" type="text" value="<%DATAVENDA%>"/>
+                <%BOTAODATAHOJE%>
+            </div>
+        </div>
+	</div>
+	<div class="col-md-12">    
+        <div class="form-group form-margin" style="width: 33.33%; float: left">
+            <div class="col-sm-6">
             	*Procedência: 
                 <%SELECTTIPOVENDA%>
             </div>
@@ -163,6 +172,15 @@
 	</div>
 </div>
 <script type="text/javascript">
+function mudaDataVenda(){
+	var data = new Date().toLocaleDateString();
+	var hora = new Date().toLocaleTimeString('pt-BR', { hour12: false, 
+        hour: "numeric", 
+        minute: "numeric"});
+	$("#dataVenda").val(data + " " + hora);
+
+}
+
 function montaParcelas(){
 	var tipo = $("#tipo").val();
 	var parcelas = $("#parcelas").val();

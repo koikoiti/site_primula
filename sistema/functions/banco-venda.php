@@ -180,8 +180,12 @@
         }
         
         #Insere Venda/Orçamento
-        function InsereOrcamento($idcliente, $idtipovenda, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal){
-        	if($orcamento == 1){
+        function InsereOrcamento($idcliente, $idtipovenda, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal, $data_venda){
+            $AUX_Data = explode(" ", $data_venda);
+            $dataUM = implode("-", array_reverse(explode("/", $AUX_Data[0])));
+            $dataDOIS = $AUX_Data[1];
+            $dataVenda = $dataUM . " " . $dataDOIS;
+            if($orcamento == 1){
         		#Orçamento (Não altera estoque e não vai pro fluxo)
         		
         		if($fretePorConta){
@@ -198,7 +202,7 @@
         		}
         		
         		$Sql = "INSERT INTO t_vendas (idcliente, idtipovenda, data, idtipofrete, valor_frete, frete_porconta, orcamento, idusuario, valor_venda, troco_credito, obs, tarifa, desconto_subtotal) 
-        				VALUES ('$idcliente', '$idtipovenda', '".date("Y-m-d H:i:s")."', '$tipoFrete', '$valorFrete', '$fretePorConta', '$orcamento', '".$_SESSION['idusuario']."', '$total', '$troco_credito', '$obs', '$tarifa', '$desconto_subtotal')";
+        				VALUES ('$idcliente', '$idtipovenda', '$dataVenda', '$tipoFrete', '$valorFrete', '$fretePorConta', '$orcamento', '".$_SESSION['idusuario']."', '$total', '$troco_credito', '$obs', '$tarifa', '$desconto_subtotal')";
         		parent::Execute($Sql);
         		$lastID = mysql_insert_id();
         		
@@ -243,7 +247,7 @@
         		}
         		
         		$Sql = "INSERT INTO t_vendas (idcliente, idtipovenda, data, idtipofrete, valor_frete, frete_porconta, orcamento, idusuario, valor_venda, troco_credito, obs, tarifa, desconto_subtotal) 
-        				VALUES ('$idcliente', '$idtipovenda', '".date("Y-m-d H:i:s")."', '$tipoFrete', '$valorFrete', '$fretePorConta', '$orcamento', '".$_SESSION['idusuario']."', '$total', '$troco_credito', '$obs', '$tarifa', '$desconto_subtotal')";
+        				VALUES ('$idcliente', '$idtipovenda', '$dataVenda', '$tipoFrete', '$valorFrete', '$fretePorConta', '$orcamento', '".$_SESSION['idusuario']."', '$total', '$troco_credito', '$obs', '$tarifa', '$desconto_subtotal')";
         		parent::Execute($Sql);
         		$lastID = mysql_insert_id();
         		
@@ -277,8 +281,12 @@
             return $lastID;
         }
         
-        function UpdateOrcamento($idvenda, $idtipovenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal){
-        	if($orcamento == 1){
+        function UpdateOrcamento($idvenda, $idtipovenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal, $data_venda){
+        	$AUX_Data = explode(" ", $data_venda);
+            $dataUM = implode("-", array_reverse(explode("/", $AUX_Data[0])));
+            $dataDOIS = $AUX_Data[1];
+            $dataVenda = $dataUM . " " . $dataDOIS;
+            if($orcamento == 1){
         		#Orçamento (Não altera estoque e não vai pro fluxo)
         	
         		if($fretePorConta){
@@ -295,7 +303,7 @@
         		}
         	
         		$Sql = "UPDATE t_vendas SET 
-        				idtipovenda = '$idtipovenda', idcliente = '$idcliente', idtipofrete = '$tipoFrete', valor_frete = '$valorFrete', frete_porconta = '$fretePorConta', orcamento = $orcamento, valor_venda = '$total', troco_credito = '$troco_credito', obs = '$obs', tarifa = '$tarifa', desconto_subtotal = '$desconto_subtotal' 
+        				data = '$dataVenda', idtipovenda = '$idtipovenda', idcliente = '$idcliente', idtipofrete = '$tipoFrete', valor_frete = '$valorFrete', frete_porconta = '$fretePorConta', orcamento = $orcamento, valor_venda = '$total', troco_credito = '$troco_credito', obs = '$obs', tarifa = '$tarifa', desconto_subtotal = '$desconto_subtotal' 
         				WHERE idvenda = $idvenda";
         		#echo $Sql;die;
         		parent::Execute($Sql);
@@ -346,7 +354,7 @@
         		}
         	
         		$Sql = "UPDATE t_vendas SET 
-        				idtipovenda = '$idtipovenda', idcliente = '$idcliente', idtipofrete = '$tipoFrete', valor_frete = '$valorFrete', frete_porconta = '$fretePorConta', orcamento = $orcamento, valor_venda = '$total', troco_credito = '$troco_credito', obs = '$obs', tarifa = '$tarifa', desconto_subtotal = '$desconto_subtotal' 
+        				data = '$dataVenda', idtipovenda = '$idtipovenda', idcliente = '$idcliente', idtipofrete = '$tipoFrete', valor_frete = '$valorFrete', frete_porconta = '$fretePorConta', orcamento = $orcamento, valor_venda = '$total', troco_credito = '$troco_credito', obs = '$obs', tarifa = '$tarifa', desconto_subtotal = '$desconto_subtotal' 
         				WHERE idvenda = $idvenda";
         		parent::Execute($Sql);
         		$lastID = $idvenda;
