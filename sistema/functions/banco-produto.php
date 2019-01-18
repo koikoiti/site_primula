@@ -163,7 +163,7 @@
             $totalPaginas = $this->TotalPaginas($produto, $idcategoria, $marca, $modelo, $pagina, $status);
             $pag = '';
             if($produto || $idcategoria || $marca || $modelo || $status){
-                $url = "idcategoria=$idcategoria&produto=$produto&marca=$marca&status=$status";
+                $url = "categoria=$idcategoria&produto=$produto&marca=$marca&status=$status";
             }
             $url .= "&page=";
             if($totalPaginas > 1){
