@@ -1,7 +1,7 @@
 <?php
     class bancoproduto extends banco{
         
-        function ListaProdutos($produto, $idcategoria, $marca, $modelo, $pagina, $status){
+        function ListaProdutos($produto, $idcategoria, $marca, $modelo, $pagina, $status, $cbInativos){
             $Auxilio = parent::CarregaHtml("Produtos/itens/lista-produto-itens");
             $inicio = ($pagina * Limite) - Limite;
             $Sql = "SELECT P.*, C.nome AS categoria FROM t_produtos P 
@@ -23,6 +23,10 @@
             if($status){
                 $Sql .= " AND P.campo_status = '$status'";
             }
+            if($cbInativos != 'checked'){
+                $Sql .= " AND P.ativo = 1";
+            }
+            
             $Sql .= "  ORDER BY P.nome ASC LIMIT $inicio, ".Limite;
             $result = parent::Execute($Sql);
             $num_rows = parent::Linha($result);
@@ -159,11 +163,16 @@
        }
        
         #Monta paginacao
-        function MontaPaginacao($produto, $idcategoria, $marca, $modelo, $pagina, $status){
-            $totalPaginas = $this->TotalPaginas($produto, $idcategoria, $marca, $modelo, $pagina, $status);
+        function MontaPaginacao($produto, $idcategoria, $marca, $modelo, $pagina, $status, $cbInativos){
+            $totalPaginas = $this->TotalPaginas($produto, $idcategoria, $marca, $modelo, $pagina, $status, $cbInativos);
             $pag = '';
             if($produto || $idcategoria || $marca || $modelo || $status){
                 $url = "categoria=$idcategoria&produto=$produto&marca=$marca&status=$status";
+            }
+            if($cbInativos == 'checked'){
+                $url .= "&cbInativos=true";
+            }else{
+                $url .= "&cbInativos=false";
             }
             $url .= "&page=";
             if($totalPaginas > 1){
@@ -234,7 +243,7 @@
         }
         
         #Total de paginas
-        function TotalPaginas($produto, $idcategoria, $marca, $modelo, $pagina, $status){
+        function TotalPaginas($produto, $idcategoria, $marca, $modelo, $pagina, $status, $cbInativos){
             $Sql = "SELECT P.*, C.nome AS categoria FROM t_produtos P
                     INNER JOIN fixo_categorias_produto C ON C.idcategoria = P.idcategoria 
                     WHERE 1
@@ -253,6 +262,9 @@
             }
             if($status){
                 $Sql .= " AND P.campo_status = '$status'";
+            }
+            if($cbInativos != 'checked'){
+                $Sql .= " AND P.ativo = 1";
             }
             $result = parent::Execute($Sql);
 			$num_rows = parent::Linha($result);
