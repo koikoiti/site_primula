@@ -204,9 +204,14 @@
         }
         
         #Lista Kits
-        function ListaKits(){
+        function ListaKits($cbInativos){
             $Auxilio = parent::CarregaHtml('Produtos/itens/lista-kit-itens');
-            $Sql = "SELECT * FROM t_kit ORDER BY nome";
+            if($cbInativos != 'checked'){
+                $where = "WHERE ativo = 1";
+            }else{
+                $where = '';
+            }
+            $Sql = "SELECT * FROM t_kit $where ORDER BY nome";
             $result = parent::Execute($Sql);
             $linha = parent::Linha($result);
             if($linha){
@@ -238,7 +243,7 @@
                 }
             }else{
                 $retorno = '<tr class="odd gradeX">
-                               <td colspan="6">Não foram encontrados kits cadastrados.</td>
+                               <td colspan="8">Não foram encontrados kits cadastrados.</td>
                            <tr>';
             }
             return utf8_encode($retorno);

@@ -5,6 +5,9 @@
                 <a href="<%URLPADRAO%>monta-kit">Inserir Novo</a>
             </p>
             <h3 style="width: 30%; float: left;">Lista Kits</h3>
+            <div style="width: 70%; float: left; padding-right: 20px;" class="text-right">
+            	<label><input <%CBINATIVOS%> onchange="mostraInativos()" type="checkbox" id="cbInativos" class="" /> Mostrar Inativos</label>
+            </div>
         </div>
         <div class="content">
             <div class="table-responsive">
@@ -33,6 +36,11 @@
     </div>
 </div>
 <script type="text/javascript">
+function mostraInativos(){
+	var cbInativos = $("#cbInativos").is(":checked");
+	location.href = "<%URLPADRAO%>lista-kit/?cbInativos=" + cbInativos;
+}
+
 function ativar(idkit, nome){
     if(confirm('Deseja ativar o kit '+nome+' ?')){
         location.href = "<%URLPADRAO%>monta-kit/ativar/" + idkit;
