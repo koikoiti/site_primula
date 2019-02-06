@@ -15,17 +15,22 @@
 		$result = $banco->BuscaUsuarioPorLogin($login);
 		$num_rows = $banco->Linha($result);
 		$rs = $banco->ArrayData($result);
-		$senhab = $rs['senha'];
-		if(!$num_rows){
-			#Se usuario nao existir, msg de erro de usuario
-			$msg = "MsgErro_Usuario";
-		#se o usuario existir, verifica se as senhas batem
-		}elseif($senha === $senhab){
-			#se o usuario estiver ativo, inicia a sessao e redireciona para a tela principal
-			$banco->AbreSessao($login);
-			$banco->RedirecionaPara('inicio');
+		
+		if($rs['ativo'] == 0){
+		    echo utf8_encode("<script type='text/javascript'>alert('Este usuário encontra-se inativo!');</script>");
 		}else{
-			$msg = "MsgErro_Senha";
+		$senhab = $rs['senha'];
+    		if(!$num_rows){
+    			#Se usuario nao existir, msg de erro de usuario
+    			$msg = "MsgErro_Usuario";
+    		#se o usuario existir, verifica se as senhas batem
+    		}elseif($senha === $senhab){
+    			#se o usuario estiver ativo, inicia a sessao e redireciona para a tela principal
+    			$banco->AbreSessao($login);
+    			$banco->RedirecionaPara('inicio');
+    		}else{
+    			$msg = "MsgErro_Senha";
+    		}
 		}
     }
      
