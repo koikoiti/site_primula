@@ -19,6 +19,7 @@
             $resultTipo = $banco->Execute($SqlTipo);
             $rsValor = $banco->ArrayData($resultTipo);
             $valor = $rsValor['valor'];
+            $valor_relatorio = $rsValor['valor'];
             break;
         case 2:
             if($idtipoprofissional == 1){
@@ -26,9 +27,11 @@
             }else{
                 $valor = "valor_profissional";
             }
+            $valor_relatorio = "valor_profissional";
             break;
         case 3:
             $valor = "valor_app";
+            $valor_relatorio = "valor_profissional";
             break;
     }
    
@@ -45,6 +48,7 @@
                          'caminho' => UrlFoto.$rsImagem['caminho'],
                          'valor' => number_format(floatval($rs[$valor]), 2, ',', '.'),
         				 'valor_real' => floatval($rs[$valor]),
+                         'valor_relatorio' => floatval($rs[$valor_relatorio]),
                     );
     }
     
@@ -66,6 +70,7 @@
                          'caminho' => UrlFoto.$rsImagemKit['caminho'],
                          'valor' => number_format(floatval($rsKit[$valor]), 2, ',', '.'),
         				 'valor_real' => floatval($rsKit[$valor]),
+                         'valor_relatorio' => floatval($rsKit[$valor]),
                     );
     }
     

@@ -14,6 +14,9 @@
 		case 'arrumaValorApp':
 		    #$banco->ArrumaValorApp();
 		    break;
+		case 'arrumaValoresVendasProdutos':
+		    $banco->arrumaValoresVendasProdutos();
+		    break;
 		default:
 			#$banco->RedirecionaPara('inicio');
 			break;

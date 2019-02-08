@@ -180,7 +180,7 @@
         }
         
         #Insere Venda/Orçamento
-        function InsereOrcamento($idcliente, $idtipovenda, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal, $data_venda){
+        function InsereOrcamento($idcliente, $idtipovenda, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal, $data_venda, $arrValorReal, $arrValorRelatorio){
             $AUX_Data = explode(" ", $data_venda);
             $dataUM = implode("-", array_reverse(explode("/", $AUX_Data[0])));
             $dataDOIS = $AUX_Data[1];
@@ -216,7 +216,7 @@
         			$descontoProduto = $arrDesconto[$key];
         			$descontoProduto = str_replace('.', '', $descontoProduto);
         			$descontoProduto = str_replace(',', '.', $descontoProduto);
-        			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$descontoProduto}', '$brinde')";
+        			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde, valor_venda, valor_relatorio) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$descontoProduto}', '$brinde', '{$arrValorReal[$key]}', '{$arrValorRelatorio[$key]}')";
         			parent::Execute($SqlProdutos);
         		}
         		if($arrTipoPagamento){
@@ -258,7 +258,7 @@
         			}else{
         				$brinde = 0;
         			}
-        			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$arrDesconto[$key]}', '$brinde')";
+        			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde, valor_venda, valor_relatorio) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$descontoProduto}', '$brinde', '{$arrValorReal[$key]}', '{$arrValorRelatorio[$key]}')";
         			parent::Execute($SqlProdutos);
         		}
         		
@@ -281,7 +281,7 @@
             return $lastID;
         }
         
-        function UpdateOrcamento($idvenda, $idtipovenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal, $data_venda){
+        function UpdateOrcamento($idvenda, $idtipovenda, $idcliente, $tipoFrete, $valorFrete, $fretePorConta, $arrProdutos, $arrQuantidade, $arrDesconto, $arrBrinde, $orcamento, $arrTipoPagamento, $arrPagamento, $total, $troco_credito, $obs, $arrDataPagamento, $tarifa, $desconto_subtotal, $data_venda, $arrValorReal, $arrValorRelatorio){
         	$AUX_Data = explode(" ", $data_venda);
             $dataUM = implode("-", array_reverse(explode("/", $AUX_Data[0])));
             $dataDOIS = $AUX_Data[1];
@@ -322,7 +322,7 @@
         			$descontoProduto = $arrDesconto[$key];
         			$descontoProduto = str_replace('.', '', $descontoProduto);
         			$descontoProduto = str_replace(',', '.', $descontoProduto);
-        			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$descontoProduto}', '$brinde')";
+        			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde, valor_venda, valor_relatorio) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$descontoProduto}', '$brinde', '{$arrValorReal[$key]}', '{$arrValorRelatorio[$key]}')";
         			parent::Execute($SqlProdutos);
         		}
         		if($arrTipoPagamento){
@@ -370,7 +370,7 @@
         				$brinde = 0;
         			}
         			
-        			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$arrDesconto[$key]}', '$brinde')";
+        			$SqlProdutos = "INSERT INTO t_vendas_produtos (idvenda, produto_kit, quantidade, desconto_valor, brinde, valor_venda, valor_relatorio) VALUES ('$lastID', '$value', '{$arrQuantidade[$key]}', '{$descontoProduto}', '$brinde', '{$arrValorReal[$key]}', '{$arrValorRelatorio[$key]}')";
         			parent::Execute($SqlProdutos);
         		}
         		
@@ -493,7 +493,7 @@
 	        		}
 	        		$retorno .= '<div id="novo'.$rs['produto_kit'].'" class="novo-produto">
 	        						<div id="" class="col-md-2 text-center"><img id="img1" src="'.UrlFoto.$rsProduto['caminho'].'" style="width: 100px; height: 100px;"></div>
-	        						<div class="col-sm-10 no-padding"><div class="col-sm-11 no-padding"><div class="col-md-12" id="div_produto'.$rs['produto_kit'].'">Produto: <input readonly id="produtonovo'.$rs['produto_kit'].'" type="text" class="form-control produto ui-autocomplete-input" autocomplete="off" value="'.$rsProduto['nome'].'"></div><div class="col-md-2"><br><label>Preço: R$ <span id="preco'.$rs['produto_kit'].'">'.number_format($rsProduto[$tipoValor], 2, ',', '.').'</span></label><input type="hidden" name="hid_valor_real[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsProduto[$tipoValor].'"></div><div class="col-md-2">Quantidade: <input onblur="calculaSubtotal();" type="text" class="form-control quantidade" value="'.$rs['quantidade'].'" name="quantidade[]"></div><div class="col-md-2">Desconto R$ (Unitário): <input name="desconto_valor[]" type="text" class="form-control money desconto-valor" onblur="calculaSubtotal();" value="'.number_format($rs['desconto_valor'], 2, ',', '.').'" autocomplete="off"></div><div class="col-md-2"><br><label><input onchange="cbBrinde(this, '.$cont.');" name="cbBrinde[]" type="checkbox" '.$cbbrinde.'> Brinde</label><input id="brinde'.$cont.'" type="hidden" name="brinde[]" value="'.$hid_brinde.'" /></div></div><div class="col-sm-1 no-padding"><div class="col-sm-1"><br><button onclick="menos(\''.$rs['produto_kit'].'\')" type="button" class="btn btn-danger">-</button></div></div></div><input type="hidden" name="produtos[]" id="hid_produtoeditar'.$rs['produto_kit'].'" value="'.$rs['produto_kit'].'"></div>';
+	        						<div class="col-sm-10 no-padding"><div class="col-sm-11 no-padding"><div class="col-md-12" id="div_produto'.$rs['produto_kit'].'">Produto: <input readonly id="produtonovo'.$rs['produto_kit'].'" type="text" class="form-control produto ui-autocomplete-input" autocomplete="off" value="'.$rsProduto['nome'].'"></div><div class="col-md-2"><br><label>Preço: R$ <span id="preco'.$rs['produto_kit'].'">'.number_format($rsProduto[$tipoValor], 2, ',', '.').'</span></label><input type="hidden" name="hid_valor_real[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsProduto[$tipoValor].'"></div><div class="col-md-2">Quantidade: <input onblur="calculaSubtotal();" type="text" class="form-control quantidade" value="'.$rs['quantidade'].'" name="quantidade[]"></div><div class="col-md-2">Desconto R$ (Unitário): <input name="desconto_valor[]" type="text" class="form-control money desconto-valor" onblur="calculaSubtotal();" value="'.number_format($rs['desconto_valor'], 2, ',', '.').'" autocomplete="off"></div><div class="col-md-2"><br><label><input onchange="cbBrinde(this, '.$cont.');" name="cbBrinde[]" type="checkbox" '.$cbbrinde.'> Brinde</label><input id="brinde'.$cont.'" type="hidden" name="brinde[]" value="'.$hid_brinde.'" /></div></div><div class="col-sm-1 no-padding"><div class="col-sm-1"><br><button onclick="menos(\''.$rs['produto_kit'].'\')" type="button" class="btn btn-danger">-</button></div></div></div><input type="hidden" name="produtos[]" id="hid_produtoeditar'.$rs['produto_kit'].'" value="'.$rs['produto_kit'].'"><input type="hidden" name="valor_real_venda[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rs['valor_venda'].'"><input type="hidden" name="valor_relatorio[]" id="hid_valor_relatorio'.$rs['produto_kit'].'" value="'.$rs['valor_relatorio'].'"></div>';
         		}else{
         		    if($idtipoprofissional == 1){
         		        $tipoValor = 'valor_consumidor';

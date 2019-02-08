@@ -1,6 +1,34 @@
 <?php
 	class bancoscylla extends banco{
 		
+	    function arrumaValoresVendasProdutos(){
+	        $Sql = "SELECT * FROM t_vendas_produtos P
+                    INNER JOIN t_vendas V ON P.idvenda = V.idvenda";
+	        $result = parent::Execute($Sql);
+	        while($rs = parent::ArrayData($result)){
+	            $auxPK = explode("_", $rs['produto_kit']);
+	            if($auxPK[0] == 'prod'){
+	                $SqlValorProduto = "SELECT * FROM t_produtos WHERE idproduto = {$auxPK[1]}";
+	                $resultValorProduto = parent::Execute($SqlValorProduto);
+	                $rsValorProduto = parent::ArrayData($resultValorProduto);
+	            }else{
+	                $SqlValorKit = "SELECT * FROM t_kit WHERE idkit = {$auxPK[1]}";
+	                $resultValorKit = parent::Execute($SqlValorKit);
+	                $rsValorKit = parent::Linha($resultValorKit);
+	            }
+	            switch($rs['idtipovenda']){
+	                       #LOJA - 
+	                case 1:
+	                    
+	                    break;
+	                case 2:
+	                    break;
+	                case 3:
+	                    break;
+	            }
+	        }
+	    }
+	    
 		function arrumaEstoque(){
 			$Sql = "SELECT * FROM t_vendas_produtos";
 			$result = parent::Execute($Sql);

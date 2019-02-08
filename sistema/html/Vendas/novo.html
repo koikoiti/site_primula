@@ -344,6 +344,19 @@ function mais(){
                         hid_produto.setAttribute('name', 'produtos[]');
                         hid_produto.setAttribute('id', 'hid_produtonovo'+novo);
                         hid_produto.setAttribute('value', ui.item.idproduto);
+                        
+                        var hid_valor_real = document.createElement('input');
+                        hid_valor_real.setAttribute('type', 'hidden');
+                        hid_valor_real.setAttribute('name', 'valor_real_venda[]');
+                        hid_valor_real.setAttribute('id', 'hid_valor_real_venda'+novo);
+                        hid_valor_real.setAttribute('value', ui.item.valor_real);
+                        
+                        var hid_valor_relatorio = document.createElement('input');
+                        hid_valor_relatorio.setAttribute('type', 'hidden');
+                        hid_valor_relatorio.setAttribute('name', 'valor_relatorio[]');
+                        hid_valor_relatorio.setAttribute('id', 'hid_valor_relatorio'+novo);
+                        hid_valor_relatorio.setAttribute('value', ui.item.valor_relatorio);
+                        
                         var img = document.createElement('img');
                         var outerimg = document.createElement('div');
                         outerimg.setAttribute('id', 'outer'+novo);
@@ -356,6 +369,8 @@ function mais(){
                         if(i){
 	                        $(novadiv).prepend(outerimg);
 	                        novadiv.appendChild(hid_produto);
+	                        novadiv.appendChild(hid_valor_real);
+	                        novadiv.appendChild(hid_valor_relatorio);
 	                        $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
 	                        calculaSubtotal();
 	                        calculaTotal();
