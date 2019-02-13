@@ -2,29 +2,67 @@
 	class bancoscylla extends banco{
 		
 	    function arrumaValoresVendasProdutos(){
-	        $Sql = "SELECT * FROM t_vendas_produtos P
-                    INNER JOIN t_vendas V ON P.idvenda = V.idvenda";
+	        $Sql = "SELECT P.*, V.*, C.idtipoprofissional FROM t_vendas_produtos P
+                    INNER JOIN t_vendas V ON P.idvenda = V.idvenda
+                    INNER JOIN t_clientes C ON V.idcliente = C.idcliente
+order by P.idvendaproduto desc
+limit 0,4";
 	        $result = parent::Execute($Sql);
 	        while($rs = parent::ArrayData($result)){
-	            $auxPK = explode("_", $rs['produto_kit']);
-	            if($auxPK[0] == 'prod'){
-	                $SqlValorProduto = "SELECT * FROM t_produtos WHERE idproduto = {$auxPK[1]}";
-	                $resultValorProduto = parent::Execute($SqlValorProduto);
-	                $rsValorProduto = parent::ArrayData($resultValorProduto);
-	            }else{
-	                $SqlValorKit = "SELECT * FROM t_kit WHERE idkit = {$auxPK[1]}";
-	                $resultValorKit = parent::Execute($SqlValorKit);
-	                $rsValorKit = parent::Linha($resultValorKit);
-	            }
-	            switch($rs['idtipovenda']){
-	                       #LOJA - 
-	                case 1:
-	                    
-	                    break;
-	                case 2:
-	                    break;
-	                case 3:
-	                    break;
+	            echo "<br><br><br>";var_dump($rs); 
+	            #idtipoprofissional 13 = Verificar
+	            if($rs['idtipoprofissional'] != 13){
+    	            switch($rs['idtipovenda']){
+    	                case 1:
+    	                    #Loja
+    	                    $SqlTipo = "SELECT valor FROM t_valor_profissional WHERE idtipoprofissional = " . $rs['idtipoprofissional'];
+    	                    $resultTipo = parent::Execute($SqlTipo);
+    	                    $rsValor = parent::ArrayData($resultTipo);
+    	                    $valor = $rsValor['valor'];
+    	                    $valor_relatorio = $rsValor['valor'];
+    	                    break;
+    	                case 2:
+    	                    #Franquia
+    	                    if($rs['idtipoprofissional'] == 1){
+    	                        $valor = "valor_app";
+    	                        $valor_relatorio = "valor_app";
+    	                    }else{
+    	                        $valor = "valor_profissional";
+    	                        $valor_relatorio = "valor_profissional";
+    	                    }
+    	                    break;
+    	                case 3:
+    	                    #Derma
+    	                    $valor = "valor_app";
+    	                    $valor_relatorio = "valor_profissional";
+    	                    break;
+    	            }
+    	            
+    	            $auxPK = explode("_", $rs['produto_kit']);
+    	            if($auxPK[0] == 'prod'){
+    	                $SqlValorProduto = "SELECT * FROM t_produtos WHERE idproduto = {$auxPK[1]}";
+    	                $resultValorProduto = parent::Execute($SqlValorProduto);
+    	                $rsValorProduto = parent::ArrayData($resultValorProduto);
+    	                $valor_venda_reais = $rsValorProduto[$valor];
+    	                $valor_relatorio_reais = $rsValorProduto[$valor_relatorio];
+    	            }else{
+    	                $SqlTipo = "SELECT valor FROM t_valor_profissional WHERE idtipoprofissional = " . $rs['idtipoprofissional'];
+    	                $resultTipo = parent::Execute($SqlTipo);
+    	                $rsValor = parent::ArrayData($resultTipo);
+    	                $valor = $rsValor['valor'];
+    	                $valor_relatorio = $rsValor['valor'];
+    	                
+    	                $SqlValorKit = "SELECT * FROM t_kit WHERE idkit = {$auxPK[1]}";
+    	                $resultValorKit = parent::Execute($SqlValorKit);
+    	                $rsValorKit = parent::Linha($resultValorKit);
+    	                
+    	                $valor_venda_reais = $rsValorKit[$valor];
+    	                $valor_relatorio_reais = $rsValorKit[$valor_relatorio];
+    	            }
+    	            
+    	            #UPDATE
+    	            $SqlUpdate = "UPDATE t_vendas_produtos SET valor_venda = $valor_venda_reais, valor_relatorio = $valor_relatorio_reais WHERE idvendaproduto = " . $rs['idvendaproduto'];
+    	            echo $SqlUpdate;
 	            }
 	        }
 	    }

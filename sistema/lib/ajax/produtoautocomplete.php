@@ -24,10 +24,11 @@
         case 2:
             if($idtipoprofissional == 1){
                 $valor = "valor_app";
+                $valor_relatorio = "valor_app";
             }else{
                 $valor = "valor_profissional";
+                $valor_relatorio = "valor_profissional";
             }
-            $valor_relatorio = "valor_profissional";
             break;
         case 3:
             $valor = "valor_app";
