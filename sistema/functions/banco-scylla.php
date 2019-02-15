@@ -5,11 +5,9 @@
 	        $Sql = "SELECT P.*, V.*, C.idtipoprofissional FROM t_vendas_produtos P
                     INNER JOIN t_vendas V ON P.idvenda = V.idvenda
                     INNER JOIN t_clientes C ON V.idcliente = C.idcliente
-order by P.idvendaproduto desc
-limit 0,4";
+                    WHERE P.valor_venda = 0 OR P.valor_relatorio = 0";
 	        $result = parent::Execute($Sql);
 	        while($rs = parent::ArrayData($result)){
-	            echo "<br><br><br>";var_dump($rs); 
 	            #idtipoprofissional 13 = Verificar
 	            if($rs['idtipoprofissional'] != 13){
     	            switch($rs['idtipovenda']){
@@ -54,7 +52,7 @@ limit 0,4";
     	                
     	                $SqlValorKit = "SELECT * FROM t_kit WHERE idkit = {$auxPK[1]}";
     	                $resultValorKit = parent::Execute($SqlValorKit);
-    	                $rsValorKit = parent::Linha($resultValorKit);
+    	                $rsValorKit = parent::ArrayData($resultValorKit);
     	                
     	                $valor_venda_reais = $rsValorKit[$valor];
     	                $valor_relatorio_reais = $rsValorKit[$valor_relatorio];
@@ -62,7 +60,7 @@ limit 0,4";
     	            
     	            #UPDATE
     	            $SqlUpdate = "UPDATE t_vendas_produtos SET valor_venda = $valor_venda_reais, valor_relatorio = $valor_relatorio_reais WHERE idvendaproduto = " . $rs['idvendaproduto'];
-    	            echo $SqlUpdate;
+    	            parent::Execute($SqlUpdate);
 	            }
 	        }
 	    }
