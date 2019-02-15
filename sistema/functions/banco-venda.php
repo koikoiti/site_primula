@@ -465,19 +465,24 @@
         		        case 1:
         		            if($idtipoprofissional == 1){
         		                $tipoValor = 'valor_consumidor';
+        		                $valor_relatorio = 'valor_consumidor';
         		            }else{
         		                $tipoValor = 'valor_profissional';
+        		                $valor_relatorio = 'valor_profissional';
         		            }
         		            break;
         		        case 2:
         		            if($idtipoprofissional == 1){
         		                $tipoValor = "valor_app";
+        		                $valor_relatorio = 'valor_app';
         		            }else{
         		                $tipoValor = "valor_profissional";
+        		                $valor_relatorio = 'valor_profissional';
         		            }
         		            break;
         		        case 3:
         		            $tipoValor = "valor_app";
+        		            $valor_relatorio = 'valor_profissional';
         		            break;
         		    }
 	        		$SqlProduto = "SELECT * FROM t_produtos P INNER JOIN t_imagens_produto I ON I.idproduto = P.idproduto WHERE P.idproduto = " . $auxProd[1] . " AND I.ordem = 1";
@@ -493,12 +498,14 @@
 	        		}
 	        		$retorno .= '<div id="novo'.$rs['produto_kit'].'" class="novo-produto">
 	        						<div id="" class="col-md-2 text-center"><img id="img1" src="'.UrlFoto.$rsProduto['caminho'].'" style="width: 100px; height: 100px;"></div>
-	        						<div class="col-sm-10 no-padding"><div class="col-sm-11 no-padding"><div class="col-md-12" id="div_produto'.$rs['produto_kit'].'">Produto: <input readonly id="produtonovo'.$rs['produto_kit'].'" type="text" class="form-control produto ui-autocomplete-input" autocomplete="off" value="'.$rsProduto['nome'].'"></div><div class="col-md-2"><br><label>Preço: R$ <span id="preco'.$rs['produto_kit'].'">'.number_format($rsProduto[$tipoValor], 2, ',', '.').'</span></label><input type="hidden" name="hid_valor_real[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsProduto[$tipoValor].'"></div><div class="col-md-2">Quantidade: <input onblur="calculaSubtotal();" type="text" class="form-control quantidade" value="'.$rs['quantidade'].'" name="quantidade[]"></div><div class="col-md-2">Desconto R$ (Unitário): <input name="desconto_valor[]" type="text" class="form-control money desconto-valor" onblur="calculaSubtotal();" value="'.number_format($rs['desconto_valor'], 2, ',', '.').'" autocomplete="off"></div><div class="col-md-2"><br><label><input onchange="cbBrinde(this, '.$cont.');" name="cbBrinde[]" type="checkbox" '.$cbbrinde.'> Brinde</label><input id="brinde'.$cont.'" type="hidden" name="brinde[]" value="'.$hid_brinde.'" /></div></div><div class="col-sm-1 no-padding"><div class="col-sm-1"><br><button onclick="menos(\''.$rs['produto_kit'].'\')" type="button" class="btn btn-danger">-</button></div></div></div><input type="hidden" name="produtos[]" id="hid_produtoeditar'.$rs['produto_kit'].'" value="'.$rs['produto_kit'].'"><input type="hidden" name="valor_real_venda[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rs['valor_venda'].'"><input type="hidden" name="valor_relatorio[]" id="hid_valor_relatorio'.$rs['produto_kit'].'" value="'.$rs['valor_relatorio'].'"></div>';
+	        						<div class="col-sm-10 no-padding"><div class="col-sm-11 no-padding"><div class="col-md-12" id="div_produto'.$rs['produto_kit'].'">Produto: <input readonly id="produtonovo'.$rs['produto_kit'].'" type="text" class="form-control produto ui-autocomplete-input" autocomplete="off" value="'.$rsProduto['nome'].'"></div><div class="col-md-2"><br><label>Preço: R$ <span id="preco'.$rs['produto_kit'].'">'.number_format($rsProduto[$tipoValor], 2, ',', '.').'</span></label><input type="hidden" name="hid_valor_real[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsProduto[$tipoValor].'"></div><div class="col-md-2">Quantidade: <input onblur="calculaSubtotal();" type="text" class="form-control quantidade" value="'.$rs['quantidade'].'" name="quantidade[]"></div><div class="col-md-2">Desconto R$ (Unitário): <input name="desconto_valor[]" type="text" class="form-control money desconto-valor" onblur="calculaSubtotal();" value="'.number_format($rs['desconto_valor'], 2, ',', '.').'" autocomplete="off"></div><div class="col-md-2"><br><label><input onchange="cbBrinde(this, '.$cont.');" name="cbBrinde[]" type="checkbox" '.$cbbrinde.'> Brinde</label><input id="brinde'.$cont.'" type="hidden" name="brinde[]" value="'.$hid_brinde.'" /></div></div><div class="col-sm-1 no-padding"><div class="col-sm-1"><br><button onclick="menos(\''.$rs['produto_kit'].'\')" type="button" class="btn btn-danger">-</button></div></div></div><input type="hidden" name="produtos[]" id="hid_produtoeditar'.$rs['produto_kit'].'" value="'.$rs['produto_kit'].'"><input type="hidden" name="valor_real_venda[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsProduto[$tipoValor].'"><input type="hidden" name="valor_relatorio[]" id="hid_valor_relatorio'.$rs['produto_kit'].'" value="'.$rsProduto[$valor_relatorio].'"></div>';
         		}else{
         		    if($idtipoprofissional == 1){
         		        $tipoValor = 'valor_consumidor';
+        		        $valor_relatorio = 'valor_consumidor';
         		    }else{
         		        $tipoValor = 'valor_profissional';
+        		        $valor_relatorio = 'valor_profissional';
         		    }
         			$SqlKit = "SELECT * FROM t_kit K INNER JOIN t_imagens_kit I ON I.idkit = K.idkit WHERE K.idkit = " . $auxProd[1] . " AND I.ordem = 1";
         			
@@ -513,7 +520,7 @@
         			}
         			$retorno .= '<div id="novo'.$rs['produto_kit'].'" class="novo-produto">
 	        						<div id="" class="col-md-2 text-center"><img id="img1" src="'.UrlFoto.$rsKit['caminho'].'" style="width: 100px; height: 100px;"></div>
-	        						<div class="col-sm-10 no-padding"><div class="col-sm-11 no-padding"><div class="col-md-12" id="div_produto'.$rs['produto_kit'].'">Produto: <input readonly id="produtonovo'.$rs['produto_kit'].'" type="text" class="form-control produto ui-autocomplete-input" autocomplete="off" value="'.$rsKit['nome'].'"></div><div class="col-md-2"><br><label>Preço: R$ <span id="preco'.$rs['produto_kit'].'">'.number_format($rsKit[$tipoValor], 2, ',', '.').'</span></label><input type="hidden" name="hid_valor_real[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsKit[$tipoValor].'"></div><div class="col-md-2">Quantidade: <input onblur="calculaSubtotal();" type="text" class="form-control quantidade" value="'.$rs['quantidade'].'" name="quantidade[]"></div><div class="col-md-2">Desconto R$ (Unitário): <input name="desconto_valor[]" type="text" class="form-control money desconto-valor" onblur="calculaSubtotal();" value="'.number_format($rs['desconto_valor'], 2, ',', '.').'" autocomplete="off"></div><div class="col-md-2"><br><label><input onchange="cbBrinde(this, '.$cont.');" name="cbBrinde[]" type="checkbox" '.$cbbrinde.'> Brinde</label><input id="brinde'.$cont.'" type="hidden" name="brinde[]" value="'.$hid_brinde.'" /></div></div><div class="col-sm-1 no-padding"><div class="col-sm-1"><br><button onclick="menos(\''.$rs['produto_kit'].'\')" type="button" class="btn btn-danger">-</button></div></div></div><input type="hidden" name="produtos[]" id="hid_produtoeditar'.$rs['produto_kit'].'" value="'.$rs['produto_kit'].'"></div>';
+	        						<div class="col-sm-10 no-padding"><div class="col-sm-11 no-padding"><div class="col-md-12" id="div_produto'.$rs['produto_kit'].'">Kit: <input readonly id="produtonovo'.$rs['produto_kit'].'" type="text" class="form-control produto ui-autocomplete-input" autocomplete="off" value="'.$rsKit['nome'].'"></div><div class="col-md-2"><br><label>Preço: R$ <span id="preco'.$rs['produto_kit'].'">'.number_format($rsKit[$tipoValor], 2, ',', '.').'</span></label><input type="hidden" name="hid_valor_real[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsKit[$tipoValor].'"></div><div class="col-md-2">Quantidade: <input onblur="calculaSubtotal();" type="text" class="form-control quantidade" value="'.$rs['quantidade'].'" name="quantidade[]"></div><div class="col-md-2">Desconto R$ (Unitário): <input name="desconto_valor[]" type="text" class="form-control money desconto-valor" onblur="calculaSubtotal();" value="'.number_format($rs['desconto_valor'], 2, ',', '.').'" autocomplete="off"></div><div class="col-md-2"><br><label><input onchange="cbBrinde(this, '.$cont.');" name="cbBrinde[]" type="checkbox" '.$cbbrinde.'> Brinde</label><input id="brinde'.$cont.'" type="hidden" name="brinde[]" value="'.$hid_brinde.'" /></div></div><div class="col-sm-1 no-padding"><div class="col-sm-1"><br><button onclick="menos(\''.$rs['produto_kit'].'\')" type="button" class="btn btn-danger">-</button></div></div></div><input type="hidden" name="produtos[]" id="hid_produtoeditar'.$rs['produto_kit'].'" value="'.$rs['produto_kit'].'"><input type="hidden" name="valor_real_venda[]" id="hid_valor_real'.$rs['produto_kit'].'" value="'.$rsKit[$tipoValor].'"><input type="hidden" name="valor_relatorio[]" id="hid_valor_relatorio'.$rs['produto_kit'].'" value="'.$rsKit[$valor_relatorio].'"></div>';
         		}
         		$cont++;
         	}
