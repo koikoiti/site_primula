@@ -119,6 +119,7 @@
 	                            	<ul class="sub-menu">
                                         <li><a href="<%URLPADRAO%>relatorio-produtos-vendidos">Produtos Vendidos</a></li>
 	                                	<li><a href="<%URLPADRAO%>relatorios">Relatório de Vendas</a></li>
+                                        <li><a href="<%URLPADRAO%>relatorio-metas">Relatório de Metas</a></li>
                         				<li><a href="<%URLPADRAO%>relatorio-cliente">Relatório por Cliente</a></li>
                         				<li><a href="<%URLPADRAO%>relatorio-interacoes">Interações x Vendas</a></li>
 	                                </ul>
