@@ -2,6 +2,9 @@
 	#include das funcoes da tela 
 	include('functions/banco-relatorio-metas.php');
 	
+	if($_SESSION['idsetor'] != 1){
+	    $idresponsavel = $_SESSION['idusuario'];
+	}
 	$dataIni = date("Y-m-01");
 	$dataFim = date("Y-m-d");
 	$botao_limpar = '';
@@ -14,7 +17,11 @@
 	    if($_GET){
 	        $dataIni = $_GET['dataIni'];
 	        $dataFim = $_GET['dataFim'];
-	        $idresponsavel = $_GET['idresponsavel'];
+	        if($_SESSION['idsetor'] != 1){
+	            $idresponsavel = $_SESSION['idusuario'];
+	        }else{
+	            $idresponsavel = $_GET['busca_responsavel'];
+	        }
 	        $marca = $_GET['marca'];
 	        $idtipopagamento = $_GET['idtipopagamento'];
 	        $cidade = $_GET['cidade'];
@@ -25,7 +32,11 @@
     if($_GET){
     	$dataIni = $_GET['dataIni'];
     	$dataFim = $_GET['dataFim'];
-    	$idresponsavel = $_GET['busca_responsavel'];
+    	if($_SESSION['idsetor'] != 1){
+    	    $idresponsavel = $_SESSION['idusuario'];
+    	}else{
+    	   $idresponsavel = $_GET['busca_responsavel'];
+    	}
     	$marca = $_GET['busca_marca'];
     	$idtipopagamento = $_GET['busca_pgto'];
     	$cidade = $_GET['busca_cidade'];

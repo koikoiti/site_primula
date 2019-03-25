@@ -148,6 +148,13 @@
                                         <li><a href="<%URLPADRAO%>gerenciar-destaques">Gerenciar Destaques</a></li>
                                     </ul>
                                 </li>';
+                    }else{
+                        $menu .= '
+                        		<li class="parent"><a href="#"><i class="fa fa-plus-circle"></i><span>Relatórios</span></a>
+	                            	<ul class="sub-menu">
+                                        <li><a href="<%URLPADRAO%>relatorio-metas">Relatório de Metas</a></li>
+	                                </ul>
+	                            </li>';
                     }
                 
                 $menu .='<li><a href="<%URLPADRAO%>inicio/sair"><i class="fa"></i><span>Sair</span></a></li>
