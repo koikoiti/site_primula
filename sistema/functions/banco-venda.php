@@ -113,8 +113,11 @@
                         $quantidade_orcamentos++;
                         $total_orcamentos += $rs['valor_venda'];
                         $auxVO = 'Orçamento';
-                        $editar = '<a href="<%URLPADRAO%>venda/editar/'.$rs['idvenda'].'">Editar</a>
-                        			<a href="<%URLPADRAO%>venda/excluir/'.$rs['idvenda'].'">Excluir</a>';
+                        $editar = '<a href="<%URLPADRAO%>venda/editar/'.$rs['idvenda'].'">Editar</a>';
+                        #Se o setor = 1 ou for o funcionário que criou o orçamento, pode excluir
+                        if($_SESSION['idsetor'] == 1 || $_SESSION['idusuario'] == $rs['idusuario']){
+                            $editar .= '<a href="<%URLPADRAO%>venda/excluir/'.$rs['idvenda'].'">Excluir</a>';
+                        }
                     }else{
                         $quantidade_vendas++;
                         $total_vendas += $rs['valor_venda'];
