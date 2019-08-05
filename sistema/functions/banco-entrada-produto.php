@@ -197,7 +197,7 @@
                     $Linha = str_replace('<%NF%>', $rs['nf'], $Linha);
                     $Linha = str_replace('<%FORNECEDOR%>', $rs['fornecedor'], $Linha);
                     $Linha = str_replace('<%VALOR%>', number_format($rs['valor'], 2, ',', '.'), $Linha);
-                    if($_SESSION['idsetor'] == 1){
+                    if($_SESSION['idsetor'] == 1 || $_SESSION['idusuario'] == 33){
                     	$menu_add = '<li>
 					                    <a href="<%URLPADRAO%>entrada-produto/editar/'.$rs['identrada'].'">Editar</a>
 					                </li>
