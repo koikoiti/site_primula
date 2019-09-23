@@ -110,7 +110,7 @@
             <div class="form-group" style="width: 50%; float: left">
                 <label class="col-sm-3 control-label form-margin">*Bairro</label>
                 <div class="col-sm-6">
-                    <input required type="text" id="bairro_p" class="form-control" name="bairro_p" value="<%BAIRRO%>">
+                    <input required type="text" id="bairro_p" class="form-control autocomplete_bairro" name="bairro_p" value="<%BAIRRO%>">
                 </div>
             </div>
             
@@ -205,6 +205,24 @@ $(function() {
 });
 </script>
 <script type="text/javascript">
+$('body').on('click', '.autocomplete_bairro', function() {
+    $(this).autocomplete({
+    	source: "<%URLPADRAO%>lib/ajax/bairroautocomplete.php",
+        minLength: 2,
+        change: function (event, ui) {
+            if(!ui.item){
+                //http://api.jqueryui.com/autocomplete/#event-change -
+                // The item selected from the menu, if any. Otherwise the property is null
+                //so clear the item for force selection
+                $(this).val("");
+            }}
+    });
+});
+
+
+
+
+
 var newEnd = 0;
 var selecttipoendereco = "<%SELECTTIPOENDERECO%>";
 selecttipoendereco = selecttipoendereco.replace('tipoendereco_p', 'tipoendereco[]');
@@ -268,7 +286,7 @@ function addAddr(){
     var nova = document.createElement('div');
     nova.setAttribute('class', 'col-sm-12');
     nova.setAttribute('style', 'margin-top: 5px; background-color: aliceblue; border-radius: 4px');
-    nova.innerHTML = '<div class="form-group form-margin" style="width: 50%; float: left"><label class="col-sm-6 control-label">*Tipo Endereço</label><div class="col-sm-6">'+selecttipoendereco+'</div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">CEP</label><div class="col-sm-6"><input type="text" class="form-control cep" name="cep[]" onblur="buscaCep(this.value, '+newEnd+')" value="" placeholder="Digite o CEP para autocompletar os outros campos" maxlength="9" autocomplete="off"></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">*Endereço</label><div class="col-sm-6"><input required="" type="text" id="endereco_'+newEnd+'" class="form-control" name="endereco[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">*Número</label><div class="col-sm-6"><input required="" type="text" id="numero" class="form-control" name="numero[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">*Bairro</label><div class="col-sm-6"><input required="" type="text" id="bairro_'+newEnd+'" class="form-control" name="bairro[]" value=""></div></div><div class="form-group" style="width: 25%; float: left"><label class="col-sm-3 control-label form-margin">*Cidade</label><div class="col-sm-6"><input required="" type="text" id="cidade_'+newEnd+'" class="form-control" name="cidade[]" value=""></div></div><div class="form-group" style="width: 25%; float: left"><label class="col-sm-3 control-label form-margin">*Estado (Sigla)</label><div class="col-sm-6"><input required="" maxlength="2" onblur="maiusc(this);" type="text" id="estado_'+newEnd+'" class="form-control" name="estado[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">Complemento</label><div class="col-sm-6"><input type="text" class="form-control" name="complemento[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label style="width: 100%;" class="col-sm-3 control-label form-margin">Ponto de Referência</label><div class="col-sm-6"><input type="text" class="form-control" name="ponto_referencia[]" value=""></div></div></div>';
+    nova.innerHTML = '<div class="form-group form-margin" style="width: 50%; float: left"><label class="col-sm-6 control-label">*Tipo Endereço</label><div class="col-sm-6">'+selecttipoendereco+'</div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">CEP</label><div class="col-sm-6"><input type="text" class="form-control cep" name="cep[]" onblur="buscaCep(this.value, '+newEnd+')" value="" placeholder="Digite o CEP para autocompletar os outros campos" maxlength="9" autocomplete="off"></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">*Endereço</label><div class="col-sm-6"><input required="" type="text" id="endereco_'+newEnd+'" class="form-control" name="endereco[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">*Número</label><div class="col-sm-6"><input required="" type="text" id="numero" class="form-control" name="numero[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">*Bairro</label><div class="col-sm-6"><input required="" type="text" id="bairro_'+newEnd+'" class="form-control autocomplete_bairro" name="bairro[]" value=""></div></div><div class="form-group" style="width: 25%; float: left"><label class="col-sm-3 control-label form-margin">*Cidade</label><div class="col-sm-6"><input required="" type="text" id="cidade_'+newEnd+'" class="form-control" name="cidade[]" value=""></div></div><div class="form-group" style="width: 25%; float: left"><label class="col-sm-3 control-label form-margin">*Estado (Sigla)</label><div class="col-sm-6"><input required="" maxlength="2" onblur="maiusc(this);" type="text" id="estado_'+newEnd+'" class="form-control" name="estado[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label class="col-sm-3 control-label form-margin">Complemento</label><div class="col-sm-6"><input type="text" class="form-control" name="complemento[]" value=""></div></div><div class="form-group" style="width: 50%; float: left"><label style="width: 100%;" class="col-sm-3 control-label form-margin">Ponto de Referência</label><div class="col-sm-6"><input type="text" class="form-control" name="ponto_referencia[]" value=""></div></div></div>';
     var aqui = document.getElementById('addrsAdicionais');
     aqui.appendChild(nova);
     $('.cep').mask('00000-000');
