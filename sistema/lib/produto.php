@@ -18,7 +18,9 @@
 	    $banco->VisualizaFichaProduto($idproduto);
 	}
 	
-    if($_SESSION['idsetor'] == 1 || $_SESSION['idusuario'] == 33){
+	
+	#Inserir e editar, conforme solicitado, liberado apenas para 2 usuários e administração
+	if($_SESSION['idsetor'] == 1 || $_SESSION['idusuario'] == 33 || $_SESSION['idusuario'] == 43){
         if($this->PaginaAux[0] == 'editar'){
             $require_foto = '';
             #Trabalha com editar
